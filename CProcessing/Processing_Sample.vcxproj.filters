@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{35ca5b8a-72cf-4a68-b39c-057703e6af52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Input">
+      <UniqueIdentifier>{3799d3b0-4a0d-4b85-9d10-ee7ed4be0591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Player">
+      <UniqueIdentifier>{0ab0b579-822b-4ef8-8332-e0eb89100805}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Save/Load">
+      <UniqueIdentifier>{a16a14d3-54df-4663-9073-c4ed80458ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Boss">
+      <UniqueIdentifier>{7c34b233-641a-42c1-9b07-757a725d977f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ScreenManager">
+      <UniqueIdentifier>{cbcc7cdb-5025-4147-9e60-48a73236074f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\ScreenManager\Screens">
+      <UniqueIdentifier>{cc811d85-f920-419d-854f-b447ddcf0a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Camera">
+      <UniqueIdentifier>{0bd5d2a0-db79-48bf-b11f-9b342a9ecf9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Level">
+      <UniqueIdentifier>{9e41956f-c5da-4e46-927b-1546170a7f37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\UI">
+      <UniqueIdentifier>{dd27d7bc-a048-48eb-a387-8b81cf1d99a5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.c">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Player\player.c">
+      <Filter>src\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Input\InputManager.c">
+      <Filter>src\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Screen\ScreenManager.c">
+      <Filter>src\ScreenManager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Player\player.h">
+      <Filter>src\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Screen\ScreenManager.h">
+      <Filter>src\ScreenManager</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
