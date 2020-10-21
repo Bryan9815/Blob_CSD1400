@@ -21,14 +21,11 @@ void MainMenuInit(void)
 	bgColor = CP_Color_Create(0, 0, 0, 255);
 	float buttonBufferY = 125.f;
 
-
 	menuList[START] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, 250.f, 100.f, "Start");
 	menuList[OPTION] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Options");
 	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Credits");
 	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 250.f, 100.f, "Quit");
 
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-	CP_Settings_RectMode(CP_POSITION_CENTER);
 }
 
 void MainMenuUpdate(void)
@@ -73,7 +70,7 @@ void MainMenuUpdate(void)
 			SetGameState(SRC_CREDITS);
 			break;
 		case EXIT:
-			MainMenuExit();
+			CP_Engine_Terminate();
 			break;
 		default:
 			break;
@@ -83,5 +80,5 @@ void MainMenuUpdate(void)
 
 void MainMenuExit(void)
 {
-	CP_Engine_Terminate();
+	
 }

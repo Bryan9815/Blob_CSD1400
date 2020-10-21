@@ -15,6 +15,8 @@ Button CreateButton(float x, float y, float w, float h, const char* text)
 void DrawButton(Button button, float textSize, float scale, CP_Color buttonColor)
 {
 	CP_Settings_Fill(buttonColor);
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Graphics_DrawRect(button.posX, button.posY, button.width * scale, button.height * scale);
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, 255));
 	CP_Settings_TextSize(textSize * scale);
