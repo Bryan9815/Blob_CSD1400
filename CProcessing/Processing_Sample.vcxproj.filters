@@ -54,6 +54,9 @@
     <ClCompile Include="src\GameLogic\ScreenManager.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameLogic\Button.c">
+      <Filter>src\GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">

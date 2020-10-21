@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bosses\Boss.c" />
+    <ClCompile Include="src\GameLogic\Button.c" />
     <ClCompile Include="src\GameLogic\ScreenManager.c" />
     <ClCompile Include="src\Input\InputManager.c" />
     <ClCompile Include="src\main.c" />

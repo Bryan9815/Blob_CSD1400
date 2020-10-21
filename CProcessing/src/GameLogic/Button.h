@@ -11,3 +11,6 @@ typedef struct Button {
 	int isSelected;
 	CP_Color objColor;
 }Button;
+
+Button CreateButton(float x, float y, float w, float h, const char* text);
+void DrawButton(Button button, float textSize, float scale, CP_Color buttonColor);
