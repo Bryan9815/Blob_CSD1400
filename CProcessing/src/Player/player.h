@@ -1,12 +1,16 @@
+#include <cprocessing.h>
 typedef struct
 {
-	float speed;
-
-	int velX, 
-		velY;
+	float		speed,
+				width,
+				rotation;
+	CP_Vector	position;
+	int			velX,
+				velY;
+	//CP_Image sprite;
 
 } Player;
 
-Player CreatePlayer();
-
+void CreatePlayer(Player* player);
 void PlayerUpdate(Player player);
+void PlayerMovement(Player* player);
