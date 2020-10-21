@@ -3,7 +3,7 @@
 #include "src_intro.h"
 
 float splashTimer, logoWidth, logoHeight, logoPosX, logoPosY;
-int logoAlpha;
+float logoAlpha;
 CP_Image splashLogo;
 CP_Color bgColor;
 
@@ -25,7 +25,13 @@ void IntroUpdate(void)
 {
 	CP_Settings_Background(bgColor);
 
-	CP_Image_Draw(splashLogo, logoPosX, logoPosY, logoWidth, logoHeight, logoAlpha);
+	// Draw Logo
+	if (logoAlpha < 255.f)
+		logoAlpha += CP_System_GetDt() * 150;
+
+	CP_Image_Draw(splashLogo, logoPosX, logoPosY, logoWidth, logoHeight, (int)logoAlpha);
+
+	// Handle timer
 	splashTimer -= CP_System_GetDt();
 	if (splashTimer <= 0)
 	{
