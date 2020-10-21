@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Bosses\Boss.c" />
+    <ClCompile Include="src\GameLogic\BlobInput.c" />
     <ClCompile Include="src\GameLogic\Button.c" />
     <ClCompile Include="src\GameLogic\ScreenManager.c" />
     <ClCompile Include="src\Input\InputManager.c" />
@@ -30,6 +31,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Bosses\Boss.h" />
+    <ClInclude Include="src\GameLogic\BlobInput.h" />
     <ClInclude Include="src\GameLogic\Button.h" />
     <ClInclude Include="src\GameLogic\ScreenManager.h" />
     <ClInclude Include="src\Player\player.h" />

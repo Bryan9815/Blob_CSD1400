@@ -21,7 +21,6 @@ void MainMenuInit(void)
 	bgColor = CP_Color_Create(0, 0, 0, 255);
 	float buttonBufferY = 125.f;
 
-
 	menuList[START] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, 250.f, 100.f, "Start");
 	menuList[OPTION] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Options");
 	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Credits");
@@ -45,21 +44,21 @@ void MainMenuUpdate(void)
 	}
 
 	// Input
-	if (CP_Input_KeyTriggered(KEY_UP))
+	if (GetBlobInput(BLOB_UP))
 	{
 		if (selectButton == 0)
 			selectButton = 3;
 		else
 			selectButton--;
 	}
-	else if (CP_Input_KeyTriggered(KEY_DOWN))
+	else if (GetBlobInput(BLOB_DOWN))
 	{
 		if (selectButton == 3)
 			selectButton = 0;
 		else
 			selectButton++;
 	}
-	if (CP_Input_KeyTriggered(KEY_SPACE) || CP_Input_KeyTriggered(KEY_ENTER))
+	if (GetBlobInput(BLOB_INTERACT))
 	{
 		switch (selectButton)
 		{

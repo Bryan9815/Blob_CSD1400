@@ -8,7 +8,7 @@ GameState currGameState = SRC_INTRO;
 
 void GameInit(void)
 {
-	
+	BlobInputInit();
 }
 
 void SetGameState(GameState nextState)

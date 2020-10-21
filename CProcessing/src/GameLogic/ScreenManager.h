@@ -1,3 +1,5 @@
+#include "BlobInput.h"
+
 typedef enum GameState {
 	SRC_INTRO,
 	SRC_MAIN_MENU,
