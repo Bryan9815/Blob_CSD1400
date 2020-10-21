@@ -21,23 +21,28 @@ void IntroInit(void)
 	bgColor = CP_Color_Create(0, 0, 0, 255);
 }
 
-void IntroUpdate(void)
+void IntroDraw(void)
 {
 	CP_Settings_Background(bgColor);
+	CP_Image_Draw(splashLogo, logoPosX, logoPosY, logoWidth, logoHeight, (int)logoAlpha);
+}
 
+void IntroUpdate(void)
+{
 	// Draw Logo
 	if (logoAlpha < 255.f)
 		logoAlpha += CP_System_GetDt() * 150;
-
-	CP_Image_Draw(splashLogo, logoPosX, logoPosY, logoWidth, logoHeight, (int)logoAlpha);
 
 	// Handle timer
 	splashTimer -= CP_System_GetDt();
 	if (splashTimer <= 0)
 		SetGameState(SRC_MAIN_MENU);
+
+	IntroDraw();
 }
 
 void IntroExit(void)
 {
-
+	CP_Image_Free(&splashLogo);
 }
+

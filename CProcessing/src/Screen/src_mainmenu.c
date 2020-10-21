@@ -43,32 +43,35 @@ void MainMenuInit(void)
 	menuList[EXIT].width = 250.f;
 	menuList[EXIT].height = 100.f;
 	menuList[EXIT].text = "Quit";
-
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-	CP_Settings_RectMode(CP_POSITION_CENTER);
 }
 
 void DrawButton(Button button, float scale, CP_Color buttonColor)
 {	
 	CP_Settings_Fill(buttonColor);
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
+	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Graphics_DrawRect(button.posX, button.posY, button.width * scale, button.height * scale);
 	CP_Settings_Fill(CP_Color_Create(0,0,0,255));
 	CP_Settings_TextSize(48 * scale);
 	CP_Font_DrawText(button.text, button.posX, button.posY);
 }
 
-void MainMenuUpdate(void)
+void MainMenuDraw(void)
 {
 	CP_Settings_Background(bgColor);
 
 	// Draw Buttons
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
-		if(selectButton == i)
+		if (selectButton == i)
 			DrawButton(menuList[i], 1.25f, CP_Color_Create(255, 255, 255, 255));
 		else
-			DrawButton(menuList[i], 1.f, CP_Color_Create(255,255,255,255));
+			DrawButton(menuList[i], 1.f, CP_Color_Create(255, 255, 255, 255));
 	}
+}
+
+void MainMenuUpdate(void)
+{
 
 	// Input
 	if (CP_Input_KeyTriggered(KEY_UP))
@@ -99,15 +102,19 @@ void MainMenuUpdate(void)
 			SetGameState(SRC_CREDITS);
 			break;
 		case EXIT:
-			MainMenuExit();
+			CP_Engine_Terminate();
 			break;
 		default:
 			break;
 		}
 	}
+
+	MainMenuDraw();
 }
+
+
 
 void MainMenuExit(void)
 {
-	CP_Engine_Terminate();
+	
 }
