@@ -3,9 +3,26 @@
 #include "src_mainmenu.h"
 #define BUTTON_NUM 4
 
+typedef struct Button {
+	float posX;
+	float posY;
+	float width;
+	float height;
+	float alpha;
+	const char* text;
+	int isSelected;
+	CP_Color objColor;
+}Button;
+
+typedef enum {
+	START,
+	OPTION,
+	CREDITS,
+	EXIT,
+}ButtonList;
+
 CP_Color bgColor;
-Button startGame, options, credits, exit;
-Button *menuList[BUTTON_NUM] = { &startGame, &options, &credits, &exit };
+Button menuList[BUTTON_NUM];
 int selectButton;
 
 void MainMenuInit(void)
@@ -13,29 +30,29 @@ void MainMenuInit(void)
 	selectButton = 0;
 	bgColor = CP_Color_Create(0, 0, 0, 255);
 
-	startGame.posX = (float)CP_System_GetWindowWidth() / 2;
-	startGame.posY = (float)CP_System_GetWindowHeight() / 2;
-	startGame.width = 250.f;
-	startGame.height = 100.f;
-	startGame.text = "Start";
+	menuList[START].posX = (float)CP_System_GetWindowWidth() / 2;
+	menuList[START].posY = (float)CP_System_GetWindowHeight() / 2;
+	menuList[START].width = 250.f;
+	menuList[START].height = 100.f;
+	menuList[START].text = "Start";
 
-	options.posX = (float)CP_System_GetWindowWidth() / 2;
-	options.posY = (float)CP_System_GetWindowHeight() / 2 + 125.f;
-	options.width = 250.f;
-	options.height = 100.f;
-	options.text = "Options";
+	menuList[OPTION].posX = (float)CP_System_GetWindowWidth() / 2;
+	menuList[OPTION].posY = (float)CP_System_GetWindowHeight() / 2 + 125.f;
+	menuList[OPTION].width = 250.f;
+	menuList[OPTION].height = 100.f;
+	menuList[OPTION].text = "Options";
 
-	credits.posX = (float)CP_System_GetWindowWidth() / 2;
-	credits.posY = (float)CP_System_GetWindowHeight() / 2 + 250.f;
-	credits.width = 250.f;
-	credits.height = 100.f;
-	credits.text = "Credits";
+	menuList[CREDITS].posX = (float)CP_System_GetWindowWidth() / 2;
+	menuList[CREDITS].posY = (float)CP_System_GetWindowHeight() / 2 + 250.f;
+	menuList[CREDITS].width = 250.f;
+	menuList[CREDITS].height = 100.f;
+	menuList[CREDITS].text = "Credits";
 
-	exit.posX = (float)CP_System_GetWindowWidth() / 2;
-	exit.posY = (float)CP_System_GetWindowHeight() / 2 + 375.f;
-	exit.width = 250.f;
-	exit.height = 100.f;
-	exit.text = "Quit";
+	menuList[EXIT].posX = (float)CP_System_GetWindowWidth() / 2;
+	menuList[EXIT].posY = (float)CP_System_GetWindowHeight() / 2 + 375.f;
+	menuList[EXIT].width = 250.f;
+	menuList[EXIT].height = 100.f;
+	menuList[EXIT].text = "Quit";
 
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
@@ -58,9 +75,9 @@ void MainMenuUpdate(void)
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
 		if(selectButton == i)
-			DrawButton(*menuList[i], 1.25f, CP_Color_Create(255, 255, 255, 255));
+			DrawButton(menuList[i], 1.25f, CP_Color_Create(255, 255, 255, 255));
 		else
-			DrawButton(*menuList[i], 1.f, CP_Color_Create(255,255,255,255));
+			DrawButton(menuList[i], 1.f, CP_Color_Create(255,255,255,255));
 	}
 
 	// Input
@@ -82,16 +99,16 @@ void MainMenuUpdate(void)
 	{
 		switch (selectButton)
 		{
-		case 0: // Start
+		case START:
 			SetGameState(SRC_GAMEPLAY);
 			break;
-		case 1: // Options
+		case OPTION:
 			SetGameState(SRC_OPTION);
 			break;
-		case 2: // Credits
+		case CREDITS:
 			SetGameState(SRC_CREDITS);
 			break;
-		case 3: // Exit
+		case EXIT:
 			MainMenuExit();
 			break;
 		default:
