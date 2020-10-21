@@ -1,18 +1,8 @@
 #include <cprocessing.h>
-#include "ScreenManager.h"
+#include "../GameLogic/Button.h"
+#include "../GameLogic/ScreenManager.h"
 #include "src_mainmenu.h"
 #define BUTTON_NUM 4
-
-typedef struct Button {
-	float posX;
-	float posY;
-	float width;
-	float height;
-	float alpha;
-	const char* text;
-	int isSelected;
-	CP_Color objColor;
-}Button;
 
 typedef enum {
 	START,

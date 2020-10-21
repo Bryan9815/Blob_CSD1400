@@ -14,7 +14,7 @@
 
 #include "cprocessing.h"
 #include <stdio.h>
-#include "Screen/ScreenManager.h"
+#include "GameLogic/ScreenManager.h"
 
 static const float WINDOW_SCALE = 0.8f;
 static const int WINDOW_WIDTH = 1600, WINDOW_HEIGHT = 900;
