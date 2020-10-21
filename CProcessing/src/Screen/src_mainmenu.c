@@ -1,18 +1,8 @@
 #include <cprocessing.h>
-#include "ScreenManager.h"
+#include "../GameLogic/Button.h"
+#include "../GameLogic/ScreenManager.h"
 #include "src_mainmenu.h"
 #define BUTTON_NUM 4
-
-typedef struct Button {
-	float posX;
-	float posY;
-	float width;
-	float height;
-	float alpha;
-	const char* text;
-	int isSelected;
-	CP_Color objColor;
-}Button;
 
 typedef enum {
 	START,
@@ -29,42 +19,16 @@ void MainMenuInit(void)
 {
 	selectButton = 0;
 	bgColor = CP_Color_Create(0, 0, 0, 255);
+	float buttonBufferY = 125.f;
 
-	menuList[START].posX = (float)CP_System_GetWindowWidth() / 2;
-	menuList[START].posY = (float)CP_System_GetWindowHeight() / 2;
-	menuList[START].width = 250.f;
-	menuList[START].height = 100.f;
-	menuList[START].text = "Start";
 
-	menuList[OPTION].posX = (float)CP_System_GetWindowWidth() / 2;
-	menuList[OPTION].posY = (float)CP_System_GetWindowHeight() / 2 + 125.f;
-	menuList[OPTION].width = 250.f;
-	menuList[OPTION].height = 100.f;
-	menuList[OPTION].text = "Options";
-
-	menuList[CREDITS].posX = (float)CP_System_GetWindowWidth() / 2;
-	menuList[CREDITS].posY = (float)CP_System_GetWindowHeight() / 2 + 250.f;
-	menuList[CREDITS].width = 250.f;
-	menuList[CREDITS].height = 100.f;
-	menuList[CREDITS].text = "Credits";
-
-	menuList[EXIT].posX = (float)CP_System_GetWindowWidth() / 2;
-	menuList[EXIT].posY = (float)CP_System_GetWindowHeight() / 2 + 375.f;
-	menuList[EXIT].width = 250.f;
-	menuList[EXIT].height = 100.f;
-	menuList[EXIT].text = "Quit";
+	menuList[START] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, 250.f, 100.f, "Start");
+	menuList[OPTION] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Options");
+	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Credits");
+	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 250.f, 100.f, "Quit");
 
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
-}
-
-void DrawButton(Button button, float scale, CP_Color buttonColor)
-{	
-	CP_Settings_Fill(buttonColor);
-	CP_Graphics_DrawRect(button.posX, button.posY, button.width * scale, button.height * scale);
-	CP_Settings_Fill(CP_Color_Create(0,0,0,255));
-	CP_Settings_TextSize(48 * scale);
-	CP_Font_DrawText(button.text, button.posX, button.posY);
 }
 
 void MainMenuUpdate(void)
@@ -75,9 +39,9 @@ void MainMenuUpdate(void)
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
 		if(selectButton == i)
-			DrawButton(menuList[i], 1.25f, CP_Color_Create(255, 255, 255, 255));
+			DrawButton(menuList[i], 48.f, 1.25f, CP_Color_Create(255, 255, 255, 255));
 		else
-			DrawButton(menuList[i], 1.f, CP_Color_Create(255,255,255,255));
+			DrawButton(menuList[i], 48.f, 1.f, CP_Color_Create(255,255,255,255));
 	}
 
 	// Input

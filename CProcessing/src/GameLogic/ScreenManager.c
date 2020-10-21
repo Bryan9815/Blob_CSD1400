@@ -1,8 +1,8 @@
 #include <cprocessing.h>
 #include <stdio.h>
 #include "ScreenManager.h"
-#include "src_intro.h"
-#include "src_mainmenu.h"
+#include "../Screen/src_intro.h"
+#include "../Screen/src_mainmenu.h"
 
 GameState currGameState = SRC_INTRO;
 

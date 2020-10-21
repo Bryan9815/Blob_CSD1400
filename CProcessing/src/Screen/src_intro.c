@@ -1,5 +1,5 @@
 #include <cprocessing.h>
-#include "ScreenManager.h"
+#include "../GameLogic/ScreenManager.h"
 #include "src_intro.h"
 
 float splashTimer, logoWidth, logoHeight, logoPosX, logoPosY;

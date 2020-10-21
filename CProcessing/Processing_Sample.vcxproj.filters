@@ -16,12 +16,6 @@
     <Filter Include="src\Boss">
       <UniqueIdentifier>{7c34b233-641a-42c1-9b07-757a725d977f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\ScreenManager">
-      <UniqueIdentifier>{cbcc7cdb-5025-4147-9e60-48a73236074f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\ScreenManager\Screens">
-      <UniqueIdentifier>{cc811d85-f920-419d-854f-b447ddcf0a29}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Camera">
       <UniqueIdentifier>{0bd5d2a0-db79-48bf-b11f-9b342a9ecf9c}</UniqueIdentifier>
     </Filter>
@@ -30,6 +24,12 @@
     </Filter>
     <Filter Include="src\UI">
       <UniqueIdentifier>{dd27d7bc-a048-48eb-a387-8b81cf1d99a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\GameLogic">
+      <UniqueIdentifier>{cbcc7cdb-5025-4147-9e60-48a73236074f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Screens">
+      <UniqueIdentifier>{cc811d85-f920-419d-854f-b447ddcf0a29}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,34 +42,40 @@
     <ClCompile Include="src\Input\InputManager.c">
       <Filter>src\Input</Filter>
     </ClCompile>
-    <ClCompile Include="src\Screen\ScreenManager.c">
-      <Filter>src\ScreenManager</Filter>
-    </ClCompile>
     <ClCompile Include="src\Screen\src_intro.c">
-      <Filter>src\ScreenManager\Screens</Filter>
+      <Filter>src\Screens</Filter>
     </ClCompile>
     <ClCompile Include="src\Screen\src_mainmenu.c">
-      <Filter>src\ScreenManager\Screens</Filter>
+      <Filter>src\Screens</Filter>
     </ClCompile>
     <ClCompile Include="src\Bosses\Boss.c">
       <Filter>src\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameLogic\ScreenManager.c">
+      <Filter>src\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameLogic\Button.c">
+      <Filter>src\GameLogic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
       <Filter>src\Player</Filter>
     </ClInclude>
-    <ClInclude Include="src\Screen\ScreenManager.h">
-      <Filter>src\ScreenManager</Filter>
-    </ClInclude>
     <ClInclude Include="src\Screen\src_intro.h">
-      <Filter>src\ScreenManager\Screens</Filter>
+      <Filter>src\Screens</Filter>
     </ClInclude>
     <ClInclude Include="src\Screen\src_mainmenu.h">
-      <Filter>src\ScreenManager\Screens</Filter>
+      <Filter>src\Screens</Filter>
     </ClInclude>
     <ClInclude Include="src\Bosses\Boss.h">
       <Filter>src\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameLogic\ScreenManager.h">
+      <Filter>src\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameLogic\Button.h">
+      <Filter>src\GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
