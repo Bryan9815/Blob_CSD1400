@@ -4,9 +4,6 @@
 #include "src_intro.h"
 #include "src_mainmenu.h"
 
-static const float WINDOW_SCALE = 0.8f;
-static const int WINDOW_WIDTH = 1600, WINDOW_HEIGHT = 900;
-
 GameState currGameState = SRC_INTRO;
 
 void GameInit(void)
