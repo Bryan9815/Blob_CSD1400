@@ -4,7 +4,7 @@
 void BossPositioning(Boss currentboss) //function to set position of boss(es)
 {
 	//temporary
-	currentboss.Position = CP_Vector_Set(CP_System_GetWindowWidth() / 2, CP_System_GetWindowHeight() / 2);
+	currentboss.Position = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2);
 }
 
 void BossDraw(Boss currentboss) //function to draw boss(es)

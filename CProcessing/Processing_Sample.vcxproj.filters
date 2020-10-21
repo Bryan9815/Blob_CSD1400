@@ -51,6 +51,9 @@
     <ClCompile Include="src\Screen\src_mainmenu.c">
       <Filter>src\ScreenManager\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bosses\Boss.c">
+      <Filter>src\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -64,6 +67,9 @@
     </ClInclude>
     <ClInclude Include="src\Screen\src_mainmenu.h">
       <Filter>src\ScreenManager\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bosses\Boss.h">
+      <Filter>src\Boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
