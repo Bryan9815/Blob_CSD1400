@@ -10,10 +10,10 @@ typedef enum BlobInput {
 	BLOB_PAUSE,
 }BlobInput;
 
-typedef struct BlobButtons {
+typedef struct BlobKeys {
 	CP_KEY key[3];
 	const char* c_key[3];
-}BlobButtons;
+}BlobKeys;
 
 void BlobInputInit();
 int GetBlobInput(BlobInput input);
