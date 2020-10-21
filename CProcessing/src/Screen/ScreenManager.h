@@ -1,9 +1,9 @@
-typedef enum {
-	INTRO,
-	MAIN_MENU,
-	OPTION,
-	GAMEPLAY,
-	CREDITS,
+typedef enum GameState {
+	SRC_INTRO,
+	SRC_MAIN_MENU,
+	SRC_OPTION,
+	SRC_GAMEPLAY,
+	SRC_CREDITS,
 }GameState;
 
 void GameInit(void);

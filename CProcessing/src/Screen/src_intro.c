@@ -34,10 +34,7 @@ void IntroUpdate(void)
 	// Handle timer
 	splashTimer -= CP_System_GetDt();
 	if (splashTimer <= 0)
-	{
-		SetGameState(MAIN_MENU);
-		CP_Engine_SetNextGameState(GameInit, GameUpdate, GameExit);
-	}
+		SetGameState(SRC_MAIN_MENU);
 }
 
 void IntroExit(void)
