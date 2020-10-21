@@ -42,8 +42,6 @@ void IntroUpdate(void)
 	}
 
 	CP_Image_Draw(splashLogo, logoPosX, logoPosY, logoWidth, logoHeight, (int)logoAlpha);
-
-	// Handle timer
 }
 
 void IntroExit(void)

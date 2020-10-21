@@ -5,9 +5,9 @@
 #include "../Screen/src_intro.h"
 #include "../Screen/src_mainmenu.h"
 
-
 GameState currGameState = SRC_INTRO;
 Fader fader;
+
 
 void ScreenStartFade(FadeType fadeType) 
 {
@@ -54,7 +54,7 @@ void GameUpdate(void)
 	switch (currGameState)
 	{
 	case SRC_INTRO:
-		IntroUpdate();
+		IntroUpdate();		
 		break;
 	case SRC_MAIN_MENU:
 		MainMenuUpdate();
@@ -70,6 +70,7 @@ void GameUpdate(void)
 	}
 	fader = UpdateFade(fader);
 }
+
 
 
 void GameExit(void)

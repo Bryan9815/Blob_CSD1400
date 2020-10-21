@@ -21,25 +21,33 @@ void MainMenuInit(void)
 	bgColor = CP_Color_Create(0, 0, 0, 255);
 	float buttonBufferY = 125.f;
 
+
 	menuList[START] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, 250.f, 100.f, "Start");
 	menuList[OPTION] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Options");
 	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Credits");
 	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 250.f, 100.f, "Quit");
 
+
 }
 
-void MainMenuUpdate(void)
+
+
+void MainMenuDraw(void)
 {
 	CP_Settings_Background(bgColor);
 
 	// Draw Buttons
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
-		if(selectButton == i)
+		if (selectButton == i)
 			DrawButton(menuList[i], 48.f, 1.25f, CP_Color_Create(255, 255, 255, 255));
 		else
 			DrawButton(menuList[i], 48.f, 1.f, CP_Color_Create(255,255,255,255));
 	}
+}
+
+void MainMenuUpdate(void)
+{
 
 	// Input
 	if (CP_Input_KeyTriggered(KEY_UP))
@@ -76,9 +84,14 @@ void MainMenuUpdate(void)
 			break;
 		}
 	}
+
+	MainMenuDraw();
 }
+
+
 
 void MainMenuExit(void)
 {
+	
 	
 }
