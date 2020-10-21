@@ -19,12 +19,14 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Bosses\Boss.c" />
     <ClCompile Include="src\Input\InputManager.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\Player\player.c" />
     <ClCompile Include="src\Screen\ScreenManager.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Bosses\Boss.h" />
     <ClInclude Include="src\Player\player.h" />
     <ClInclude Include="src\Screen\ScreenManager.h" />
   </ItemGroup>
