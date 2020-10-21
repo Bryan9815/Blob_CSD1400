@@ -14,6 +14,7 @@
 
 #include "cprocessing.h"
 #include <stdio.h>
+#include "Screen/ScreenManager.h"
 
 static const float WINDOW_SCALE = 0.8f;
 static const int WINDOW_WIDTH = 1600, WINDOW_HEIGHT = 900;
@@ -23,6 +24,7 @@ static const int WINDOW_WIDTH = 1600, WINDOW_HEIGHT = 900;
 void game_init(void)
 {
 	// initialize variables and CProcessing settings for this gamestate
+	GameInit();
 }
 
 // use CP_Engine_SetNextGameState to specify this function as the update function
@@ -30,6 +32,7 @@ void game_init(void)
 void game_update(void)
 {
 	// check input, update simulation, render etc.
+	GameUpdate();
 }
 
 // use CP_Engine_SetNextGameState to specify this function as the exit function
@@ -37,6 +40,7 @@ void game_update(void)
 void game_exit(void)
 {
 	// shut down the gamestate and cleanup any dynamic memory
+	GameExit();
 }
 
 // main() the starting point for the program
