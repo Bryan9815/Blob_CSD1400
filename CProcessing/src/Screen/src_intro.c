@@ -40,6 +40,10 @@ void IntroUpdate(void)
 			SetGameState(SRC_MAIN_MENU);
 		}
 	}
+	if (GetBlobInput(BLOB_INTERACT))
+	{
+		SetGameState(SRC_MAIN_MENU);
+	}
 
 	CP_Image_Draw(splashLogo, logoPosX, logoPosY, logoWidth, logoHeight, (int)logoAlpha);
 }

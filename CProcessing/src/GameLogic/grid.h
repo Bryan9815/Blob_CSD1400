@@ -3,8 +3,8 @@
 This is for casting a grid
 --------------------------*/
 
-#define GRID_WIDTH 24							//Set the horizontal length
-#define GRID_HEIGHT 18							//Set the vertical length
+#define GRID_WIDTH 40							//Set the horizontal length
+#define GRID_HEIGHT 40							//Set the vertical length
 
 #define GRID_UNIT_WIDTH 50	
 #define GRID_UNIT_HEIGHT 50	
