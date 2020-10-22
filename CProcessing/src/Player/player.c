@@ -6,7 +6,7 @@
 CP_Color backgroundColour;
 //Player newPlayer;
 
-void SetPlayer(Player* player) //Default Variables
+void SetPlayer(Player* player) //Default settings
 {
 	//Player Stats and Position
 	//player.sprite = CP_Image_Load("./dioface.png");
