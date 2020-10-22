@@ -1,10 +1,8 @@
 #pragma once
-#include <cprocessing.h>
-#include <stdio.h>
-#include <stdbool.h>
 #include "ScreenManager.h"
 #include "../Screen/src_intro.h"
 #include "../Screen/src_mainmenu.h"
+#include "../Screen/scr_level_1.h"
 #include "../Bosses/Boss.h"
 
 GameState currGameState = SRC_INTRO;
@@ -36,6 +34,7 @@ void GameInit(void)
 	case SRC_CREDITS:
 		break;
 	case SRC_GAMEPLAY:
+		Level1Init();
 		break;
 	default:
 		break;
@@ -46,7 +45,7 @@ void GameInit(void)
 void SetGameState(GameState nextState)
 {
 	currGameState = nextState;
-	CP_Engine_SetNextGameState(GameInit, GameUpdate, GameExit);
+	CP_Engine_SetNextGameStateForced(GameInit, GameUpdate, GameExit);
 }
 
 void GameUpdate(void)
@@ -65,6 +64,7 @@ void GameUpdate(void)
 	case SRC_CREDITS:
 		break;
 	case SRC_GAMEPLAY:
+		Level1Update();
 		break;
 	default:
 		break;
