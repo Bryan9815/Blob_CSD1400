@@ -19,8 +19,6 @@ typedef struct
 
 } Player;
 
-int dodgeBlur;
-
 Player newPlayer;
 
 void SetPlayer(Player* player);

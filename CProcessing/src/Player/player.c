@@ -4,7 +4,6 @@
 
 
 CP_Color backgroundColour;
-float dodgetimer;
 //Player newPlayer;
 
 void SetPlayer(Player* player) //Default Variables
@@ -21,12 +20,11 @@ void SetPlayer(Player* player) //Default Variables
 
 	//Player dodge
 	player->numDodge = 2;
+	player->dodgeBlur = 3;
 	player->dodgeCooldown = 4;
 	player->dodgeFactor = 10.0f;
 	player->dodgeTimer = CP_System_GetWindowWidth() / 100.0f;
 	player->isDodging = 0;
-
-	dodgetimer = 0.0f;
 }
 
 /*Physics*/
@@ -135,13 +133,13 @@ void PlayerDodge(Player* player)
 	if (player->isDodging == 1)
 	{
 
-		if (dodgeBlur != 0)
+		if (player->dodgeBlur != 0)
 		{
-			dodgeBlur -= 1;
+			player->dodgeBlur -= 1;
 		}
 		else
 		{
-			dodgeBlur = 3;
+			player->dodgeBlur = 3;
 			player->isDodging = 0;
 		}
 		player->position.x += (player->velX * (player->speed * (player->dodgeFactor / 4)));
