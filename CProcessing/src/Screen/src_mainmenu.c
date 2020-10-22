@@ -1,8 +1,9 @@
 #include <cprocessing.h>
+#include <stdio.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
 #include "src_mainmenu.h"
-#define BUTTON_NUM 4
+#define MAIN_MENU_BUTTONS 4
 
 typedef enum {
 	START,
@@ -12,7 +13,7 @@ typedef enum {
 }ButtonList;
 
 CP_Color bgColor;
-Button menuList[BUTTON_NUM];
+Button menuList[MAIN_MENU_BUTTONS];
 int selectButton;
 
 void MainMenuInit(void)
@@ -34,7 +35,7 @@ void MainMenuDraw(void)
 	CP_Settings_Background(bgColor);
 
 	// Draw Buttons
-	for (int i = 0; i < BUTTON_NUM; i++)
+	for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
 	{
 		if (selectButton == i)
 			DrawButton(menuList[i], 48.f, 1.25f, CP_Color_Create(255, 255, 255, 255));
@@ -50,13 +51,13 @@ void MainMenuUpdate(void)
 	if (GetBlobInput(BLOB_UP))
 	{
 		if (selectButton == 0)
-			selectButton = 3;
+			selectButton = MAIN_MENU_BUTTONS - 1;
 		else
 			selectButton--;
 	}
 	else if (GetBlobInput(BLOB_DOWN))
 	{
-		if (selectButton == 3)
+		if (selectButton == MAIN_MENU_BUTTONS - 1)
 			selectButton = 0;
 		else
 			selectButton++;

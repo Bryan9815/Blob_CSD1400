@@ -1,7 +1,9 @@
 #pragma once
 #include "BlobInput.h"
+#include <stdio.h>
 
 BlobKeys keys[6];
+char turnInputToChar[40];
 
 BlobKeys CreateBlobButton(CP_KEY k1, CP_KEY k2, CP_KEY k3, const char* ck1, const char* ck2, const char* ck3)
 {
@@ -35,4 +37,44 @@ int GetBlobInput(BlobInput input)
 			return 1;
 	}
 	return 0;
+}
+
+const char* GetBlobInputName(BlobInput input)
+{
+	switch (input)
+	{
+	case BLOB_UP:
+		return "Up";
+		break;
+	case BLOB_DOWN:
+		return "Down";
+		break;
+	case BLOB_LEFT:
+		return "Left";
+		break;
+	case BLOB_RIGHT:
+		return "Right";
+		break;
+	case BLOB_INTERACT:
+		return "Interact";
+		break;
+	case BLOB_PAUSE:
+		return "Pause";
+		break;
+	default:
+		return "";
+		break;
+	}
+}
+
+const char* GetBlobKeyName(BlobInput input, int keyNum)
+{
+	return keys[input].c_key[keyNum-1];
+}
+
+void EditBlobInput(BlobInput blobInput, int keyNum, CP_KEY newInput)
+{
+	keys[blobInput].key[keyNum] = newInput;
+	sprintf_s(keys[blobInput].new_c_key, sizeof newInput, "%c", newInput);
+	keys[blobInput].c_key[keyNum] = keys[blobInput].new_c_key;
 }

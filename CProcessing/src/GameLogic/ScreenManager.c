@@ -8,7 +8,6 @@
 
 GameState currGameState = SRC_INTRO;
 Fader fader;
-int initCheck = 0;
 
 void ScreenStartFade(FadeType fadeType) 
 {
@@ -22,7 +21,6 @@ Fader GetFader()
 
 void GameInit(void)
 {
-	initCheck = 1;
 	switch (currGameState)
 	{
 	case SRC_INTRO:
@@ -49,18 +47,11 @@ void GameInit(void)
 void SetGameState(GameState nextState)
 {
 	currGameState = nextState;
-	initCheck = 0;
-	CP_Engine_SetNextGameState(GameInit, GameUpdate, GameExit);
+	CP_Engine_SetNextGameStateForced(GameInit, GameUpdate, GameExit);
 }
 
 void GameUpdate(void)
 {
-	if (initCheck == 0)
-	{
-		GameInit();
-		initCheck = 1;
-	}
-
 	switch (currGameState)
 	{
 	case SRC_INTRO:
