@@ -1,3 +1,4 @@
+#include "../Screen/fader.h"
 #include "BlobInput.h"
 
 typedef enum GameState {
@@ -12,3 +13,6 @@ void GameInit(void);
 void GameUpdate(void);
 void GameExit(void);
 void SetGameState(GameState nextState);
+
+void ScreenStartFade(FadeType fadeType);
+Fader GetFader();

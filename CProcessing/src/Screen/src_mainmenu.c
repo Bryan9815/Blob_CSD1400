@@ -26,22 +26,27 @@ void MainMenuInit(void)
 	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Credits");
 	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 250.f, 100.f, "Quit");
 
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
-	CP_Settings_RectMode(CP_POSITION_CENTER);
+
 }
 
-void MainMenuUpdate(void)
+
+
+void MainMenuDraw(void)
 {
 	CP_Settings_Background(bgColor);
 
 	// Draw Buttons
 	for (int i = 0; i < BUTTON_NUM; i++)
 	{
-		if(selectButton == i)
+		if (selectButton == i)
 			DrawButton(menuList[i], 48.f, 1.25f, CP_Color_Create(255, 255, 255, 255));
 		else
 			DrawButton(menuList[i], 48.f, 1.f, CP_Color_Create(255,255,255,255));
 	}
+}
+
+void MainMenuUpdate(void)
+{
 
 	// Input
 	if (GetBlobInput(BLOB_UP))
@@ -72,15 +77,20 @@ void MainMenuUpdate(void)
 			SetGameState(SRC_CREDITS);
 			break;
 		case EXIT:
-			MainMenuExit();
+			CP_Engine_Terminate();
 			break;
 		default:
 			break;
 		}
 	}
+
+	MainMenuDraw();
 }
+
+
 
 void MainMenuExit(void)
 {
-	CP_Engine_Terminate();
+	
+	
 }

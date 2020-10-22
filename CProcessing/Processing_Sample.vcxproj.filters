@@ -57,6 +57,9 @@
     <ClCompile Include="src\GameLogic\Button.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="src\Screen\fader.c">
+      <Filter>src\UI</Filter>
+    </ClCompile>
     <ClCompile Include="src\GameLogic\BlobInput.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
@@ -79,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="src\GameLogic\Button.h">
       <Filter>src\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Screen\fader.h">
+      <Filter>src\UI</Filter>
     </ClInclude>
     <ClInclude Include="src\GameLogic\BlobInput.h">
       <Filter>src\GameLogic</Filter>

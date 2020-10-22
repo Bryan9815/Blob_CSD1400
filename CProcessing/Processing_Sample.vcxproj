@@ -26,6 +26,7 @@
     <ClCompile Include="src\Input\InputManager.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\Player\player.c" />
+    <ClCompile Include="src\Screen\fader.c" />
     <ClCompile Include="src\Screen\src_intro.c" />
     <ClCompile Include="src\Screen\src_mainmenu.c" />
   </ItemGroup>
@@ -35,6 +36,7 @@
     <ClInclude Include="src\GameLogic\Button.h" />
     <ClInclude Include="src\GameLogic\ScreenManager.h" />
     <ClInclude Include="src\Player\player.h" />
+    <ClInclude Include="src\Screen\fader.h" />
     <ClInclude Include="src\Screen\src_intro.h" />
     <ClInclude Include="src\Screen\src_mainmenu.h" />
   </ItemGroup>
