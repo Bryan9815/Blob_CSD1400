@@ -40,7 +40,7 @@ void OptionsInit(void)
 		customInputMenu[i][0].objColor = WHITE;
 		for (int j = 1; j < 4; j++)
 		{
-			customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 6 + 350.f * j, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i,j));
+			customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 6 + 350.f * j, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
 			customInputMenu[i][j].isSelected = 0;
 			customInputMenu[i][j].objColor = WHITE;
 		}
@@ -438,7 +438,7 @@ void OptionsInput(void)
 			if (getInput() != 0)
 			{
 				EditBlobInput(customInputY, customInputX - 1, getInput());
-				customInputMenu[customInputY][customInputX].text = GetBlobKeyName(customInputY, customInputX);
+				customInputMenu[customInputY][customInputX].text = GetBlobKeyName(customInputY, customInputX - 1);
 				customInputMenu[customInputY][customInputX].isSelected = 0;
 				customInputMenu[customInputY][customInputX].objColor = WHITE;
 				changingInput = 0;

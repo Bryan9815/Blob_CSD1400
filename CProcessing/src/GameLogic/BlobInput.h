@@ -13,7 +13,7 @@ typedef enum BlobInput {
 typedef struct BlobKeys {
 	CP_KEY key[3];
 	const char* c_key[3];
-	char new_c_key[40];
+	char new_c_key[3][40];
 }BlobKeys;
 
 void BlobInputInit();

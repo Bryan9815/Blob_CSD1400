@@ -69,12 +69,15 @@ const char* GetBlobInputName(BlobInput input)
 
 const char* GetBlobKeyName(BlobInput input, int keyNum)
 {
-	return keys[input].c_key[keyNum-1];
+	if (input < BLOB_PAUSE && keyNum < 3)
+		return keys[input].c_key[keyNum];
+	else
+		return keys[BLOB_PAUSE].c_key[2];
 }
 
 void EditBlobInput(BlobInput blobInput, int keyNum, CP_KEY newInput)
 {
 	keys[blobInput].key[keyNum] = newInput;
-	sprintf_s(keys[blobInput].new_c_key, sizeof newInput, "%c", newInput);
-	keys[blobInput].c_key[keyNum] = keys[blobInput].new_c_key;
+	sprintf_s(keys[blobInput].new_c_key[keyNum], sizeof newInput, "%c", newInput);
+	keys[blobInput].c_key[keyNum] = keys[blobInput].new_c_key[keyNum];
 }
