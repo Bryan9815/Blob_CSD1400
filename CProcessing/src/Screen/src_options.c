@@ -74,7 +74,14 @@ void OptionsDraw(void)
 		// Draw custom inputs
 		for (int i = 0; i < BLOB_PAUSE + 2; i++)
 		{
-			for (int j = 0; j < 4; j++)
+			if(i == BLOB_PAUSE + 1)
+				DrawButton(customInputMenu[i][0], 48.f, 1.f, WHITE);
+			else
+			{
+				CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+				CP_Font_DrawText(customInputMenu[i][0].text, customInputMenu[i][0].posX, customInputMenu[i][0].posY);
+			}
+			for (int j = 1; j < 4; j++)
 			{
 				if (i != BLOB_PAUSE + 1)
 				{

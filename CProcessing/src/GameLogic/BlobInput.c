@@ -78,6 +78,23 @@ const char* GetBlobKeyName(BlobInput input, int keyNum)
 void EditBlobInput(BlobInput blobInput, int keyNum, CP_KEY newInput)
 {
 	keys[blobInput].key[keyNum] = newInput;
-	sprintf_s(keys[blobInput].new_c_key[keyNum], sizeof newInput, "%c", newInput);
-	keys[blobInput].c_key[keyNum] = keys[blobInput].new_c_key[keyNum];
+	switch (newInput)
+	{
+	case KEY_UP:
+		keys[blobInput].c_key[keyNum] = "UP";
+		break;
+	case KEY_DOWN:
+		keys[blobInput].c_key[keyNum] = "DOWN";
+		break;
+	case KEY_LEFT:
+		keys[blobInput].c_key[keyNum] = "LEFT";
+		break;
+	case KEY_RIGHT:
+		keys[blobInput].c_key[keyNum] = "RIGHT";
+		break;
+	default:
+		sprintf_s(keys[blobInput].new_c_key[keyNum], sizeof newInput, "%c", newInput);
+		keys[blobInput].c_key[keyNum] = keys[blobInput].new_c_key[keyNum];
+		break;
+	}
 }

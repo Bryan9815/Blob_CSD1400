@@ -46,7 +46,6 @@ void MainMenuDraw(void)
 
 void MainMenuUpdate(void)
 {
-	MainMenuDraw();
 	// Input
 	if (GetBlobInput(BLOB_UP))
 	{
@@ -82,6 +81,7 @@ void MainMenuUpdate(void)
 			break;
 		}
 	}
+	MainMenuDraw();
 }
 
 
