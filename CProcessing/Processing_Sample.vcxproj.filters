@@ -60,6 +60,9 @@
     <ClCompile Include="src\Screen\fader.c">
       <Filter>src\UI</Filter>
     </ClCompile>
+    <ClCompile Include="src\Player\Arrow.c">
+      <Filter>src\Player</Filter>
+    </ClCompile>
     <ClCompile Include="src\GameLogic\grid.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="src\Screen\fader.h">
       <Filter>src\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Player\Arrow.h">
+      <Filter>src\Player</Filter>
     </ClInclude>
     <ClInclude Include="src\GameLogic\grid.h">
       <Filter>src\GameLogic</Filter>

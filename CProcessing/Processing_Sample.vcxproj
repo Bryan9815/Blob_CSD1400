@@ -25,6 +25,7 @@
     <ClCompile Include="src\GameLogic\ScreenManager.c" />
     <ClCompile Include="src\Input\InputManager.c" />
     <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\Player\Arrow.c" />
     <ClCompile Include="src\Player\player.c" />
     <ClCompile Include="src\Screen\fader.c" />
     <ClCompile Include="src\Screen\scr_level_1.c" />
@@ -36,6 +37,7 @@
     <ClInclude Include="src\GameLogic\Button.h" />
     <ClInclude Include="src\GameLogic\grid.h" />
     <ClInclude Include="src\GameLogic\ScreenManager.h" />
+    <ClInclude Include="src\Player\Arrow.h" />
     <ClInclude Include="src\Player\player.h" />
     <ClInclude Include="src\Screen\fader.h" />
     <ClInclude Include="src\Screen\scr_level_1.h" />
