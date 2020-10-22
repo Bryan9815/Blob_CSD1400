@@ -38,7 +38,7 @@ void MainMenuDraw(void)
 	for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
 	{
 		if (selectButton == i)
-			DrawButton(menuList[i], 48.f, 1.25f, CP_Color_Create(255, 255, 255, 255));
+			DrawButton(menuList[i], 48.f, 1.f, CP_Color_Create(0, 255, 0, 255));
 		else
 			DrawButton(menuList[i], 48.f, 1.f, CP_Color_Create(255,255,255,255));
 	}

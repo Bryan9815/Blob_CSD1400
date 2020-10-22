@@ -1,10 +1,10 @@
-#include <cprocessing.h>
-#include <stdio.h>
-#include <stdbool.h>
+#pragma once
 #include "ScreenManager.h"
 #include "../Screen/src_intro.h"
 #include "../Screen/src_mainmenu.h"
 #include "../Screen/src_options.h"
+#include "../Screen/scr_level_1.h"
+#include "../Bosses/Boss.h"
 
 GameState currGameState = SRC_INTRO;
 Fader fader;
@@ -37,6 +37,7 @@ void GameInit(void)
 	case SRC_CREDITS:
 		break;
 	case SRC_GAMEPLAY:
+		Level1Init();
 		break;
 	default:
 		break;
@@ -66,6 +67,7 @@ void GameUpdate(void)
 	case SRC_CREDITS:
 		break;
 	case SRC_GAMEPLAY:
+		Level1Update();
 		break;
 	default:
 		break;

@@ -1,5 +1,9 @@
+#include <cprocessing.h>
+#include <stdio.h>
+#include <stdbool.h>
 #include "../Screen/fader.h"
 #include "BlobInput.h"
+#include "grid.h"
 
 typedef enum GameState {
 	SRC_INTRO,
