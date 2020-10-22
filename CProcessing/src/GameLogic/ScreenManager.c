@@ -1,13 +1,14 @@
+#pragma once
 #include <cprocessing.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include "ScreenManager.h"
 #include "../Screen/src_intro.h"
 #include "../Screen/src_mainmenu.h"
+#include "../Bosses/Boss.h"
 
 GameState currGameState = SRC_INTRO;
 Fader fader;
-
 
 void ScreenStartFade(FadeType fadeType) 
 {
