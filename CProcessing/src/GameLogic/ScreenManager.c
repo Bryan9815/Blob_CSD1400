@@ -4,10 +4,11 @@
 #include "ScreenManager.h"
 #include "../Screen/src_intro.h"
 #include "../Screen/src_mainmenu.h"
+#include "../Screen/src_options.h"
 
 GameState currGameState = SRC_INTRO;
 Fader fader;
-
+//int initCheck = 0;
 
 void ScreenStartFade(FadeType fadeType) 
 {
@@ -25,12 +26,14 @@ void GameInit(void)
 	{
 	case SRC_INTRO:
 		fader = CreateFader();
+		BlobInputInit();
 		IntroInit();
 		break;
 	case SRC_MAIN_MENU:
 		MainMenuInit();
 		break;
 	case SRC_OPTION:
+		OptionsInit();
 		break;
 	case SRC_CREDITS:
 		break;
@@ -45,12 +48,18 @@ void GameInit(void)
 void SetGameState(GameState nextState)
 {
 	currGameState = nextState;
+	//initCheck = 0;
 	CP_Engine_SetNextGameState(GameInit, GameUpdate, GameExit);
 }
 
 void GameUpdate(void)
 {
-	
+	/*if (initCheck == 0)
+	{
+		GameInit();
+		initCheck = 1;
+	}*/
+
 	switch (currGameState)
 	{
 	case SRC_INTRO:
@@ -60,6 +69,7 @@ void GameUpdate(void)
 		MainMenuUpdate();
 		break;
 	case SRC_OPTION:
+		OptionsUpdate();
 		break;
 	case SRC_CREDITS:
 		break;
@@ -84,6 +94,7 @@ void GameExit(void)
 		MainMenuExit();
 		break;
 	case SRC_OPTION:
+		OptionsExit();
 		break;
 	case SRC_CREDITS:
 		break;

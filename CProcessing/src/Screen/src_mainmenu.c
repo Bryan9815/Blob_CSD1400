@@ -25,8 +25,6 @@ void MainMenuInit(void)
 	menuList[OPTION] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Options");
 	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Credits");
 	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 250.f, 100.f, "Quit");
-
-
 }
 
 
@@ -47,7 +45,7 @@ void MainMenuDraw(void)
 
 void MainMenuUpdate(void)
 {
-
+	MainMenuDraw();
 	// Input
 	if (GetBlobInput(BLOB_UP))
 	{
@@ -83,14 +81,11 @@ void MainMenuUpdate(void)
 			break;
 		}
 	}
-
-	MainMenuDraw();
 }
 
 
 
 void MainMenuExit(void)
-{
-	
+{	
 	
 }

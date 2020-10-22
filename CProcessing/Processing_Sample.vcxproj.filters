@@ -63,6 +63,9 @@
     <ClCompile Include="src\GameLogic\BlobInput.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="src\Screen\src_options.c">
+      <Filter>src\Screens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -88,6 +91,9 @@
     </ClInclude>
     <ClInclude Include="src\GameLogic\BlobInput.h">
       <Filter>src\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Screen\src_options.h">
+      <Filter>src\Screens</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
