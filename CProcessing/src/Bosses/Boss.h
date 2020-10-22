@@ -14,4 +14,4 @@ Boss ArmorSlime; //currently only 1 boss
 
 void CreateBoss(Boss* currentboss, int health, float size);
 void BossDraw(Boss currentboss);
-void BossMovement(Boss* currentboss/*, Player* player*/);
+void BossMovement(Boss* currentboss/*, Player* player*/); //remove all comments once player is added
