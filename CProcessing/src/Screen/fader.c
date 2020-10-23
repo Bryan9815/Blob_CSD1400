@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include "fader.h"
 
-Fader CreateFader()
+Fader CreateFader() //Default Variables
 {
 	Fader fader;
 	fader.isFading = false;
@@ -13,7 +13,7 @@ Fader CreateFader()
 	return fader;
 }
 
-Fader StartFade(Fader fader, FadeType fadeType)	//wtf
+Fader StartFade(Fader fader, FadeType fadeType)	//Sets the Fader to fade
 {
 
 	if (fadeType == FADE_OUT)
@@ -27,14 +27,14 @@ Fader StartFade(Fader fader, FadeType fadeType)	//wtf
 	return fader;
 }
 
-Fader StopFade(Fader fader, FadeType fadeType)	//wtf
+Fader StopFade(Fader fader, FadeType fadeType)	//Sets the Fader to stop fading
 {
 	fader.isFading = false;
 	fader.fadeType = fadeType;
 	return fader;
 }
 
-Fader UpdateFade(Fader fader)	//wtf
+Fader UpdateFade(Fader fader)	//Drawcall for Fader
 {
 	if (fader.isFading) //fading
 	{

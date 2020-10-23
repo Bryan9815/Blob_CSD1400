@@ -4,20 +4,21 @@
 
 typedef enum COL_SHAPE
 {
-	COL_CIRCLE,
-	COL_RECT
+	COL_CIRCLE,			//CIRCLE
+	COL_RECT			//RECT
 
 }COL_SHAPE;
 
-typedef struct //wtf
+typedef struct 
 {
 	CP_Vector position;
 
-	float width,
-		  height,
-		  radius;
+	float width,			//USE FOR RECT COLLIDER
+		  height,			//USE FOR RECT COLLIDER
 
-	COL_SHAPE shapeType;
+		  radius;			//USE FOR CIRCLE COLLIDER
+
+	COL_SHAPE shapeType;	//COLLIDER SHAPE
 
 }Collider;
 

@@ -4,7 +4,7 @@ GridUnit level[GRID_WIDTH][GRID_HEIGHT];
 
 void Level1Init(void) 
 {
-	LoadMapFile(Level0);
+	LoadMapFile(Level1);
 	GridInit(level[0]);
 }
 

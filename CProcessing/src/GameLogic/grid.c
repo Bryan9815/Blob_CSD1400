@@ -191,7 +191,8 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 		if(COL_IsColliding(grid[i * levelHeight + j].collider, playerHitBox))
 			CP_Settings_Fill(CP_Color_Create(255, 0, 255, 200));	//RECT COLLIDER
 		else
-			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));	//RECT COLLIDER
+			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));	//RECT 
+		CP_Settings_RectMode(CP_POSITION_CORNER);
 		CP_Graphics_DrawRect(	
 			grid[i * levelHeight + j].collider.position.x,
 			grid[i * levelHeight + j].collider.position.y,
