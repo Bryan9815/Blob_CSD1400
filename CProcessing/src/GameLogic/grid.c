@@ -130,7 +130,7 @@ void GridInit(GridUnit* grid)//Add starting point
 			grid[j * levelHeight + k].collider.shapeType = COL_CIRCLE;								//CIRCLE COLLIDER
 			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
 			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-			grid[j * levelHeight + k].collider.radius = (float)(GRID_UNIT_WIDTH);
+			grid[j * levelHeight + k].collider.radius = (float)(GRID_UNIT_WIDTH) / 2;
 #endif
 #if 1
 			grid[j * levelHeight + k].collider.shapeType = COL_RECT;								//RECT COLLIDER
@@ -178,11 +178,14 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 			GRID_UNIT_HEIGHT,
 			255);
 #if 0
-		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));	//CIRCLE COLLIDER
+		if (COL_IsColliding(grid[i * levelHeight + j].collider, playerHitBox))
+			CP_Settings_Fill(CP_Color_Create(255, 0, 255, 200));	//RECT COLLIDER
+		else
+			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));	//RECT COLLIDER
 		CP_Graphics_DrawCircle(
 			grid[i * levelHeight + j].collider.position.x,
 			grid[i * levelHeight + j].collider.position.y,
-			grid[i * levelHeight + j].collider.radius);
+			grid[i * levelHeight + j].collider.radius * 2);
 #endif
 #if 1
 		if(COL_IsColliding(grid[i * levelHeight + j].collider, playerHitBox))

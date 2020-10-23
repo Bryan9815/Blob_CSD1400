@@ -20,11 +20,17 @@ void CreatePlayer(Player* player) //Default Variables
 	player->rotation = 0.0f;
 	player->position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
 	player->vel = CP_Vector_Set(0, -1);
-
+#if 1 
 	player->hitBox.shapeType = COL_RECT;
 	player->hitBox.position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
 	player->hitBox.width = CP_System_GetWindowWidth() / 15.0f;
 	player->hitBox.height = CP_System_GetWindowWidth() / 15.0f;
+#endif
+#if 0
+	player->hitBox.shapeType = COL_CIRCLE;
+	player->hitBox.position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
+	player->hitBox.radius = (CP_System_GetWindowWidth() / 15.0f) /2;
+#endif
 
 	//Player dodge
 	dodgeDistance = CP_System_GetWindowWidth() / 100.0f;
@@ -48,6 +54,21 @@ void PlayerDraw(Player* player)
 	//Draw arrow
 	CP_Settings_Fill(arrowColor);
 	CP_Graphics_DrawRectAdvanced(player->arrow.position.x, player->arrow.position.y, player->arrow.width, player->arrow.width, player->rotation+45.0f, 1);
+	
+	//HitBox
+	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 200));	//RECT COLLIDER
+#if 0
+	CP_Graphics_DrawCircle(
+		player->hitBox.position.x,
+		player->hitBox.position.y,
+		player->hitBox.radius * 2);
+#endif
+	CP_Graphics_DrawRect(
+		player->hitBox.position.x,
+		player->hitBox.position.y,
+		player->hitBox.width,
+		player->hitBox.height
+	);
 
 	//Draw Dio
 	//CP_Image_DrawAdvanced(sprite, player->position.x, player->position.y, dioWidth, dioHeight, 255, player->rotation);

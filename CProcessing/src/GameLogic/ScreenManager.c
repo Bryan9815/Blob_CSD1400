@@ -47,7 +47,7 @@ void GameInit(void)
 		break;
 	}
 	ScreenStartFade(FADE_OUT);
-	Level1Init();
+	//Level1Init();
 	CreateBoss(&ArmorSlime, 1, 100.f);
 	shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
 }
