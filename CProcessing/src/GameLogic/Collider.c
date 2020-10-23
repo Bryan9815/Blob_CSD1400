@@ -1,5 +1,3 @@
-#include <stdbool.h>
-#include <cprocessing.h>
 #include "Collider.h"
 
 

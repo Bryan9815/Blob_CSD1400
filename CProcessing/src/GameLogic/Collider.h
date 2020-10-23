@@ -1,6 +1,7 @@
 #include <cprocessing.h>
+#include <stdbool.h>
 
-typedef enum //wtf
+typedef enum COL_SHAPE
 {
 	COL_CIRCLE,
 	COL_RECT
@@ -18,3 +19,5 @@ typedef struct //wtf
 	COL_SHAPE shapeType;
 
 }Collider;
+
+bool COL_IsColliding(Collider hitBox1, Collider hitBox2);

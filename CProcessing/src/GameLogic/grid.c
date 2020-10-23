@@ -126,11 +126,18 @@ void GridInit(GridUnit* grid)//Add starting point
 		else if (levelData[i] == '-') //WALL
 		{
 			/*@todo*/
-#if 1
+#if 0
 			grid[j * levelHeight + k].collider.shapeType = COL_CIRCLE;								//CIRCLE COLLIDER
 			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
 			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
 			grid[j * levelHeight + k].collider.radius = (float)(GRID_UNIT_WIDTH);
+#endif
+#if 1
+			grid[j * levelHeight + k].collider.shapeType = COL_RECT;								//RECT COLLIDER
+			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH);
+			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT);
+			grid[j * levelHeight + k].collider.width = (float)(GRID_UNIT_WIDTH);
+			grid[j * levelHeight + k].collider.height = (float)(GRID_UNIT_HEIGHT);
 #endif
 
 			grid[j * levelHeight + k].gridType = GE_WALL;
@@ -144,61 +151,66 @@ void GridInit(GridUnit* grid)//Add starting point
 
 
 
-void GridDraw(GridUnit* grid) 
+void GridDraw(GridUnit* grid, int i , int j)
 {
 	//Checks thru all the elements
-	for (int i = 0; i < levelWidth; i++)
-	{
-		for (int j = 0; j < levelHeight; j++)
-		{
+	
 #if !debug
-			switch (grid[i * levelHeight + j].gridType)
-			{
-			case GE_FlOOR:
-				CP_Settings_ImageMode(CP_POSITION_CORNER);
-				CP_Image_Draw(
-					tile1,
-					(float)GRID_UNIT_WIDTH * i,
-					(float)GRID_UNIT_HEIGHT * j,
-					GRID_UNIT_WIDTH,
-					GRID_UNIT_HEIGHT,
-					255);
-				break;
-			case GE_WALL:
-				CP_Settings_ImageMode(CP_POSITION_CORNER);
-				CP_Image_Draw(
-					tile2,
-					(float)GRID_UNIT_WIDTH * i,
-					(float)GRID_UNIT_HEIGHT * j,
-					GRID_UNIT_WIDTH,
-					GRID_UNIT_HEIGHT,
-					255);
-				CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));
-				CP_Graphics_DrawCircle(
-					grid[i * levelHeight + j].collider.position.x,
-					grid[i * levelHeight + j].collider.position.y,
-					grid[i * levelHeight + j].collider.radius);
+	switch (grid[i * levelHeight + j].gridType)
+	{
+	case GE_FlOOR:
+		CP_Settings_ImageMode(CP_POSITION_CORNER);
+		CP_Image_Draw(
+			tile1,
+			(float)GRID_UNIT_WIDTH * i,
+			(float)GRID_UNIT_HEIGHT * j,
+			GRID_UNIT_WIDTH,
+			GRID_UNIT_HEIGHT,
+			255);
+		break;
+	case GE_WALL:
+		CP_Settings_ImageMode(CP_POSITION_CORNER);
+		CP_Image_Draw(
+			tile2,
+			(float)GRID_UNIT_WIDTH * i,
+			(float)GRID_UNIT_HEIGHT * j,
+			GRID_UNIT_WIDTH,
+			GRID_UNIT_HEIGHT,
+			255);
 #if 0
-				CP_Graphics_DrawRect(
-					(float)GRID_UNIT_WIDTH * i,
-					(float)GRID_UNIT_HEIGHT * j,
-					GRID_UNIT_WIDTH,
-					GRID_UNIT_HEIGHT);
+		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));	//CIRCLE COLLIDER
+		CP_Graphics_DrawCircle(
+			grid[i * levelHeight + j].collider.position.x,
+			grid[i * levelHeight + j].collider.position.y,
+			grid[i * levelHeight + j].collider.radius);
 #endif
-				break;
-			case GE_VOID:
-				CP_Settings_Fill(CP_Color_Create(255, 255, 255, 30));
-				CP_Graphics_DrawRect(
-					(float)GRID_UNIT_WIDTH * i,
-					(float)GRID_UNIT_HEIGHT * j,
-					GRID_UNIT_WIDTH,
-					GRID_UNIT_HEIGHT);
-				break;
-			}
+#if 1
+		
+			//CP_Settings_Fill(CP_Color_Create(255, 0, 255, 30));	//RECT COLLIDER
+		//else
+			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));	//RECT COLLIDER
+		CP_Graphics_DrawRect(	
+			grid[i * levelHeight + j].collider.position.x,
+			grid[i * levelHeight + j].collider.position.y,
+			grid[i * levelHeight + j].collider.width,
+			grid[i * levelHeight + j].collider.height
+			);
+#endif
 
-		}
-#endif
+		break;
+	case GE_VOID:
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 30));
+		CP_Graphics_DrawRect(
+			(float)GRID_UNIT_WIDTH * i,
+			(float)GRID_UNIT_HEIGHT * j,
+			GRID_UNIT_WIDTH,
+			GRID_UNIT_HEIGHT);
+		break;
 	}
+
+		
+#endif
+	
 
 #if debug
 	char _buffer[20];
@@ -215,5 +227,11 @@ void GridDraw(GridUnit* grid)
 /*Draw Call/Update Function for Grid*/
 void GridUpdate(GridUnit* grid)
 {	
-	GridDraw(grid);
+	for (int i = 0; i < levelWidth; i++)
+	{
+		for (int j = 0; j < levelHeight; j++)
+		{
+			GridDraw(grid, i, j);
+		}
+	}
 }
