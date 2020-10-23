@@ -78,10 +78,7 @@
     <ClCompile Include="src\GameLogic\Collider.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="src\Bosses\Shield.c">
-      <Filter>src\Boss</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Bosses\Boss1_Attack.c">
+    <ClCompile Include="src\Bosses\Boss1.c">
       <Filter>src\Boss</Filter>
     </ClCompile>
   </ItemGroup>
@@ -125,10 +122,7 @@
     <ClInclude Include="src\GameLogic\Collider.h">
       <Filter>src\GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="src\Bosses\Shield.h">
-      <Filter>src\Boss</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Bosses\Boss1_Attack.h">
+    <ClInclude Include="src\Bosses\Boss1.h">
       <Filter>src\Boss</Filter>
     </ClInclude>
   </ItemGroup>
