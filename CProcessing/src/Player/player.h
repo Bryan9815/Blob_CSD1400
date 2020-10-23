@@ -1,26 +1,56 @@
 #pragma once
 #include <cprocessing.h>
+#include "Arrow.h"
+
+#define PLAYER_SPEED	7.0f
+#define DODGE_COOLDOWN	4	//Seconds
+#define MAX_DODGE		2
+
 typedef struct
 {
-	float		speed,
-				width,
+	int			health;
+	float		width,
 				rotation;
-	CP_Vector	position;		//Position of player
-	int			velX,			//direction/velocity along x-axis
-				velY;			//direction/velocity along y axis
-				
-	int			numDodge,		//Number of Dodges
-				isDodging,
-				dodgeBlur,		//Afterimage
-				dodgeCooldown;	//Cooldown of dodge
-	float		dodgeFactor,	//Distance travelled via dodge
-				dodgeTimer;		//Timer for dodging cooldown
-	//CP_Image	  sprite;
+	CP_Vector	position;	//Position of player
+	CP_Vector   vel;		//direction/velocity
+
+	int			numDodge;	// number of dodges
+
+	Arrow		arrow;
+	int			playerHasArrow;
 
 } Player;
 
-Player newPlayer;
+typedef enum
+{
+	MOVING,
+	DODGING,
+	STILL,
+	SHOOTING
 
-void SetPlayer(Player* player);
-void PlayerUpdate(Player player);
+} PlayerState;
+
+Player newPlayer;
+PlayerState playerState;
+
+//CP_Image	sprite;
+CP_Color	playerColor;
+CP_Color	backgroundColour;
+
+
+
+float dodgeTimer;		//Timer for dodging cooldown
+float dodgeDistance;	//distance travelled via dodge
+int dodgeBlur;			//Dodge blur effect
+
+void PlayerInit(void);
+
+void CreatePlayer(Player* player);
+void PlayerDraw(Player* player);
+
+void PlayerUpdate(Player* player);
 void PlayerMovement(Player* player);
+void Dodge(Player* player);
+void DodgeRecharge(Player* player);
+
+void ArrowTrigger(Player* player);

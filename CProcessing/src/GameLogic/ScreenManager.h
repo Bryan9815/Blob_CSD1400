@@ -5,12 +5,14 @@
 #include "BlobInput.h"
 #include "grid.h"
 
-typedef enum GameState {
-	SRC_INTRO,
-	SRC_MAIN_MENU,
-	SRC_OPTION,
-	SRC_GAMEPLAY,
-	SRC_CREDITS,
+typedef enum GameState 
+{
+	SCR_INTRO,
+	SCR_MAIN_MENU,
+	SCR_OPTION,
+	SCR_GAMEPLAY,
+	SCR_CREDITS,
+
 }GameState;
 
 void GameInit(void);

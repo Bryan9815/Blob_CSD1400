@@ -1,6 +1,6 @@
 #include <cprocessing.h>
 #include "../GameLogic/ScreenManager.h"
-#include "src_intro.h"
+#include "SCR_intro.h"
 
 float splashTimer, logoWidth, logoHeight, logoPosX, logoPosY;
 float logoAlpha;
@@ -37,12 +37,12 @@ void IntroUpdate(void)
 		}
 		else if(GetFader().fadeAlpha == 255)
 		{
-			SetGameState(SRC_MAIN_MENU);
+			SetGameState(SCR_MAIN_MENU);
 		}
 	}
-	if (GetBlobInput(BLOB_INTERACT))
+	if (GetBlobInputTriggered(BLOB_INTERACT))
 	{
-		SetGameState(SRC_MAIN_MENU);
+		SetGameState(SCR_MAIN_MENU);
 	}
 
 	CP_Image_Draw(splashLogo, logoPosX, logoPosY, logoWidth, logoHeight, (int)logoAlpha);

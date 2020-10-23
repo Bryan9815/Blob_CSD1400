@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <cprocessing.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include "grid.h"
 
 /*Debug Flag*/
@@ -11,9 +12,62 @@
 CP_Image tile1;
 CP_Image tile2;
 
-/*Initialize Grid*/
-void GridInit(GRID_ELEMENTS* grid, int w, int h)//Add starting point
+#define BUFFERSIZE 2000 * 2000
+char levelData[BUFFERSIZE];
+
+int levelWidth = 0, levelHeight = 0;
+
+int GetLevelWidth()//Make error code
 {
+	return levelWidth;
+}
+
+int GetLevelHeight()//Make error code
+{
+	return levelHeight;
+}
+
+void LoadMapFile (MAP level)	//Call Load before Rendering Map
+{
+	FILE* fp;
+
+	char fileName[40];
+	sprintf_s(fileName, 40, "././Assets/Level/Level%d.txt", (int)level);
+
+	errno_t err = fopen_s(&fp, fileName, "rt");
+	int i = 0, w = 0, h = 1, finalWidth = 0;
+	
+	if (err == 0 && fp != NULL) /*Checks if file is open*/
+	{
+		while (!feof(fp)) /*While not at EOF for the file pf*/
+		{
+			
+			levelData[i++] = (char)fgetc(fp);
+			if (levelData[i - 1] == '\n')
+			{
+				if (finalWidth < w)
+					finalWidth = w - 1;
+				w = 0;
+				h++;
+			}
+			w++;
+		}
+		fclose(fp);
+	}
+	else 
+	{
+		printf("File Not Found");	//Error checking
+	}
+	
+	levelWidth = finalWidth;
+	levelHeight = h;
+}
+
+
+/*Initialize Grid*/
+void GridInit(GridUnit* grid)//Add starting point
+{
+	
 	tile1 = CP_Image_Load("././Assets/Tile1.png");
 	tile2 = CP_Image_Load("././Assets/Tile2.png");
 #if 0
@@ -33,6 +87,7 @@ void GridInit(GRID_ELEMENTS* grid, int w, int h)//Add starting point
 		}
 	}
 #endif
+#if 0 
 	//Boundary 2D
 	for (int i = 0; i < w; i++) 
 	{
@@ -52,21 +107,62 @@ void GridInit(GRID_ELEMENTS* grid, int w, int h)//Add starting point
 			}
 		}
 	}
+#endif
+	
+	for (int i = 0, j = 0 ,k = 0; i < levelWidth * levelHeight + levelHeight; i++)
+	{
+		if (levelData[i] == '\n')
+		{
+			j = 0;
+			k++;
+			continue;
+		}
+
+		if (levelData[i] == (char)32) //Floor
+		{
+			
+			grid[j * levelHeight + k].gridType = GE_FlOOR;
+		}
+		else if (levelData[i] == '-') //WALL
+		{
+			/*@todo*/
+			grid[j * levelHeight + k].collider.shapeType = COL_CIRCLE;								//CIRCLE COLLIDER
+			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			grid[j * levelHeight + k].collider.radius = (float)(GRID_UNIT_WIDTH / 2);
+
+			grid[j * levelHeight + k].gridType = GE_WALL;
+		}
+		
+		j++;
+		
+	}
+	printf("%s\n", levelData);
 }
 
-/*Draw Call/Update Function for Grid*/
-void GridUpdate(GRID_ELEMENTS* grid, int w, int h)
+
+
+void GridDraw(GridUnit* grid) 
 {
 	//Checks thru all the elements
-	for (int i = 0; i < w; i++)
+	for (int i = 0; i < levelWidth; i++)
 	{
-		for (int j = 0; j < h; j++) 
+		for (int j = 0; j < levelHeight; j++)
 		{
 #if !debug
-			switch (grid[i * h + j])
+			switch (grid[i * levelHeight + j].gridType)
 			{
+			case GE_FlOOR:
+				CP_Settings_ImageMode(CP_POSITION_CORNER);
+				CP_Image_Draw(
+					tile1,
+					(float)GRID_UNIT_WIDTH * i,
+					(float)GRID_UNIT_HEIGHT * j,
+					GRID_UNIT_WIDTH,
+					GRID_UNIT_HEIGHT,
+					255);
+				break;
 			case GE_WALL:
-				CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 				CP_Settings_ImageMode(CP_POSITION_CORNER);
 				CP_Image_Draw(
 					tile2,
@@ -84,15 +180,12 @@ void GridUpdate(GRID_ELEMENTS* grid, int w, int h)
 #endif
 				break;
 			case GE_VOID:
-				CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-				CP_Settings_ImageMode(CP_POSITION_CORNER);
-				CP_Image_Draw(
-					tile1,
+				CP_Settings_Fill(CP_Color_Create(255, 255, 255, 30));
+				CP_Graphics_DrawRect(
 					(float)GRID_UNIT_WIDTH * i,
 					(float)GRID_UNIT_HEIGHT * j,
 					GRID_UNIT_WIDTH,
-					GRID_UNIT_HEIGHT,
-					255);
+					GRID_UNIT_HEIGHT);
 				break;
 			}
 
@@ -107,7 +200,13 @@ void GridUpdate(GRID_ELEMENTS* grid, int w, int h)
 	CP_Font_DrawText(_buffer,
 		(CP_System_GetWindowWidth() / (float)gridW) * (i % gridW),
 		(CP_System_GetWindowHeight() / (float)gridH) * (i / gridW));
-	
-#endif	
 
+#endif	
+}
+
+
+/*Draw Call/Update Function for Grid*/
+void GridUpdate(GridUnit* grid)
+{	
+	GridDraw(grid);
 }

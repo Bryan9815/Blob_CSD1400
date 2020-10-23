@@ -1,7 +1,7 @@
 #include <cprocessing.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
-#include "src_options.h"
+#include "scr_options.h"
 #define OPTIONS_BUTTONS 3
 
 typedef enum {
@@ -355,21 +355,21 @@ void OptionsInput(void)
 {
 	if (overlayNum >= OPTIONS_BUTTONS)
 	{
-		if (GetBlobInput(BLOB_UP))
+		if (GetBlobInputTriggered(BLOB_UP))
 		{
 			if (selectButton == 0)
 				selectButton = OPTIONS_BUTTONS - 1;
 			else
 				selectButton--;
 		}
-		else if (GetBlobInput(BLOB_DOWN))
+		else if (GetBlobInputTriggered(BLOB_DOWN))
 		{
 			if (selectButton == OPTIONS_BUTTONS - 1)
 				selectButton = 0;
 			else
 				selectButton++;
 		}
-		if (GetBlobInput(BLOB_INTERACT))
+		if (GetBlobInputTriggered(BLOB_INTERACT))
 		{
 			switch (selectButton)
 			{
@@ -379,7 +379,7 @@ void OptionsInput(void)
 				overlayNum = CONTROLS;
 				break;
 			case EXIT:
-				SetGameState(SRC_MAIN_MENU);
+				SetGameState(SCR_MAIN_MENU);
 				break;
 			default:
 				break;
@@ -396,35 +396,35 @@ void OptionsInput(void)
 				// SFX and Music slider options
 				break;
 			case CONTROLS:
-				if (GetBlobInput(BLOB_UP))
+				if (GetBlobInputTriggered(BLOB_UP))
 				{
 					if (customInputY == 0)
 						customInputY = BLOB_PAUSE + 1;
 					else
 						customInputY--;
 				}
-				else if (GetBlobInput(BLOB_DOWN))
+				else if (GetBlobInputTriggered(BLOB_DOWN))
 				{
 					if (customInputY == BLOB_PAUSE + 1)
 						customInputY = 0;
 					else
 						customInputY++;
 				}
-				if (GetBlobInput(BLOB_LEFT))
+				if (GetBlobInputTriggered(BLOB_LEFT))
 				{
 					if (customInputX == 1)
 						customInputX = 3;
 					else
 						customInputX--;
 				}
-				else if (GetBlobInput(BLOB_RIGHT))
+				else if (GetBlobInputTriggered(BLOB_RIGHT))
 				{
 					if (customInputX == 3)
 						customInputX = 1;
 					else
 						customInputX++;
 				}
-				if (GetBlobInput(BLOB_INTERACT))
+				if (GetBlobInputTriggered(BLOB_INTERACT))
 				{
 					if (customInputY == BLOB_PAUSE + 1) // if at Exit button
 						overlayNum = OPTIONS_BUTTONS;

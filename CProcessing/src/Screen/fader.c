@@ -15,6 +15,12 @@ Fader CreateFader()
 
 Fader StartFade(Fader fader, FadeType fadeType)	//wtf
 {
+
+	if (fadeType == FADE_OUT)
+		fader.fadeAlpha = 255.0f;
+	else
+		fader.fadeAlpha = 0.0f;
+
 	fader.isFading = true;
 	fader.fadeType = fadeType;
 

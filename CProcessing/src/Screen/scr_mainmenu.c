@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
-#include "src_mainmenu.h"
+#include "scr_mainmenu.h"
 #define MAIN_MENU_BUTTONS 4
 
 typedef enum {
@@ -47,32 +47,32 @@ void MainMenuDraw(void)
 void MainMenuUpdate(void)
 {
 	// Input
-	if (GetBlobInput(BLOB_UP))
+	if (GetBlobInputTriggered(BLOB_UP))
 	{
 		if (selectButton == 0)
 			selectButton = MAIN_MENU_BUTTONS - 1;
 		else
 			selectButton--;
 	}
-	else if (GetBlobInput(BLOB_DOWN))
+	else if (GetBlobInputTriggered(BLOB_DOWN))
 	{
 		if (selectButton == MAIN_MENU_BUTTONS - 1)
 			selectButton = 0;
 		else
 			selectButton++;
 	}
-	if (GetBlobInput(BLOB_INTERACT))
+	if (GetBlobInputTriggered(BLOB_INTERACT))
 	{
 		switch (selectButton)
 		{
 		case START:
-			SetGameState(SRC_GAMEPLAY);
+			SetGameState(SCR_GAMEPLAY);
 			break;
 		case OPTION:
-			SetGameState(SRC_OPTION);
+			SetGameState(SCR_OPTION);
 			break;
 		case CREDITS:
-			SetGameState(SRC_CREDITS);
+			SetGameState(SCR_CREDITS);
 			break;
 		case EXIT:
 			CP_Engine_Terminate();
