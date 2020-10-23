@@ -33,7 +33,11 @@ bool COL_IsColliding (Collider hitBox1, Collider hitBox2) //wtf
 		}
 		else if (hitBox2.shapeType == COL_RECT) //Both Rect
 		{
-
+			col = (hitBox1.position.x < hitBox2.position.x + hitBox2.width &&
+				hitBox1.position.x + hitBox1.width > hitBox2.position.x &&
+				hitBox1.position.y < hitBox2.position.y + hitBox2.height &&
+				hitBox1.position.y + hitBox1.height > hitBox2.position.y)
+				? true : false;
 		}
 	}
 
