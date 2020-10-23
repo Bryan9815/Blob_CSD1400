@@ -1,7 +1,7 @@
 #include <cprocessing.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
-#include "src_options.h"
+#include "scr_options.h"
 #define OPTIONS_BUTTONS 3
 
 typedef enum {
@@ -379,7 +379,7 @@ void OptionsInput(void)
 				overlayNum = CONTROLS;
 				break;
 			case EXIT:
-				SetGameState(SRC_MAIN_MENU);
+				SetGameState(SCR_MAIN_MENU);
 				break;
 			default:
 				break;
