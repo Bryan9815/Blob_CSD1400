@@ -28,5 +28,8 @@ void BossMovement(Boss* currentboss/*, Player* player*/) //boss slowly moves tow
 		CP_Vector DirVector = CP_Vector_Normalize(MoveDir); //normalise for direction vector
 		CP_Vector Movement = CP_Vector_Scale(DirVector, (currentboss->Speed * CP_System_GetDt())); //scale direction vector with speed over dt
 		currentboss->Position = CP_Vector_Add(Movement, currentboss->Position); //update position
+
+		CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
+		currentboss->Rotation = CP_Vector_Angle(UpDir, DirVector); //rotation of boss from upward dir
 	}
 }

@@ -5,10 +5,19 @@
 typedef struct
 {
 	CP_Vector Position; //Position vector of boss
+	float Rotation;		//orientation of boss
 	int Health;			//Health of boss
 	float Size;			//Radius of boss for drawing
 	float Speed;		//Movement speed of boss (not charge speed of boss 1)
 } Boss;
+
+enum BossState
+{
+	IDLE,			//normal, should be moving toward player
+	ATTACK_NEAR,	//attacks player if within a certain distance
+	ATTACK_FAR,		//charges at player if beyond that distance
+	DEFEAT			//boss is dead, stop boss functions
+};
 
 Boss ArmorSlime; //currently only 1 boss
 
