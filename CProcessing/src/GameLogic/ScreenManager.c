@@ -5,9 +5,11 @@
 #include "../Screen/src_options.h"
 #include "../Screen/scr_level_1.h"
 #include "../Bosses/Boss.h"
+#include "../Bosses/Shield.h"
 
 GameState currGameState = SRC_INTRO;
 Fader fader;
+CP_Image shield;
 
 void ScreenStartFade(FadeType fadeType) 
 {
@@ -43,6 +45,9 @@ void GameInit(void)
 		break;
 	}
 	ScreenStartFade(FADE_OUT);
+	Level1Init();
+	CreateBoss(&ArmorSlime, 1, 100.f);
+	shield = CP_Image_Load("././Assets/Shield1.png");
 }
 
 void SetGameState(GameState nextState)
@@ -97,4 +102,5 @@ void GameExit(void)
 	default:
 		break;
 	}
+	CP_Image_Free(&shield);
 }
