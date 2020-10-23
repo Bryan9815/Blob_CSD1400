@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
-#include "src_mainmenu.h"
+#include "scr_mainmenu.h"
 #define MAIN_MENU_BUTTONS 4
 
 typedef enum {
@@ -66,13 +66,13 @@ void MainMenuUpdate(void)
 		switch (selectButton)
 		{
 		case START:
-			SetGameState(SRC_GAMEPLAY);
+			SetGameState(SCR_GAMEPLAY);
 			break;
 		case OPTION:
-			SetGameState(SRC_OPTION);
+			SetGameState(SCR_OPTION);
 			break;
 		case CREDITS:
-			SetGameState(SRC_CREDITS);
+			SetGameState(SCR_CREDITS);
 			break;
 		case EXIT:
 			CP_Engine_Terminate();
