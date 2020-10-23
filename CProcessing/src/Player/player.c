@@ -28,13 +28,8 @@ void CreatePlayer(Player* player) //Default Variables
 	player->numDodge = 2;
 
 	//Player Arrow
-<<<<<<< HEAD
 	player->playerHasArrow = 1;
 	CreateArrow(&(player->arrow));
-=======
-	newPlayer->playerHasArrow = 1;
-	SetArrow(&(newPlayer->arrow));
->>>>>>> 5b4e5c0633afebf36783bc092369f202ded3fde6
 
 }
 
@@ -68,7 +63,7 @@ void PlayerMovement(Player* player)
 
 		}
 		//else if (CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_A))
-		else if (GetBlobInput(BLOB_UP) && GetBlobInput(BLOB_LEFT))
+		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(-1, -1);
@@ -77,7 +72,7 @@ void PlayerMovement(Player* player)
 			player->rotation = -45.0f;
 		}
 		//else if ((CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_D)))
-		else if (GetBlobInput(BLOB_UP) && GetBlobInput(BLOB_RIGHT))
+		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(1, -1);
@@ -86,7 +81,7 @@ void PlayerMovement(Player* player)
 			player->rotation = 45.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_W))
-		else if (GetBlobInput(BLOB_UP))
+		else if (GetBlobInputDown(BLOB_UP))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(0, -1);
@@ -95,7 +90,7 @@ void PlayerMovement(Player* player)
 			player->rotation = 0.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_D))
-		else if (GetBlobInput(BLOB_DOWN) && GetBlobInput(BLOB_RIGHT))
+		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(1, 1);
@@ -104,7 +99,7 @@ void PlayerMovement(Player* player)
 			player->rotation = 135.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_A))
-		else if (GetBlobInput(BLOB_DOWN) && GetBlobInput(BLOB_LEFT))
+		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(-1, 1);
@@ -113,7 +108,7 @@ void PlayerMovement(Player* player)
 			player->rotation = 225.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S))
-		else if (GetBlobInput(BLOB_DOWN))
+		else if (GetBlobInputDown(BLOB_DOWN))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(0, 1);
@@ -123,7 +118,7 @@ void PlayerMovement(Player* player)
 		}
 
 		//else if (CP_Input_KeyDown(KEY_A))
-		else if (GetBlobInput(BLOB_LEFT))
+		else if (GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(-1, 0);
@@ -133,7 +128,7 @@ void PlayerMovement(Player* player)
 		}
 
 		//else if (CP_Input_KeyDown(KEY_D))
-		else if (GetBlobInput(BLOB_RIGHT))
+		else if (GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(1, 0);
