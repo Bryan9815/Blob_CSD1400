@@ -29,7 +29,7 @@ void CreatePlayer(Player* newPlayer) //Default Variables
 
 	//Player Arrow
 	newPlayer->playerHasArrow = 1;
-	SetArrow(&(newPlayer->arrow));
+	CreateArrow(&(newPlayer->arrow));
 
 }
 
