@@ -3,7 +3,6 @@
 #include <cprocessing.h>
 #include <stdbool.h>
 #include <stdio.h>
-
 #include "grid.h"
 
 /*Debug Flag*/
@@ -66,7 +65,7 @@ void LoadMapFile (MAP level)	//Call Load before Rendering Map
 
 
 /*Initialize Grid*/
-void GridInit(GRID_ELEMENTS* grid)//Add starting point
+void GridInit(GridUnit* grid)//Add starting point
 {
 	
 	tile1 = CP_Image_Load("././Assets/Tile1.png");
@@ -121,11 +120,18 @@ void GridInit(GRID_ELEMENTS* grid)//Add starting point
 
 		if (levelData[i] == (char)32) //Floor
 		{
-			grid[j * levelHeight + k] = GE_FlOOR;
+			
+			grid[j * levelHeight + k].gridType = GE_FlOOR;
 		}
 		else if (levelData[i] == '-') //WALL
 		{
-			grid[j * levelHeight + k] = GE_WALL;
+			/*@todo*/
+			grid[j * levelHeight + k].collider.shapeType = COL_CIRCLE;								//CIRCLE COLLIDER
+			grid[j * levelHeight + k].collider.posX = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			grid[j * levelHeight + k].collider.posY = (float)(k * GRID_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			grid[j * levelHeight + k].collider.radius = (float)(GRID_UNIT_WIDTH / 2);
+
+			grid[j * levelHeight + k].gridType = GE_WALL;
 		}
 		
 		j++;
@@ -134,8 +140,9 @@ void GridInit(GRID_ELEMENTS* grid)//Add starting point
 	printf("%s\n", levelData);
 }
 
-/*Draw Call/Update Function for Grid*/
-void GridUpdate(GRID_ELEMENTS* grid)
+
+
+void GridDraw(GridUnit* grid) 
 {
 	//Checks thru all the elements
 	for (int i = 0; i < levelWidth; i++)
@@ -143,7 +150,7 @@ void GridUpdate(GRID_ELEMENTS* grid)
 		for (int j = 0; j < levelHeight; j++)
 		{
 #if !debug
-			switch (grid[i * levelHeight + j])
+			switch (grid[i * levelHeight + j].gridType)
 			{
 			case GE_FlOOR:
 				CP_Settings_ImageMode(CP_POSITION_CORNER);
@@ -193,7 +200,13 @@ void GridUpdate(GRID_ELEMENTS* grid)
 	CP_Font_DrawText(_buffer,
 		(CP_System_GetWindowWidth() / (float)gridW) * (i % gridW),
 		(CP_System_GetWindowHeight() / (float)gridH) * (i / gridW));
-	
-#endif	
 
+#endif	
+}
+
+
+/*Draw Call/Update Function for Grid*/
+void GridUpdate(GridUnit* grid)
+{	
+	GridDraw(grid);
 }

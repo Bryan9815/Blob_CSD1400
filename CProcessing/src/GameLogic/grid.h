@@ -1,7 +1,8 @@
-
+#include "Collider.h"
 /*-------------------------
 This is for casting a grid
 --------------------------*/
+//DEFAULT VARIABLES
 
 #define GRID_WIDTH 200							//Set the horizontal length
 #define GRID_HEIGHT 200							//Set the vertical length
@@ -20,7 +21,6 @@ typedef enum
 
 }GRID_ELEMENTS;
 
-
 typedef enum
 {
 	Level0,
@@ -29,8 +29,16 @@ typedef enum
 
 }MAP;
 
+typedef struct 
+{
+	Collider collider;
+
+	GRID_ELEMENTS gridType;
+
+}GridUnit;
+
 int GetLevelWidth();
 int GetLevelHeight();
 void LoadMapFile(MAP level);
-void GridInit(GRID_ELEMENTS* grid);
-void GridUpdate(GRID_ELEMENTS* grid);
+void GridInit(GridUnit* grid);
+void GridUpdate(GridUnit* grid);

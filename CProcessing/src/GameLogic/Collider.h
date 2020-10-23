@@ -2,8 +2,8 @@
 
 typedef enum //wtf
 {
-	COL_RECT,
-	COL_CIRCLE
+	COL_CIRCLE,
+	COL_RECT
 
 }COL_SHAPE;
 
