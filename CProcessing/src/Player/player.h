@@ -1,6 +1,6 @@
 #pragma once
 #include <cprocessing.h>
-#include "arrow.h"
+#include "Arrow.h"
 
 #define PLAYER_SPEED	7.0f
 #define DODGE_COOLDOWN	4	//Seconds
