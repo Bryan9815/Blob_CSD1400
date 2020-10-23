@@ -126,10 +126,12 @@ void GridInit(GridUnit* grid)//Add starting point
 		else if (levelData[i] == '-') //WALL
 		{
 			/*@todo*/
+#if 1
 			grid[j * levelHeight + k].collider.shapeType = COL_CIRCLE;								//CIRCLE COLLIDER
 			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_HEIGHT + GRID_UNIT_HEIGHT / 2);
-			grid[j * levelHeight + k].collider.radius = (float)(GRID_UNIT_WIDTH / 2);
+			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			grid[j * levelHeight + k].collider.radius = (float)(GRID_UNIT_WIDTH);
+#endif
 
 			grid[j * levelHeight + k].gridType = GE_WALL;
 		}
@@ -171,6 +173,11 @@ void GridDraw(GridUnit* grid)
 					GRID_UNIT_WIDTH,
 					GRID_UNIT_HEIGHT,
 					255);
+				CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));
+				CP_Graphics_DrawCircle(
+					grid[i * levelHeight + j].collider.position.x,
+					grid[i * levelHeight + j].collider.position.y,
+					grid[i * levelHeight + j].collider.radius);
 #if 0
 				CP_Graphics_DrawRect(
 					(float)GRID_UNIT_WIDTH * i,
