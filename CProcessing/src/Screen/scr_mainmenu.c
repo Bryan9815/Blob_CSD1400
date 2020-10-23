@@ -47,21 +47,21 @@ void MainMenuDraw(void)
 void MainMenuUpdate(void)
 {
 	// Input
-	if (GetBlobInput(BLOB_UP))
+	if (GetBlobInputTriggered(BLOB_UP))
 	{
 		if (selectButton == 0)
 			selectButton = MAIN_MENU_BUTTONS - 1;
 		else
 			selectButton--;
 	}
-	else if (GetBlobInput(BLOB_DOWN))
+	else if (GetBlobInputTriggered(BLOB_DOWN))
 	{
 		if (selectButton == MAIN_MENU_BUTTONS - 1)
 			selectButton = 0;
 		else
 			selectButton++;
 	}
-	if (GetBlobInput(BLOB_INTERACT))
+	if (GetBlobInputTriggered(BLOB_INTERACT))
 	{
 		switch (selectButton)
 		{

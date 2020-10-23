@@ -28,8 +28,13 @@ void CreatePlayer(Player* player) //Default Variables
 	player->numDodge = 2;
 
 	//Player Arrow
+<<<<<<< HEAD
 	player->playerHasArrow = 1;
 	CreateArrow(&(player->arrow));
+=======
+	newPlayer->playerHasArrow = 1;
+	SetArrow(&(newPlayer->arrow));
+>>>>>>> 5b4e5c0633afebf36783bc092369f202ded3fde6
 
 }
 
