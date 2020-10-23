@@ -4,8 +4,8 @@
 #include "../Screen/scr_mainmenu.h"
 #include "../Screen/scr_options.h"
 #include "../Screen/scr_level_1.h"
-#include "../Bosses/Boss.h"
 #include "../Player/player.h"
+#include "../Bosses/Boss.h"
 #include "../Bosses/Shield.h"
 
 GameState currGameState = SCR_INTRO;
