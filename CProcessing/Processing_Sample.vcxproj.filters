@@ -42,12 +42,6 @@
     <ClCompile Include="src\Input\InputManager.c">
       <Filter>src\Input</Filter>
     </ClCompile>
-    <ClCompile Include="src\Screen\src_intro.c">
-      <Filter>src\Screens</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Screen\src_mainmenu.c">
-      <Filter>src\Screens</Filter>
-    </ClCompile>
     <ClCompile Include="src\Bosses\Boss.c">
       <Filter>src\Boss</Filter>
     </ClCompile>
@@ -72,19 +66,19 @@
     <ClCompile Include="src\GameLogic\BlobInput.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="src\Screen\src_options.c">
+    <ClCompile Include="src\Screen\scr_intro.c">
+      <Filter>src\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Screen\scr_mainmenu.c">
+      <Filter>src\Screens</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Screen\scr_options.c">
       <Filter>src\Screens</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
       <Filter>src\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Screen\src_intro.h">
-      <Filter>src\Screens</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Screen\src_mainmenu.h">
-      <Filter>src\Screens</Filter>
     </ClInclude>
     <ClInclude Include="src\Bosses\Boss.h">
       <Filter>src\Boss</Filter>
@@ -110,7 +104,13 @@
     <ClInclude Include="src\GameLogic\BlobInput.h">
       <Filter>src\GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="src\Screen\src_options.h">
+    <ClInclude Include="src\Screen\scr_intro.h">
+      <Filter>src\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Screen\scr_mainmenu.h">
+      <Filter>src\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Screen\scr_options.h">
       <Filter>src\Screens</Filter>
     </ClInclude>
   </ItemGroup>

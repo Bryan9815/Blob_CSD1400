@@ -30,9 +30,9 @@
     <ClCompile Include="src\Player\player.c" />
     <ClCompile Include="src\Screen\fader.c" />
     <ClCompile Include="src\Screen\scr_level_1.c" />
-    <ClCompile Include="src\Screen\src_intro.c" />
-    <ClCompile Include="src\Screen\src_mainmenu.c" />
-    <ClCompile Include="src\Screen\src_options.c" />
+    <ClCompile Include="src\Screen\scr_intro.c" />
+    <ClCompile Include="src\Screen\scr_mainmenu.c" />
+    <ClCompile Include="src\Screen\scr_options.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Bosses\Boss.h" />
@@ -44,9 +44,9 @@
     <ClInclude Include="src\Player\player.h" />
     <ClInclude Include="src\Screen\fader.h" />
     <ClInclude Include="src\Screen\scr_level_1.h" />
-    <ClInclude Include="src\Screen\src_intro.h" />
-    <ClInclude Include="src\Screen\src_mainmenu.h" />
-    <ClInclude Include="src\Screen\src_options.h" />
+    <ClInclude Include="src\Screen\scr_intro.h" />
+    <ClInclude Include="src\Screen\scr_mainmenu.h" />
+    <ClInclude Include="src\Screen\scr_options.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

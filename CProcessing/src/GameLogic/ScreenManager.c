@@ -1,12 +1,12 @@
 #pragma once
 #include "ScreenManager.h"
-#include "../Screen/src_intro.h"
-#include "../Screen/src_mainmenu.h"
-#include "../Screen/src_options.h"
+#include "../Screen/scr_intro.h"
+#include "../Screen/scr_mainmenu.h"
+#include "../Screen/scr_options.h"
 #include "../Screen/scr_level_1.h"
 #include "../Bosses/Boss.h"
 
-GameState currGameState = SRC_INTRO;
+GameState currGameState = SCR_INTRO;
 Fader fader;
 
 void ScreenStartFade(FadeType fadeType) 
@@ -23,20 +23,20 @@ void GameInit(void)
 {
 	switch (currGameState)
 	{
-	case SRC_INTRO:
+	case SCR_INTRO:
 		fader = CreateFader();
 		BlobInputInit();
 		IntroInit();
 		break;
-	case SRC_MAIN_MENU:
+	case SCR_MAIN_MENU:
 		MainMenuInit();
 		break;
-	case SRC_OPTION:
+	case SCR_OPTION:
 		OptionsInit();
 		break;
-	case SRC_CREDITS:
+	case SCR_CREDITS:
 		break;
-	case SRC_GAMEPLAY:
+	case SCR_GAMEPLAY:
 		Level1Init();
 		break;
 	default:
@@ -55,18 +55,18 @@ void GameUpdate(void)
 {
 	switch (currGameState)
 	{
-	case SRC_INTRO:
+	case SCR_INTRO:
 		IntroUpdate();		
 		break;
-	case SRC_MAIN_MENU:
+	case SCR_MAIN_MENU:
 		MainMenuUpdate();
 		break;
-	case SRC_OPTION:
+	case SCR_OPTION:
 		OptionsUpdate();
 		break;
-	case SRC_CREDITS:
+	case SCR_CREDITS:
 		break;
-	case SRC_GAMEPLAY:
+	case SCR_GAMEPLAY:
 		Level1Update();
 		break;
 	default:
@@ -81,18 +81,18 @@ void GameExit(void)
 {
 	switch (currGameState)
 	{
-	case SRC_INTRO:
+	case SCR_INTRO:
 		IntroExit();
 		break;
-	case SRC_MAIN_MENU:
+	case SCR_MAIN_MENU:
 		MainMenuExit();
 		break;
-	case SRC_OPTION:
+	case SCR_OPTION:
 		OptionsExit();
 		break;
-	case SRC_CREDITS:
+	case SCR_CREDITS:
 		break;
-	case SRC_GAMEPLAY:
+	case SCR_GAMEPLAY:
 		break;
 	default:
 		break;
