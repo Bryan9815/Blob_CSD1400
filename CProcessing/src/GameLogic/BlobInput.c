@@ -29,11 +29,31 @@ void BlobInputInit()
 	keys[BLOB_PAUSE] = CreateBlobButton(KEY_ESCAPE, KEY_ESCAPE, KEY_ESCAPE, "ESC", "ESC", "ESC");
 }
 
-int GetBlobInput(BlobInput input)
+int GetBlobInputTriggered(BlobInput input)
 {
 	for (int i = 0; i < 3; i++)
 	{
 		if (CP_Input_KeyTriggered(keys[input].key[i]))
+			return 1;
+	}
+	return 0;
+}
+
+int GetBlobInputDown(BlobInput input)
+{
+	for (int i = 0; i < 3; i++)
+	{		
+		if (CP_Input_KeyDown(keys[input].key[i]))
+			return 1;
+	}
+	return 0;
+}
+
+int GetBlobInputReleased(BlobInput input)
+{
+	for (int i = 0; i < 3; i++)
+	{
+		if (CP_Input_KeyReleased(keys[input].key[i]))
 			return 1;
 	}
 	return 0;
