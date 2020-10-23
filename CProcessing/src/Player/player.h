@@ -30,15 +30,20 @@ typedef enum
 
 } PlayerState;
 
+Player newPlayer;
+PlayerState playerState;
+
 //CP_Image	sprite;
 CP_Color	playerColor;
 CP_Color	backgroundColour;
 
-PlayerState playerState;
+
 
 float dodgeTimer;		//Timer for dodging cooldown
 float dodgeDistance;	//distance travelled via dodge
 int dodgeBlur;			//Dodge blur effect
+
+void PlayerInit(void);
 
 void CreatePlayer(Player* player);
 void PlayerDraw(Player* player);
