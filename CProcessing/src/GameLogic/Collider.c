@@ -5,7 +5,7 @@
 
 float COL_Dist(Collider hitBox1, Collider hitBox2) //wtf
 {
-	return CP_Math_Distance(hitBox1.posX, hitBox1.posY, hitBox2.posX, hitBox2.posY);
+	return CP_Math_Distance(hitBox1.position.x, hitBox1.position.y, hitBox2.position.x, hitBox2.position.y);
 	
 }
 

@@ -127,8 +127,8 @@ void GridInit(GridUnit* grid)//Add starting point
 		{
 			/*@todo*/
 			grid[j * levelHeight + k].collider.shapeType = COL_CIRCLE;								//CIRCLE COLLIDER
-			grid[j * levelHeight + k].collider.posX = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-			grid[j * levelHeight + k].collider.posY = (float)(k * GRID_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_HEIGHT + GRID_UNIT_HEIGHT / 2);
 			grid[j * levelHeight + k].collider.radius = (float)(GRID_UNIT_WIDTH / 2);
 
 			grid[j * levelHeight + k].gridType = GE_WALL;

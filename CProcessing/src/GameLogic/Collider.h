@@ -1,4 +1,4 @@
-
+#include <cprocessing.h>
 
 typedef enum //wtf
 {
@@ -9,8 +9,7 @@ typedef enum //wtf
 
 typedef struct //wtf
 {
-	float posX,
-		  posY;
+	CP_Vector position;
 
 	float width,
 		  height,
