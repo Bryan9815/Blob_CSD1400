@@ -1,3 +1,4 @@
+#pragma once
 #include "Collider.h"
 /*-------------------------
 This is for casting a grid
@@ -41,4 +42,4 @@ int GetLevelWidth();
 int GetLevelHeight();
 void LoadMapFile(MAP level);
 void GridInit(GridUnit* grid);
-void GridUpdate(GridUnit* grid);
+void GridUpdate(GridUnit* grid, Collider playerHitBox);

@@ -4,7 +4,7 @@
 #include "../Screen/scr_mainmenu.h"
 #include "../Screen/scr_options.h"
 #include "../Screen/scr_level_1.h"
-#include "../Player/player.h"
+
 #include "../Bosses/Boss.h"
 #include "../Bosses/Shield.h"
 
@@ -74,7 +74,7 @@ void GameUpdate(void)
 	case SCR_CREDITS:
 		break;
 	case SCR_GAMEPLAY:
-		Level1Update();
+		Level1Update(&newPlayer);
 		PlayerUpdate(&newPlayer);
 		break;
 	default:

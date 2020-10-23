@@ -151,7 +151,7 @@ void GridInit(GridUnit* grid)//Add starting point
 
 
 
-void GridDraw(GridUnit* grid, int i , int j)
+void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 {
 	//Checks thru all the elements
 	
@@ -185,9 +185,9 @@ void GridDraw(GridUnit* grid, int i , int j)
 			grid[i * levelHeight + j].collider.radius);
 #endif
 #if 1
-		
-			//CP_Settings_Fill(CP_Color_Create(255, 0, 255, 30));	//RECT COLLIDER
-		//else
+		if(COL_IsColliding(grid[i * levelHeight + j].collider, playerHitBox))
+			CP_Settings_Fill(CP_Color_Create(255, 0, 255, 200));	//RECT COLLIDER
+		else
 			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));	//RECT COLLIDER
 		CP_Graphics_DrawRect(	
 			grid[i * levelHeight + j].collider.position.x,
@@ -225,13 +225,13 @@ void GridDraw(GridUnit* grid, int i , int j)
 
 
 /*Draw Call/Update Function for Grid*/
-void GridUpdate(GridUnit* grid)
+void GridUpdate(GridUnit* grid, Collider playerHitBox)
 {	
 	for (int i = 0; i < levelWidth; i++)
 	{
 		for (int j = 0; j < levelHeight; j++)
 		{
-			GridDraw(grid, i, j);
+			GridDraw(grid, i, j, playerHitBox);
 		}
 	}
 }

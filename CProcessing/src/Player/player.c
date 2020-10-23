@@ -21,6 +21,11 @@ void CreatePlayer(Player* player) //Default Variables
 	player->position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
 	player->vel = CP_Vector_Set(0, -1);
 
+	player->hitBox.shapeType = COL_RECT;
+	player->hitBox.position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
+	player->hitBox.width = CP_System_GetWindowWidth() / 15.0f;
+	player->hitBox.height = CP_System_GetWindowWidth() / 15.0f;
+
 	//Player dodge
 	dodgeDistance = CP_System_GetWindowWidth() / 100.0f;
 	dodgeTimer = 0.0f;
@@ -136,8 +141,9 @@ void PlayerMovement(Player* player)
 			player->position.y += (player->vel.y * PLAYER_SPEED);
 			player->rotation = 90.0f;
 		}
+		
 	}
-
+	player->hitBox.position = player->position;
 	player->arrow.position = player->position;
 	PlayerDraw(player);
 }
@@ -159,6 +165,7 @@ void Dodge(Player* player)
 		}
 		player->position.x += player->vel.x * (PLAYER_SPEED * (dodgeDistance / 4));
 		player->position.y += player->vel.y * (PLAYER_SPEED * (dodgeDistance / 4));
+		player->hitBox.position = player->position;
 		player->arrow.position = player->position;
 		PlayerDraw(player);
 	}
