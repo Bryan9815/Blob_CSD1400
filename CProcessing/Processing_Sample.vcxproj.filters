@@ -75,6 +75,9 @@
     <ClCompile Include="src\Screen\scr_options.c">
       <Filter>src\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameLogic\Collider.c">
+      <Filter>src\GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -112,6 +115,9 @@
     </ClInclude>
     <ClInclude Include="src\Screen\scr_options.h">
       <Filter>src\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameLogic\Collider.h">
+      <Filter>src\GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

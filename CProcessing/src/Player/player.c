@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <cprocessing.h>
 #include "player.h"
+#include "../GameLogic/BlobInput.h"
 
 
 CP_Color backgroundColour;
 //Player newPlayer;
-void CreatePlayer(Player* newPlayer) //Default Variables
+void CreatePlayer(Player* player) //Default Variables
 {
 	//Set player state
 	playerState = STILL;
@@ -14,34 +15,34 @@ void CreatePlayer(Player* newPlayer) //Default Variables
 	//sprite = CP_Image_Load(".dioface.png");
 
 	//Player Stats and Position
-	newPlayer->health = 1;
-	newPlayer->width = CP_System_GetWindowWidth() / 15.0f;
-	newPlayer->rotation = 0.0f;
-	newPlayer->position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f,
-						  (CP_System_GetWindowHeight() / 2.0f) + (CP_System_GetWindowHeight() / 4.0f));
-	newPlayer->vel = CP_Vector_Set(0, -1);
+	player->health = 1;
+	player->width = CP_System_GetWindowWidth() / 15.0f;
+	player->rotation = 0.0f;
+	player->position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
+	player->vel = CP_Vector_Set(0, -1);
 
 	//Player dodge
 	dodgeDistance = CP_System_GetWindowWidth() / 100.0f;
 	dodgeTimer = 0.0f;
 	dodgeBlur = 3;
-	newPlayer->numDodge = 2;
+	player->numDodge = 2;
 
 	//Player Arrow
-	newPlayer->playerHasArrow = 1;
-	CreateArrow(&(newPlayer->arrow));
+	player->playerHasArrow = 1;
+	CreateArrow(&(player->arrow));
 
 }
 
 void PlayerDraw(Player* player)
 {
+	CP_Settings_RectMode(CP_POSITION_CENTER);
 	//Draw player
 	CP_Settings_Fill(playerColor);
 	CP_Graphics_DrawRectAdvanced(player->position.x, player->position.y, player->width, player->width, player->rotation, 1);
 
 	//Draw arrow
 	CP_Settings_Fill(arrowColor);
-	CP_Graphics_DrawRectAdvanced(player->arrow.position.x, player->arrow.position.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+	CP_Graphics_DrawRectAdvanced(player->arrow.position.x, player->arrow.position.y, player->arrow.width, player->arrow.width, player->rotation+45.0f, 1);
 
 	//Draw Dio
 	//CP_Image_DrawAdvanced(sprite, player->position.x, player->position.y, dioWidth, dioHeight, 255, player->rotation);
@@ -61,7 +62,8 @@ void PlayerMovement(Player* player)
 			player->numDodge -= 1;
 
 		}
-		else if (CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_A))
+		//else if (CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_A))
+		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(-1, -1);
@@ -69,7 +71,8 @@ void PlayerMovement(Player* player)
 			player->position.y += (player->vel.y * PLAYER_SPEED);
 			player->rotation = -45.0f;
 		}
-		else if ((CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_D)))
+		//else if ((CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_D)))
+		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(1, -1);
@@ -77,7 +80,8 @@ void PlayerMovement(Player* player)
 			player->position.y += (player->vel.y * PLAYER_SPEED);
 			player->rotation = 45.0f;
 		}
-		else if (CP_Input_KeyDown(KEY_W))
+		//else if (CP_Input_KeyDown(KEY_W))
+		else if (GetBlobInputDown(BLOB_UP))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(0, -1);
@@ -85,7 +89,8 @@ void PlayerMovement(Player* player)
 			player->position.y += (player->vel.y * PLAYER_SPEED);
 			player->rotation = 0.0f;
 		}
-		else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_D))
+		//else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_D))
+		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(1, 1);
@@ -93,7 +98,8 @@ void PlayerMovement(Player* player)
 			player->position.y += (player->vel.y * PLAYER_SPEED);
 			player->rotation = 135.0f;
 		}
-		else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_A))
+		//else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_A))
+		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(-1, 1);
@@ -101,7 +107,8 @@ void PlayerMovement(Player* player)
 			player->position.y += (player->vel.y * PLAYER_SPEED);
 			player->rotation = 225.0f;
 		}
-		else if (CP_Input_KeyDown(KEY_S))
+		//else if (CP_Input_KeyDown(KEY_S))
+		else if (GetBlobInputDown(BLOB_DOWN))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(0, 1);
@@ -110,7 +117,8 @@ void PlayerMovement(Player* player)
 			player->rotation = 180.0f;
 		}
 
-		else if (CP_Input_KeyDown(KEY_A))
+		//else if (CP_Input_KeyDown(KEY_A))
+		else if (GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(-1, 0);
@@ -119,7 +127,8 @@ void PlayerMovement(Player* player)
 			player->rotation = -90.0f;
 		}
 
-		else if (CP_Input_KeyDown(KEY_D))
+		//else if (CP_Input_KeyDown(KEY_D))
+		else if (GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(1, 0);
@@ -204,6 +213,11 @@ void ArrowTrigger(Player* player)
 			}
 		}
 	}
+}
+
+void PlayerInit(void)
+{
+	CreatePlayer(&newPlayer);
 }
 
 /*Update Player*/

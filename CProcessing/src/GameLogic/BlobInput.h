@@ -17,7 +17,9 @@ typedef struct BlobKeys {
 }BlobKeys;
 
 void BlobInputInit();
-int GetBlobInput(BlobInput input);
+int GetBlobInputTriggered(BlobInput input);
+int GetBlobInputDown(BlobInput input);
+int GetBlobInputReleased(BlobInput input);
 const char* GetBlobInputName(BlobInput input);
 const char* GetBlobKeyName(BlobInput input, int keyNum);
 void EditBlobInput(BlobInput blobInput, int keyNum, CP_KEY newInput);

@@ -40,7 +40,7 @@ void IntroUpdate(void)
 			SetGameState(SCR_MAIN_MENU);
 		}
 	}
-	if (GetBlobInput(BLOB_INTERACT))
+	if (GetBlobInputTriggered(BLOB_INTERACT))
 	{
 		SetGameState(SCR_MAIN_MENU);
 	}

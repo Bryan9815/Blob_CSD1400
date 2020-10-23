@@ -5,7 +5,6 @@
 #include "BlobInput.h"
 #include "grid.h"
 
-
 typedef enum GameState 
 {
 	SCR_INTRO,

@@ -5,6 +5,7 @@
 #include "../Screen/scr_options.h"
 #include "../Screen/scr_level_1.h"
 #include "../Bosses/Boss.h"
+#include "../Player/player.h"
 
 GameState currGameState = SCR_INTRO;
 Fader fader;
@@ -38,6 +39,7 @@ void GameInit(void)
 		break;
 	case SCR_GAMEPLAY:
 		Level1Init();
+		CreatePlayer(&newPlayer);
 		break;
 	default:
 		break;
@@ -68,6 +70,7 @@ void GameUpdate(void)
 		break;
 	case SCR_GAMEPLAY:
 		Level1Update();
+		PlayerUpdate(&newPlayer);
 		break;
 	default:
 		break;
