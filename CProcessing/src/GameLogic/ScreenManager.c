@@ -3,6 +3,7 @@
 #include "../Screen/scr_intro.h"
 #include "../Screen/scr_mainmenu.h"
 #include "../Screen/scr_options.h"
+#include "../Screen/scr_credits.h"
 #include "../Screen/scr_level_1.h"
 #include "../Bosses/Boss.h"
 #include "../Bosses/Boss1.h"
@@ -37,6 +38,7 @@ void GameInit(void)
 		OptionsInit();
 		break;
 	case SCR_CREDITS:
+		CreditsInit();
 		break;
 	case SCR_GAMEPLAY:
 		Level1Init();
@@ -71,6 +73,7 @@ void GameUpdate(void)
 		OptionsUpdate();
 		break;
 	case SCR_CREDITS:
+		CreditsUpdate();
 		break;
 	case SCR_GAMEPLAY:
 		Level1Update(&newPlayer);
