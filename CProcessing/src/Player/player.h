@@ -21,8 +21,6 @@ typedef struct
 	Arrow		arrow;
 	int			playerHasArrow;
 
-	Collider hitBox;
-
 } Player;
 
 typedef enum
