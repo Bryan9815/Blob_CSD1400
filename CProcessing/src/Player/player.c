@@ -4,6 +4,7 @@
 #include "../GameLogic/BlobInput.h"
 
 
+
 CP_Color backgroundColour;
 //Player newPlayer;
 void CreatePlayer(Player* player) //Default Variables
@@ -16,7 +17,7 @@ void CreatePlayer(Player* player) //Default Variables
 
 	//Player Stats and Position
 	player->health = 1;
-	player->width = CP_System_GetWindowWidth() / 15.0f;
+	player->radius = CP_System_GetWindowWidth() / 20.0f;
 	player->rotation = 0.0f;
 	player->position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
 	player->vel = CP_Vector_Set(0, -1);
@@ -29,7 +30,7 @@ void CreatePlayer(Player* player) //Default Variables
 #if 1
 	player->hitBox.shapeType = COL_CIRCLE; //CIRCLE COLLIDER
 	player->hitBox.position = player->position;
-	player->hitBox.radius = (CP_System_GetWindowWidth() / 15.0f) /2;
+	player->hitBox.radius = player->radius;
 #endif
 
 	//Player dodge
@@ -46,10 +47,13 @@ void CreatePlayer(Player* player) //Default Variables
 
 void PlayerDraw(Player* player)
 {
+	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
+	MouseTracking(player);
 	//Draw player
 	CP_Settings_Fill(playerColor);
-	CP_Graphics_DrawRectAdvanced(player->position.x, player->position.y, player->width, player->width, player->rotation, 1);
+	CP_Graphics_DrawEllipseAdvanced(player->position.x, player->position.y, player->radius *2, player->radius * 2, player->rotation);
+	CP_Graphics_DrawRectAdvanced(player->position.x, player->position.y, player->radius, player->radius, player->rotation, 1);
 
 	//Draw arrow
 	CP_Settings_Fill(arrowColor);
@@ -99,7 +103,7 @@ void PlayerMovement(Player* player)
 			player->vel = CP_Vector_Set(-1, -1);
 			player->position.x += (player->vel.x * PLAYER_SPEED);
 			player->position.y += (player->vel.y * PLAYER_SPEED);
-			player->rotation = -45.0f;
+			//player->rotation = -45.0f;
 		}
 		//else if ((CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_D)))
 		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_RIGHT))
@@ -108,7 +112,7 @@ void PlayerMovement(Player* player)
 			player->vel = CP_Vector_Set(1, -1);
 			player->position.x += (player->vel.x * PLAYER_SPEED);
 			player->position.y += (player->vel.y * PLAYER_SPEED);
-			player->rotation = 45.0f;
+			//player->rotation = 45.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_W))
 		else if (GetBlobInputDown(BLOB_UP))
@@ -117,7 +121,7 @@ void PlayerMovement(Player* player)
 			player->vel = CP_Vector_Set(0, -1);
 			player->position.x += (player->vel.x * PLAYER_SPEED);
 			player->position.y += (player->vel.y * PLAYER_SPEED);
-			player->rotation = 0.0f;
+			//player->rotation = 0.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_D))
 		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_RIGHT))
@@ -126,7 +130,7 @@ void PlayerMovement(Player* player)
 			player->vel = CP_Vector_Set(1, 1);
 			player->position.x += (player->vel.x * PLAYER_SPEED);
 			player->position.y += (player->vel.y * PLAYER_SPEED);
-			player->rotation = 135.0f;
+			//player->rotation = 135.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_A))
 		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_LEFT))
@@ -135,7 +139,7 @@ void PlayerMovement(Player* player)
 			player->vel = CP_Vector_Set(-1, 1);
 			player->position.x += (player->vel.x * PLAYER_SPEED);
 			player->position.y += (player->vel.y * PLAYER_SPEED);
-			player->rotation = 225.0f;
+			//player->rotation = 225.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S))
 		else if (GetBlobInputDown(BLOB_DOWN))
@@ -144,7 +148,7 @@ void PlayerMovement(Player* player)
 			player->vel = CP_Vector_Set(0, 1);
 			player->position.x += (player->vel.x * PLAYER_SPEED);
 			player->position.y += (player->vel.y * PLAYER_SPEED);
-			player->rotation = 180.0f;
+			//player->rotation = 180.0f;
 		}
 
 		//else if (CP_Input_KeyDown(KEY_A))
@@ -154,7 +158,7 @@ void PlayerMovement(Player* player)
 			player->vel = CP_Vector_Set(-1, 0);
 			player->position.x += (player->vel.x * PLAYER_SPEED);
 			player->position.y += (player->vel.y * PLAYER_SPEED);
-			player->rotation = -90.0f;
+			//player->rotation = -90.0f;
 		}
 
 		//else if (CP_Input_KeyDown(KEY_D))
@@ -164,7 +168,7 @@ void PlayerMovement(Player* player)
 			player->vel = CP_Vector_Set(1, 0);
 			player->position.x += (player->vel.x * PLAYER_SPEED);
 			player->position.y += (player->vel.y * PLAYER_SPEED);
-			player->rotation = 90.0f;
+			//player->rotation = 90.0f;
 		}
 		
 	}
@@ -177,6 +181,25 @@ void PlayerMovement(Player* player)
 #endif
 	player->arrow.position = player->position;
 	PlayerDraw(player);
+}
+
+void MouseTracking(Player* player)
+{
+	mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()), player->position);
+	if (mousePositionVector.x < 0)
+	{
+		player->rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, 1.0f)) + 190.0f;
+	}
+	else
+	{
+		player->rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, -1.0f));
+	}
+	
+	//if (CP_Vector_DotProduct(mousePositionVector, CP_Vector_Set(0.0f, -1.0f)) < 0)
+	//{
+	//	player->rotation += 90.0f;
+	//}
+
 }
 
 void Dodge(Player* player)

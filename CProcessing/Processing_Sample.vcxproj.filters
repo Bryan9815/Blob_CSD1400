@@ -81,6 +81,9 @@
     <ClCompile Include="src\Bosses\Boss1.c">
       <Filter>src\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="src\Camera\Camera.c">
+      <Filter>src\Camera</Filter>
+    </ClCompile>
     <ClCompile Include="src\Screen\scr_credits.c">
       <Filter>src\Screens</Filter>
     </ClCompile>
@@ -127,6 +130,9 @@
     </ClInclude>
     <ClInclude Include="src\Bosses\Boss1.h">
       <Filter>src\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera\Camera.h">
+      <Filter>src\Camera</Filter>
     </ClInclude>
     <ClInclude Include="src\Screen\scr_credits.h">
       <Filter>src\Screens</Filter>

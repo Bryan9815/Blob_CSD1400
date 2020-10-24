@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\Bosses\Boss.c" />
     <ClCompile Include="src\Bosses\Boss1.c" />
+    <ClCompile Include="src\Camera\Camera.c" />
     <ClCompile Include="src\GameLogic\BlobInput.c" />
     <ClCompile Include="src\GameLogic\Button.c" />
     <ClCompile Include="src\GameLogic\grid.c" />
@@ -40,6 +41,7 @@
   <ItemGroup>
     <ClInclude Include="src\Bosses\Boss.h" />
     <ClInclude Include="src\Bosses\Boss1.h" />
+    <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\GameLogic\BlobInput.h" />
     <ClInclude Include="src\GameLogic\Button.h" />
     <ClInclude Include="src\GameLogic\grid.h" />
