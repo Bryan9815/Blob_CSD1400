@@ -10,7 +10,7 @@
 typedef struct
 {
 	int			health;
-	float		width,
+	float		radius,
 				rotation;
 	CP_Vector	position;	//Position of player
 	CP_Vector   vel;		//direction/velocity
@@ -20,6 +20,8 @@ typedef struct
 
 	Arrow		arrow;
 	int			playerHasArrow;
+
+	Collider hitBox;
 
 } Player;
 
@@ -34,6 +36,7 @@ typedef enum
 
 Player newPlayer;
 PlayerState playerState;
+CP_Vector	mousePositionVector;
 
 //CP_Image	sprite;
 CP_Color	playerColor;
@@ -49,6 +52,7 @@ void PlayerInit(void);
 
 void CreatePlayer(Player* player);
 void PlayerDraw(Player* player);
+void MouseTracking(Player* player);
 
 void PlayerUpdate(Player* player);
 void PlayerMovement(Player* player);
