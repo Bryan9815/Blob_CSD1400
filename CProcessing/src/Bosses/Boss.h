@@ -17,6 +17,7 @@ enum BossState
 	IDLE,			//normal, should be moving toward player
 	ATTACK_NEAR,	//attacks player if within a certain distance
 	ATTACK_FAR,		//charges at player if beyond that distance
+	STUNNED,		//boss cannot move
 	DEFEAT			//boss is dead, stop boss functions
 };
 

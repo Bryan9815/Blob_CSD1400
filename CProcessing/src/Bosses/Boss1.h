@@ -8,3 +8,4 @@ enum BossState Boss1_State;
 void Shield1Draw(Boss armorboss, CP_Image shield);
 void AttackNear(Player player, Boss* armorboss);
 void AttackCharge(Player player, Boss* armorboss);
+void Boss1Battle(Player player, CP_Image shield);
