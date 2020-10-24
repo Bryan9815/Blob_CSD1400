@@ -81,6 +81,9 @@
     <ClCompile Include="src\Bosses\Boss1.c">
       <Filter>src\Boss</Filter>
     </ClCompile>
+    <ClCompile Include="src\Camera\Camera.c">
+      <Filter>src\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="src\Bosses\Boss1.h">
       <Filter>src\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Camera\Camera.h">
+      <Filter>src\Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

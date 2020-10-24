@@ -2,5 +2,5 @@
 #include <cprocessing.h>
 
 void CameraInit(CP_Vector *charPos);
-void CameraUpdate(void);
+void CameraUpdate(CP_Vector* charPos);
 void CameraExit(void);

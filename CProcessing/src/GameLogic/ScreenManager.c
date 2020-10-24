@@ -6,6 +6,7 @@
 #include "../Screen/scr_level_1.h"
 #include "../Bosses/Boss.h"
 #include "../Bosses/Boss1.h"
+#include "../Camera/Camera.h"
 
 GameState currGameState = SCR_INTRO;
 Fader fader;
@@ -41,6 +42,7 @@ void GameInit(void)
 	case SCR_GAMEPLAY:
 		Level1Init();
 		CreatePlayer(&newPlayer);
+		CameraInit(&newPlayer.position);
 		BossInit(&ArmorSlime, 1, 100.f);
 		shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
 		break;
@@ -73,6 +75,7 @@ void GameUpdate(void)
 	case SCR_CREDITS:
 		break;
 	case SCR_GAMEPLAY:
+		CameraUpdate(&newPlayer.position);
 		Level1Update(&newPlayer);
 		PlayerUpdate(&newPlayer);
 		break;

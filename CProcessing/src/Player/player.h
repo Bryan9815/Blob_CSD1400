@@ -1,6 +1,7 @@
 #pragma once
 #include <cprocessing.h>
 #include "Arrow.h"
+#include "../GameLogic/Collider.h"
 
 #define PLAYER_SPEED	7.0f
 #define DODGE_COOLDOWN	4	//Seconds
@@ -15,6 +16,7 @@ typedef struct
 	CP_Vector   vel;		//direction/velocity
 
 	int			numDodge;	// number of dodges
+	Collider	hitBox;
 
 	Arrow		arrow;
 	int			playerHasArrow;
