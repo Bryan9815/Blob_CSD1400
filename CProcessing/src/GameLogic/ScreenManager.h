@@ -4,6 +4,7 @@
 #include "../Screen/fader.h"
 #include "BlobInput.h"
 #include "grid.h"
+#include "../Player/player.h"
 
 typedef enum GameState 
 {

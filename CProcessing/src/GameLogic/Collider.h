@@ -1,21 +1,25 @@
+#pragma once
+#include <cprocessing.h>
+#include <stdbool.h>
 
-
-typedef enum //wtf
+typedef enum COL_SHAPE
 {
-	COL_RECT,
-	COL_CIRCLE
+	COL_CIRCLE,			//CIRCLE
+	COL_RECT			//RECT
 
 }COL_SHAPE;
 
-typedef struct //wtf
+typedef struct 
 {
-	float posX,
-		  posY;
+	CP_Vector position;
 
-	float width,
-		  height,
-		  radius;
+	float width,			//USE FOR RECT COLLIDER
+		  height,			//USE FOR RECT COLLIDER
 
-	COL_SHAPE shapeType;
+		  radius;			//USE FOR CIRCLE COLLIDER
+
+	COL_SHAPE shapeType;	//COLLIDER SHAPE
 
 }Collider;
+
+bool COL_IsColliding(Collider hitBox1, Collider hitBox2);

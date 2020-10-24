@@ -78,6 +78,9 @@
     <ClCompile Include="src\GameLogic\Collider.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bosses\Boss1.c">
+      <Filter>src\Boss</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -118,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="src\GameLogic\Collider.h">
       <Filter>src\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bosses\Boss1.h">
+      <Filter>src\Boss</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
