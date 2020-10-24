@@ -59,5 +59,3 @@ void Dodge(Player* player);
 void DodgeRecharge(Player* player);
 
 void ArrowTrigger(Player* player);
-
-void DisplayScore(float score);
