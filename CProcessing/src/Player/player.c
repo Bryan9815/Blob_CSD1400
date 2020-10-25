@@ -53,7 +53,7 @@ void PlayerDraw(Player* player)
 	//Draw player
 	CP_Settings_Fill(playerColor);
 	CP_Graphics_DrawEllipseAdvanced(player->position.x, player->position.y, player->radius *2, player->radius * 2, player->rotation);
-	CP_Graphics_DrawRectAdvanced(player->position.x, player->position.y, player->radius, player->radius, player->rotation, 1);
+	//CP_Graphics_DrawRectAdvanced(player->position.x, player->position.y, player->radius, player->radius, player->rotation, 1);
 
 	//Draw arrow
 	CP_Settings_Fill(arrowColor);
@@ -188,7 +188,7 @@ void MouseTracking(Player* player)
 	mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()), player->position);
 	if (mousePositionVector.x < 0)
 	{
-		player->rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, 1.0f)) + 190.0f;
+		player->rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, 1.0f)) + 180.0f;
 	}
 	else
 	{

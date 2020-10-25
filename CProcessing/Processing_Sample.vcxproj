@@ -32,6 +32,7 @@
     <ClCompile Include="src\Player\Arrow.c" />
     <ClCompile Include="src\Player\player.c" />
     <ClCompile Include="src\Screen\fader.c" />
+    <ClCompile Include="src\Screen\scr_credits.c" />
     <ClCompile Include="src\Screen\scr_level_1.c" />
     <ClCompile Include="src\Screen\scr_intro.c" />
     <ClCompile Include="src\Screen\scr_mainmenu.c" />
@@ -49,6 +50,7 @@
     <ClInclude Include="src\Player\Arrow.h" />
     <ClInclude Include="src\Player\player.h" />
     <ClInclude Include="src\Screen\fader.h" />
+    <ClInclude Include="src\Screen\scr_credits.h" />
     <ClInclude Include="src\Screen\scr_level_1.h" />
     <ClInclude Include="src\Screen\scr_intro.h" />
     <ClInclude Include="src\Screen\scr_mainmenu.h" />

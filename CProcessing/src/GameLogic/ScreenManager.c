@@ -3,13 +3,13 @@
 #include "../Screen/scr_intro.h"
 #include "../Screen/scr_mainmenu.h"
 #include "../Screen/scr_options.h"
+#include "../Screen/scr_credits.h"
 #include "../Screen/scr_level_1.h"
 #include "../Bosses/Boss.h"
 #include "../Bosses/Boss1.h"
 
 GameState currGameState = SCR_INTRO;
 Fader fader;
-CP_Image shield;
 
 void ScreenStartFade(FadeType fadeType) 
 {
@@ -37,12 +37,13 @@ void GameInit(void)
 		OptionsInit();
 		break;
 	case SCR_CREDITS:
+		CreditsInit();
 		break;
 	case SCR_GAMEPLAY:
 		Level1Init();
 		CreatePlayer(&newPlayer);
 		CameraInit(&newPlayer.position);
-		BossInit(&ArmorSlime, 1, 100.f);
+		BossInit(&ArmorSlime, 1, 250.f);
 		shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
 		break;
 	default:
@@ -72,11 +73,13 @@ void GameUpdate(void)
 		OptionsUpdate();
 		break;
 	case SCR_CREDITS:
+		CreditsUpdate();
 		break;
 	case SCR_GAMEPLAY:
 		CameraUpdate(&newPlayer.position, &fader);
 		Level1Update(&newPlayer);
 		PlayerUpdate(&newPlayer);
+		Boss1Battle(newPlayer);
 		break;
 	default:
 		break;

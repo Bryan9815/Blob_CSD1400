@@ -84,6 +84,9 @@
     <ClCompile Include="src\Camera\Camera.c">
       <Filter>src\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="src\Screen\scr_credits.c">
+      <Filter>src\Screens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="src\Camera\Camera.h">
       <Filter>src\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Screen\scr_credits.h">
+      <Filter>src\Screens</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
