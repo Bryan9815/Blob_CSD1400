@@ -87,6 +87,9 @@
     <ClCompile Include="src\Screen\scr_credits.c">
       <Filter>src\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameLogic\SaveLoad.c">
+      <Filter>src\GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="src\Screen\scr_credits.h">
       <Filter>src\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameLogic\SaveLoad.h">
+      <Filter>src\GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

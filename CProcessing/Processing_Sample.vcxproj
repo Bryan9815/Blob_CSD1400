@@ -26,6 +26,7 @@
     <ClCompile Include="src\GameLogic\Button.c" />
     <ClCompile Include="src\GameLogic\grid.c" />
     <ClCompile Include="src\GameLogic\Collider.c" />
+    <ClCompile Include="src\GameLogic\SaveLoad.c" />
     <ClCompile Include="src\GameLogic\ScreenManager.c" />
     <ClCompile Include="src\Input\InputManager.c" />
     <ClCompile Include="src\main.c" />
@@ -46,6 +47,7 @@
     <ClInclude Include="src\GameLogic\Button.h" />
     <ClInclude Include="src\GameLogic\grid.h" />
     <ClInclude Include="src\GameLogic\Collider.h" />
+    <ClInclude Include="src\GameLogic\SaveLoad.h" />
     <ClInclude Include="src\GameLogic\ScreenManager.h" />
     <ClInclude Include="src\Player\Arrow.h" />
     <ClInclude Include="src\Player\player.h" />
