@@ -16,14 +16,15 @@ void CameraInit(CP_Vector *charPos)
 	translationMatrix = CP_Matrix_Translate(currentPosition);
 }
 
-void CameraUpdate(CP_Vector* charPos)
+void CameraUpdate(CP_Vector* charPos, Fader* fader)
 {
 	if (GetBlobInputDown(BLOB_UP) || GetBlobInputDown(BLOB_DOWN) || GetBlobInputDown(BLOB_LEFT) || GetBlobInputDown(BLOB_RIGHT))
 	{
 		currentPosition = CP_Vector_Set(-(charPos->x - centerX), -(charPos->y - centerY));
 		translationMatrix = CP_Matrix_Translate(currentPosition);
 	}
-
+	fader->fadePosX = -currentPosition.x;
+	fader->fadePosY = -currentPosition.y;
 	CP_Settings_ApplyMatrix(translationMatrix);
 }
 

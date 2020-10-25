@@ -6,7 +6,6 @@
 #include "../Screen/scr_level_1.h"
 #include "../Bosses/Boss.h"
 #include "../Bosses/Boss1.h"
-#include "../Camera/Camera.h"
 
 GameState currGameState = SCR_INTRO;
 Fader fader;
@@ -75,7 +74,7 @@ void GameUpdate(void)
 	case SCR_CREDITS:
 		break;
 	case SCR_GAMEPLAY:
-		CameraUpdate(&newPlayer.position);
+		CameraUpdate(&newPlayer.position, &fader);
 		Level1Update(&newPlayer);
 		PlayerUpdate(&newPlayer);
 		break;

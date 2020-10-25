@@ -62,7 +62,7 @@ Fader UpdateFade(Fader fader)	//Drawcall for Fader
 
 	CP_Settings_Fill(CP_Color_Create(0, 0, 0, (int)fader.fadeAlpha));
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Graphics_DrawRect(0, 0, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight());
+	CP_Graphics_DrawRect(fader.fadePosX, fader.fadePosY, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight());
 
 	return fader;
 }

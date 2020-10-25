@@ -1,7 +1,7 @@
 #include <cprocessing.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "../Screen/fader.h"
+#include "../Camera/Camera.h"
 #include "BlobInput.h"
 #include "grid.h"
 #include "../Player/player.h"

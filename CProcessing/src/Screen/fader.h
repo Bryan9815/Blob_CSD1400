@@ -15,7 +15,9 @@ typedef struct
 
 	float fadeAlpha,
 
-		  fadeSpeed;
+		  fadeSpeed,
+		  fadePosX,
+		  fadePosY;
 
 }Fader;
 
