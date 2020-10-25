@@ -3,9 +3,11 @@
 #include "Boss.h"
 
 //functions specifically for boss 1 here
-enum BossState Boss1_State;
+CP_Image shield;
 
-void Shield1Draw(Boss armorboss, CP_Image shield);
-void AttackNear(Player player, Boss* armorboss);
+void Shield1Draw(Boss armorboss);
+void AttackNear(Boss* armorboss);
 void AttackCharge(Player player, Boss* armorboss);
-void Boss1Battle(Player player, CP_Image shield);
+void StunTimer(Boss currentboss);
+void B1_StateChange(Player player, Boss* currentboss);
+void Boss1Battle(Player player);

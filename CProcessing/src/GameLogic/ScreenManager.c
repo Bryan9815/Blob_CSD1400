@@ -11,7 +11,6 @@
 
 GameState currGameState = SCR_INTRO;
 Fader fader;
-CP_Image shield;
 
 void ScreenStartFade(FadeType fadeType) 
 {
@@ -45,7 +44,7 @@ void GameInit(void)
 		Level1Init();
 		CreatePlayer(&newPlayer);
 		CameraInit(&newPlayer.position);
-		BossInit(&ArmorSlime, 1, 100.f);
+		BossInit(&ArmorSlime, 1, 250.f);
 		shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
 		break;
 	default:
@@ -81,6 +80,7 @@ void GameUpdate(void)
 		CameraUpdate(&newPlayer.position);
 		Level1Update(&newPlayer);
 		PlayerUpdate(&newPlayer);
+		Boss1Battle(newPlayer);
 		break;
 	default:
 		break;
