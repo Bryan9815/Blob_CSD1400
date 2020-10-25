@@ -1,7 +1,6 @@
-#include <cprocessing.h>
+#include "../Camera/Camera.h"
 #include <stdio.h>
 #include <stdbool.h>
-#include "../Camera/Camera.h"
 #include "BlobInput.h"
 #include "grid.h"
 #include "../Player/player.h"
