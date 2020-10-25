@@ -13,12 +13,12 @@ Fader fader;
 
 void ScreenStartFade(FadeType fadeType) 
 {
-	fader = StartFade(fader, fadeType);
+	StartFade(&fader, fadeType);
 }
 
-Fader GetFader()
+Fader* GetFader()
 {
-	return fader;
+	return &fader;
 }
 
 void GameInit(void)
@@ -26,7 +26,7 @@ void GameInit(void)
 	switch (currGameState)
 	{
 	case SCR_INTRO:
-		fader = CreateFader();
+		CreateFader(&fader);
 		BlobInputInit();
 		IntroInit();
 		break;
@@ -84,7 +84,7 @@ void GameUpdate(void)
 	default:
 		break;
 	}
-	fader = UpdateFade(fader);
+	UpdateFade(&fader);
 }
 
 

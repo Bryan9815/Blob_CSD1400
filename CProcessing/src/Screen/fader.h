@@ -21,7 +21,7 @@ typedef struct
 
 }Fader;
 
-Fader CreateFader();
-Fader StartFade(Fader fader, FadeType fadeType);
-Fader StopFade(Fader fader, FadeType fadeType);
-Fader UpdateFade(Fader fader);
+void CreateFader(Fader* fader);
+void StartFade(Fader* fader, FadeType fadeType);
+void StopFade(Fader* fader, FadeType fadeType);
+void UpdateFade(Fader* fader);

@@ -25,9 +25,9 @@ void IntroUpdate(void)
 {
 	CP_Settings_Background(bgColor);
 
-	if (!GetFader().isFading)
+	if (!GetFader()->isFading)
 	{
-		if (GetFader().fadeAlpha == 0) 
+		if (GetFader()->fadeAlpha == 0)
 		{
 			splashTimer -= CP_System_GetDt();
 			if (splashTimer <= 0) 
@@ -35,7 +35,7 @@ void IntroUpdate(void)
 				ScreenStartFade(FADE_IN);
 			}
 		}
-		else if(GetFader().fadeAlpha == 255)
+		else if(GetFader()->fadeAlpha == 255)
 		{
 			SetGameState(SCR_MAIN_MENU);
 		}

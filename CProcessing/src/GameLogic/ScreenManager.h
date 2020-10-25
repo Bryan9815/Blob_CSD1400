@@ -21,4 +21,4 @@ void GameExit(void);
 void SetGameState(GameState nextState);
 
 void ScreenStartFade(FadeType fadeType);
-Fader GetFader();
+Fader* GetFader();
