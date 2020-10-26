@@ -16,6 +16,7 @@ typedef enum GameState
 }GameState;
 
 void GameInit(void);
+void GameDraw(void);
 void GameUpdate(void);
 void GameExit(void);
 void SetGameState(GameState nextState);

@@ -60,6 +60,33 @@ void SetGameState(GameState nextState)
 	CP_Engine_SetNextGameStateForced(GameInit, GameUpdate, GameExit);
 }
 
+void GameDraw(void)
+{
+	switch (currGameState)
+	{
+	case SCR_INTRO:
+		//IntroUpdate();
+		break;
+	case SCR_MAIN_MENU:
+		///MainMenuUpdate();
+		break;
+	case SCR_OPTION:
+		//OptionsUpdate();
+		break;
+	case SCR_CREDITS:
+		//CreditsUpdate();
+		break;
+	case SCR_GAMEPLAY:
+		//CameraUpdate(&newPlayer.position, &fader);
+		//Level1Update(&newPlayer);
+		//PlayerUpdate(&newPlayer);
+		//Boss1Battle(newPlayer);
+		break;
+	default:
+		break;
+	}
+}
+
 void GameUpdate(void)
 {
 	switch (currGameState)
@@ -86,6 +113,7 @@ void GameUpdate(void)
 		break;
 	}
 	UpdateFade(&fader);
+	GameDraw();
 }
 
 
