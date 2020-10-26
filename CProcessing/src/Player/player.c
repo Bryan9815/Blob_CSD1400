@@ -35,9 +35,9 @@ void CreatePlayer(Player* player) //Default Variables
 #endif
 
 	//Player dodge
-	dodgeDistance = CP_System_GetWindowWidth() / 60.0f;
+	dodgeDistance = CP_System_GetWindowWidth() / 55.0f;
 	dodgeTimer = 0.0f;
-	dodgeBlur = 3;
+	dodgeBlur = 15;
 	player->numDodge = 2;
 
 	//Player Arrow
@@ -222,11 +222,11 @@ void Dodge(Player* player)
 		}
 		else
 		{
-			dodgeBlur = 3;
+			dodgeBlur = 15;
 			playerState = STILL;
 		}
-		player->position.x += player->vel.x * (PLAYER_SPEED * (dodgeDistance / 4));
-		player->position.y += player->vel.y * (PLAYER_SPEED * (dodgeDistance / 4));
+		player->position.x += player->vel.x * (PLAYER_SPEED * (dodgeDistance / 15));
+		player->position.y += player->vel.y * (PLAYER_SPEED * (dodgeDistance / 15));
 		//HitBox
 #if 0
 		player->hitBox.position = CP_Vector_Set(player->position.x - player->width / 2, player->position.y - player->width / 2);	//RECT
@@ -253,33 +253,32 @@ void DodgeRecharge(Player* player) //Recharge Dodge
 
 void ArrowTrigger(Player* player)
 {
-	if (playerArrowState == WITHPLAYER)
+	if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
 	{
-		if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
+		if (playerState == STILL && playerArrowState == WITHPLAYER)
 		{
-			if (playerState == STILL)
+			arrowColor = CP_Color_Create(255, 255, 255, 255);
+			//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+			if (player->arrow.forceTimer <= 30)
 			{
-				CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-				CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
-				if (player->arrow.forceTimer <= 30)
-				{
-					player->arrow.forceTimer += CP_System_GetDt() * 10;
-				}
-			}
-			else if (playerState == MOVING || playerState == DODGING)
-			{
-				player->arrow.forceTimer = 0.0f;
+				player->arrow.forceTimer += CP_System_GetDt() * 10;
 			}
 		}
-		else if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT))
+		else if (playerState == MOVING || playerState == DODGING)
 		{
-			playerState = SHOOTING;
-			if (playerState == SHOOTING)
-			{
-				ArrowRelease(&(player->arrow));
-			}
+			player->arrow.forceTimer = 0.0f;
 		}
 	}
+
+	else if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT))
+	{
+		playerState = SHOOTING;
+		if (playerState == SHOOTING)
+		{
+			ArrowRelease(&(player->arrow));
+		}
+	}
+	
 }
 
 void PlayerInit(void)
