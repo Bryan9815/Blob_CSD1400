@@ -180,7 +180,7 @@ void PlayerMovement(Player* player)
 	player->hitBox.position = player->position;		//Circle
 #endif
 	player->arrow.currentPosition = player->position;
-	PlayerDraw(player);
+	
 }
 
 void MouseTracking(Player* player)
