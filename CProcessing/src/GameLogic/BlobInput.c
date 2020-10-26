@@ -21,10 +21,10 @@ BlobKeys CreateBlobButton(CP_KEY k1, CP_KEY k2, CP_KEY k3, const char* ck1, cons
 
 void BlobInputInit()
 {
-	keys[BLOB_UP] = CreateBlobButton(KEY_UP, KEY_UP, KEY_UP, "UP", "UP", "UP");
-	keys[BLOB_DOWN] = CreateBlobButton(KEY_DOWN, KEY_DOWN, KEY_DOWN, "DOWN", "DOWN", "DOWN");
-	keys[BLOB_LEFT] = CreateBlobButton(KEY_LEFT, KEY_LEFT, KEY_LEFT, "LEFT", "LEFT", "LEFT");
-	keys[BLOB_RIGHT] = CreateBlobButton(KEY_RIGHT, KEY_RIGHT, KEY_RIGHT, "RIGHT", "RIGHT", "RIGHT");
+	keys[BLOB_UP] = CreateBlobButton(KEY_UP, KEY_W, KEY_UP, "UP", "W", "UP");
+	keys[BLOB_DOWN] = CreateBlobButton(KEY_DOWN, KEY_S, KEY_DOWN, "DOWN", "S", "DOWN");
+	keys[BLOB_LEFT] = CreateBlobButton(KEY_LEFT, KEY_A, KEY_LEFT, "LEFT", "A", "LEFT");
+	keys[BLOB_RIGHT] = CreateBlobButton(KEY_RIGHT, KEY_D, KEY_RIGHT, "RIGHT", "D", "RIGHT");
 	keys[BLOB_INTERACT] = CreateBlobButton(KEY_SPACE, KEY_ENTER, KEY_ENTER, "SPACE", "ENTER", "ENTER");
 	keys[BLOB_PAUSE] = CreateBlobButton(KEY_ESCAPE, KEY_ESCAPE, KEY_ESCAPE, "ESC", "ESC", "ESC");
 }
