@@ -456,7 +456,6 @@ void OptionsInput(void)
 
 void OptionsUpdate(void)
 {
-	OptionsDraw();
 	OptionsInput();
 }
 

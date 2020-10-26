@@ -28,8 +28,6 @@ void MainMenuInit(void)
 	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 250.f, 100.f, "Quit");
 }
 
-
-
 void MainMenuDraw(void)
 {
 	CP_Settings_Background(bgColor);
@@ -81,7 +79,7 @@ void MainMenuUpdate(void)
 			break;
 		}
 	}
-	MainMenuDraw();
+	//MainMenuDraw();
 }
 
 

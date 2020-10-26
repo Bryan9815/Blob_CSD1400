@@ -16,9 +16,9 @@ typedef enum GameState
 }GameState;
 
 void GameInit(void);
-void GameDraw(void);
 void GameUpdate(void);
 void GameExit(void);
+void GameDraw(void);
 void SetGameState(GameState nextState);
 
 void ScreenStartFade(FadeType fadeType);

@@ -10,6 +10,7 @@
 
 GameState currGameState = SCR_INTRO;
 Fader fader;
+int hasInitialized = 0;
 
 void ScreenStartFade(FadeType fadeType) 
 {
@@ -56,34 +57,8 @@ void GameInit(void)
 void SetGameState(GameState nextState)
 {
 	currGameState = nextState;
+	hasInitialized = 0;
 	CP_Engine_SetNextGameStateForced(GameInit, GameUpdate, GameExit);
-}
-
-void GameDraw(void)
-{
-	switch (currGameState)
-	{
-	case SCR_INTRO:
-		//IntroUpdate();
-		break;
-	case SCR_MAIN_MENU:
-		///MainMenuUpdate();
-		break;
-	case SCR_OPTION:
-		//OptionsUpdate();
-		break;
-	case SCR_CREDITS:
-		//CreditsUpdate();
-		break;
-	case SCR_GAMEPLAY:
-		//CameraUpdate(&newPlayer.position, &fader);
-		//Level1Update(&newPlayer);
-		//PlayerUpdate(&newPlayer);
-		//Boss1Battle(newPlayer);
-		break;
-	default:
-		break;
-	}
 }
 
 void GameUpdate(void)
@@ -115,7 +90,36 @@ void GameUpdate(void)
 	GameDraw();
 }
 
-
+void GameDraw(void)
+{
+	if (hasInitialized == 0)
+	{
+		GameInit();
+		hasInitialized = 1;
+	}
+	switch (currGameState)
+	{
+	case SCR_INTRO:
+		break;
+	case SCR_MAIN_MENU:
+		MainMenuDraw();
+		break;
+	case SCR_OPTION:
+		OptionsDraw();
+		break;
+	case SCR_CREDITS:
+		//CreditsUpdate();
+		break;
+	case SCR_GAMEPLAY:
+		//CameraUpdate(&newPlayer.position, &fader);
+		//Level1Update(&newPlayer);
+		//PlayerUpdate(&newPlayer);
+		//Boss1Battle(newPlayer);
+		break;
+	default:
+		break;
+	}
+}
 
 void GameExit(void)
 {
