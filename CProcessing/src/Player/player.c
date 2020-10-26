@@ -35,7 +35,7 @@ void CreatePlayer(Player* player) //Default Variables
 #endif
 
 	//Player dodge
-	dodgeDistance = CP_System_GetWindowWidth() / 80.0f;
+	dodgeDistance = CP_System_GetWindowWidth() / 60.0f;
 	dodgeTimer = 0.0f;
 	dodgeBlur = 3;
 	player->numDodge = 2;
@@ -50,14 +50,27 @@ void PlayerDraw(Player* player)
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	MouseTracking(player);
-	//Draw player
-	CP_Settings_Fill(playerColor);
-	CP_Graphics_DrawEllipseAdvanced(player->position.x, player->position.y, player->radius *2, player->radius * 2, player->rotation);
-	//CP_Graphics_DrawRectAdvanced(player->position.x, player->position.y, player->radius, player->radius, player->rotation, 1);
+	if (playerState == DODGING)
+	{
+		//Draw player
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 100));
+		CP_Graphics_DrawEllipseAdvanced(player->position.x, player->position.y, player->radius * 2, player->radius * 2, player->rotation);
 
-	//Draw arrow
-	CP_Settings_Fill(arrowColor);
-	CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation+45.0f, 1);
+		//Draw arrow
+		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 100));
+		CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+	}
+	else if ()
+	{
+		//Draw player
+		CP_Settings_Fill(playerColor);
+		CP_Graphics_DrawEllipseAdvanced(player->position.x, player->position.y, player->radius * 2, player->radius * 2, player->rotation);
+
+		//Draw arrow
+		CP_Settings_Fill(arrowColor);
+		CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+	}
+
 	
 	//HitBox
 	
@@ -222,7 +235,6 @@ void Dodge(Player* player)
 		player->hitBox.position = player->position;		//Circle
 #endif
 		player->arrow.currentPosition = player->position;
-		PlayerDraw(player);
 	}
 }
 
@@ -264,7 +276,6 @@ void ArrowTrigger(Player* player)
 			playerState = SHOOTING;
 			if (playerState == SHOOTING)
 			{
-				PlayerDraw(player);
 				ArrowRelease(&(player->arrow));
 			}
 		}
