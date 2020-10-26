@@ -4,6 +4,8 @@
 #include "BlobInput.h"
 #include "grid.h"
 #include "../Player/player.h"
+#include "../Bosses/Boss.h"
+#include "../Bosses/Boss1.h"
 
 typedef enum GameState 
 {
@@ -16,7 +18,6 @@ typedef enum GameState
 }GameState;
 
 void GameInit(void);
-void GameDraw(void);
 void GameUpdate(void);
 void GameExit(void);
 void SetGameState(GameState nextState);

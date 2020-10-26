@@ -123,6 +123,5 @@ void Boss1Battle(Player player)
 			CP_Font_DrawText(errormessage, (float)(CP_System_GetWindowWidth() / 2), (float)(CP_System_GetDisplayHeight() / 2));
 			break;
 	}
-	Shield1Draw(ArmorSlime);
-	BossDraw(ArmorSlime); //note that boss is drawn after to be on top of shield
+	
 }
