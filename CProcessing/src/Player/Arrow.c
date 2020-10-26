@@ -3,7 +3,7 @@
 
 void CreateArrow(Arrow* arrow)
 {
-	arrowColor = CP_Color_Create(255, 0, 0, 200);
+	arrowColor = CP_Color_Create(255, 0, 0, 255);
 
 	arrow->currentPosition = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
 	arrow->newPosition = arrow->currentPosition;
@@ -26,7 +26,7 @@ void CalculateNewPosition(Arrow* arrow)
 	arrow->dir.x = CP_Input_GetMouseWorldX() - arrow->oldPosition.x;
 	arrow->dir.y = CP_Input_GetMouseWorldY() - arrow->oldPosition.y;
 	arrow->dir = CP_Vector_Scale(arrow->dir, arrow->chargeScale);
-	arrow->newPosition = CP_Vector_Add(arrow->oldPosition, arrow->dir);
+	arrow->newPosition = CP_Vector_Set(arrow->oldPosition.x + arrow->dir.x, arrow->oldPosition.y + arrow->dir.y);
 	arrow->chargeTimer = 0.0f;
 }
 
@@ -43,3 +43,8 @@ void ArrowRecall(Arrow* arrow, CP_Vector playerPos)
 	arrow->currentPosition = playerPos;
 	playerArrowState = WITHPLAYER;
 }
+
+//void ArrowPickup(Arrow* arrow, CP_Vector playerPos)
+//{
+//
+//}

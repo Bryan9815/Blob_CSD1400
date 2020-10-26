@@ -35,7 +35,7 @@ void CreatePlayer(Player* player) //Default Variables
 #endif
 
 	//Player dodge
-	dodgeDistance = CP_System_GetWindowWidth() / 50.0f;
+	dodgeDistance = CP_System_GetWindowWidth() / 30.0f;
 	dodgeTimer = 0.0f;
 	dodgeBlur = 20;
 	player->numDodge = 2;
@@ -73,10 +73,10 @@ void PlayerDraw(Player* player)
 			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 100));
 			CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 		}
-		else
+		else if (player->arrow.charging == 0)
 		{
 			//Draw arrow
-			CP_Settings_Fill(arrowColor);
+			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 			CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 		}
 	}
@@ -210,8 +210,10 @@ void PlayerMovement(Player* player)
 #if 1
 	player->hitBox.position = player->position;		//Circle
 #endif
-	player->arrow.currentPosition = player->position;
-	
+	if (playerArrowState == WITHPLAYER)
+	{
+		player->arrow.currentPosition = player->position;
+	}
 }
 
 void MouseTracking(Player* player)
@@ -251,8 +253,12 @@ void Dodge(Player* player)
 #if 1
 		player->hitBox.position = player->position;		//Circle
 #endif
-		player->arrow.currentPosition = player->position;
+		if (playerArrowState == WITHPLAYER)
+		{
+			player->arrow.currentPosition = player->position;
+		}
 	}
+		
 }
 
 void DodgeRecharge(Player* player) //Recharge Dodge
@@ -278,7 +284,7 @@ void ArrowStateChange(Player* player, Arrow* arrow) // arrow release
 	case MOTIONLESS:
 		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT))
 		{
-			//ArrowRecall(arrow, player->position);
+			ArrowRecall(arrow, player->position);
 			playerArrowState = WITHPLAYER;
 		}
 		break;
@@ -297,8 +303,9 @@ void ArrowTrigger(Player* player)
 {
 	if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
 	{
-		if (playerState == STILL || playerArrowState == WITHPLAYER)
+		if (playerState == STILL && playerArrowState == WITHPLAYER)
 		{
+			player->arrow.charging = 1;
 			if (player->arrow.chargeTimer <= 30)
 			{
 				player->arrow.chargeTimer += CP_System_GetDt() * 10;
@@ -309,11 +316,17 @@ void ArrowTrigger(Player* player)
 		{
 			player->arrow.chargeTimer = 0.0f;
 		}
+
 	}
 	else if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT))
 	{
-		playerArrowState = RELEASE;
+		if (playerArrowState == WITHPLAYER)
+		{
+			player->arrow.charging = 0;
+			playerArrowState = RELEASE;
+		}
 	}
+
 }
 
 void PlayerInit(void)

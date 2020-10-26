@@ -3,7 +3,7 @@
 #include "Arrow.h"
 #include "../GameLogic/Collider.h"
 
-#define PLAYER_SPEED	7.0f
+#define PLAYER_SPEED	5.0f
 #define DODGE_COOLDOWN	4	//Seconds
 #define MAX_DODGE		2
 
