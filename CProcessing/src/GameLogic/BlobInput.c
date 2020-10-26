@@ -21,10 +21,10 @@ BlobKeys CreateBlobButton(CP_KEY k1, CP_KEY k2, CP_KEY k3, const char* ck1, cons
 
 void BlobInputInit()
 {
-	keys[BLOB_UP] = CreateBlobButton(KEY_UP, KEY_W, KEY_UP, "UP", "W", "UP");
-	keys[BLOB_DOWN] = CreateBlobButton(KEY_DOWN, KEY_S, KEY_DOWN, "DOWN", "S", "DOWN");
-	keys[BLOB_LEFT] = CreateBlobButton(KEY_LEFT, KEY_A, KEY_LEFT, "LEFT", "A", "LEFT");
-	keys[BLOB_RIGHT] = CreateBlobButton(KEY_RIGHT, KEY_D, KEY_RIGHT, "RIGHT", "D", "RIGHT");
+	keys[BLOB_UP] = CreateBlobButton(KEY_UP, KEY_W, KEY_I, "UP", "W", "I");
+	keys[BLOB_DOWN] = CreateBlobButton(KEY_DOWN, KEY_S, KEY_K, "DOWN", "S", "K");
+	keys[BLOB_LEFT] = CreateBlobButton(KEY_LEFT, KEY_A, KEY_J, "LEFT", "A", "J");
+	keys[BLOB_RIGHT] = CreateBlobButton(KEY_RIGHT, KEY_D, KEY_L, "RIGHT", "D", "L");
 	keys[BLOB_INTERACT] = CreateBlobButton(KEY_SPACE, KEY_ENTER, KEY_ENTER, "SPACE", "ENTER", "ENTER");
 	keys[BLOB_PAUSE] = CreateBlobButton(KEY_ESCAPE, KEY_ESCAPE, KEY_ESCAPE, "ESC", "ESC", "ESC");
 }
@@ -89,7 +89,7 @@ const char* GetBlobInputName(BlobInput input)
 
 const char* GetBlobKeyName(BlobInput input, int keyNum)
 {
-	if (input < BLOB_PAUSE && keyNum < 3)
+	if (input <= BLOB_PAUSE && keyNum < 3)
 		return keys[input].c_key[keyNum];
 	else
 		return keys[BLOB_PAUSE].c_key[2];
@@ -97,6 +97,17 @@ const char* GetBlobKeyName(BlobInput input, int keyNum)
 
 void EditBlobInput(BlobInput blobInput, int keyNum, CP_KEY newInput)
 {
+	for (int i = 0; i <= BLOB_PAUSE; i++)
+	{
+		for (int j = 0; j <= 2; j++)
+		{
+			if (keys[i].key[j] == newInput)
+			{
+				keys[i].key[j] = keys[blobInput].key[keyNum];
+				keys[i].c_key[j] = keys[blobInput].c_key[keyNum];
+			}
+		}
+	}
 	keys[blobInput].key[keyNum] = newInput;
 	switch (newInput)
 	{
@@ -111,6 +122,15 @@ void EditBlobInput(BlobInput blobInput, int keyNum, CP_KEY newInput)
 		break;
 	case KEY_RIGHT:
 		keys[blobInput].c_key[keyNum] = "RIGHT";
+		break;
+	case KEY_ENTER:
+		keys[blobInput].c_key[keyNum] = "ENTER";
+		break;
+	case KEY_SPACE:
+		keys[blobInput].c_key[keyNum] = "SPACE";
+		break;
+	case KEY_ESCAPE:
+		keys[blobInput].c_key[keyNum] = "ESC";
 		break;
 	default:
 		sprintf_s(keys[blobInput].new_c_key[keyNum], sizeof newInput, "%c", newInput);
