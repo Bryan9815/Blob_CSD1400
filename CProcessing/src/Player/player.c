@@ -35,9 +35,9 @@ void CreatePlayer(Player* player) //Default Variables
 #endif
 
 	//Player dodge
-	dodgeDistance = CP_System_GetWindowWidth() / 55.0f;
+	dodgeDistance = CP_System_GetWindowWidth() / 50.0f;
 	dodgeTimer = 0.0f;
-	dodgeBlur = 15;
+	dodgeBlur = 20;
 	player->numDodge = 2;
 
 	//Player Arrow
@@ -53,11 +53,11 @@ void PlayerDraw(Player* player)
 	if (playerState == DODGING)
 	{
 		//Draw player
-		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 100));
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 50));
 		CP_Graphics_DrawEllipseAdvanced(player->position.x, player->position.y, player->radius * 2, player->radius * 2, player->rotation);
 
 		//Draw arrow
-		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 100));
+		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 50));
 		CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 	}
 	else
@@ -67,13 +67,31 @@ void PlayerDraw(Player* player)
 		CP_Graphics_DrawEllipseAdvanced(player->position.x, player->position.y, player->radius * 2, player->radius * 2, player->rotation);
 
 		//Draw arrow
-		CP_Settings_Fill(arrowColor);
-		CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+		if (player->arrow.charging == 1)
+		{
+			//Draw arrow
+			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 100));
+			CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+		}
+		else
+		{
+			//Draw arrow
+			CP_Settings_Fill(arrowColor);
+			CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+		}
 	}
 
-	
+	//Draw Dodge Bar
+	if (dodgeTimer > 0)
+	{
+		CP_Settings_Fill(CP_Color_Create(255, 255, 100, 100));
+		CP_Graphics_DrawRect(player->position.x, player->position.y - player->radius - 10.0f, player->radius, player->radius / 5);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 100, 255));
+		CP_Graphics_DrawRect(player->position.x, player->position.y - player->radius - 10.0f, player->radius * (dodgeTimer / DODGE_COOLDOWN), player->radius / 5);
+	}
+
+
 	//HitBox
-	
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 200));	
 #if 1
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
@@ -207,7 +225,6 @@ void MouseTracking(Player* player)
 	{
 		player->rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, -1.0f));
 	}
-
 }
 
 void Dodge(Player* player)
@@ -222,11 +239,11 @@ void Dodge(Player* player)
 		}
 		else
 		{
-			dodgeBlur = 15;
+			dodgeBlur = 20;
 			playerState = STILL;
 		}
-		player->position.x += player->vel.x * (PLAYER_SPEED * (dodgeDistance / 15));
-		player->position.y += player->vel.y * (PLAYER_SPEED * (dodgeDistance / 15));
+		player->position.x += player->vel.x * (PLAYER_SPEED * (dodgeDistance / 20));
+		player->position.y += player->vel.y * (PLAYER_SPEED * (dodgeDistance / 20));
 		//HitBox
 #if 0
 		player->hitBox.position = CP_Vector_Set(player->position.x - player->width / 2, player->position.y - player->width / 2);	//RECT
@@ -251,34 +268,52 @@ void DodgeRecharge(Player* player) //Recharge Dodge
 	}
 }
 
+void ArrowStateChange(Player* player, Arrow* arrow) // arrow release
+{
+	switch (playerArrowState) {
+	case RELEASE:
+		CalculateNewPosition(arrow);
+		playerArrowState = MOTION;
+		break;
+	case MOTIONLESS:
+		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT))
+		{
+			//ArrowRecall(arrow, player->position);
+			playerArrowState = WITHPLAYER;
+		}
+		break;
+	case WITHPLAYER:
+		break;
+	default:
+		break;
+	}
+	if (playerArrowState == MOTION)
+	{
+		ArrowInMotion(arrow);
+	}
+}
+
 void ArrowTrigger(Player* player)
 {
 	if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
 	{
-		if (playerState == STILL && playerArrowState == WITHPLAYER)
+		if (playerState == STILL || playerArrowState == WITHPLAYER)
 		{
-			arrowColor = CP_Color_Create(255, 255, 255, 255);
-			//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
-			if (player->arrow.forceTimer <= 30)
+			if (player->arrow.chargeTimer <= 30)
 			{
-				player->arrow.forceTimer += CP_System_GetDt() * 10;
+				player->arrow.chargeTimer += CP_System_GetDt() * 10;
 			}
+			
 		}
 		else if (playerState == MOVING || playerState == DODGING)
 		{
-			player->arrow.forceTimer = 0.0f;
+			player->arrow.chargeTimer = 0.0f;
 		}
 	}
-
 	else if (CP_Input_MouseReleased(MOUSE_BUTTON_LEFT))
 	{
-		playerState = SHOOTING;
-		if (playerState == SHOOTING)
-		{
-			ArrowRelease(&(player->arrow));
-		}
+		playerArrowState = RELEASE;
 	}
-	
 }
 
 void PlayerInit(void)
@@ -292,5 +327,5 @@ void PlayerUpdate(Player* player)
 	PlayerMovement(player);
 	Dodge(player);
 	ArrowTrigger(player);
-	ArrowPhysics(&(player->arrow));
+	ArrowStateChange(player, &(player->arrow));
 }

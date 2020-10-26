@@ -57,3 +57,4 @@ void Dodge(Player* player);
 void DodgeRecharge(Player* player);
 
 void ArrowTrigger(Player* player);
+void ArrowStateChange(Player* player, Arrow* arrow);

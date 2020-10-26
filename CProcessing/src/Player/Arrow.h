@@ -12,21 +12,24 @@ typedef struct
 				dir;
 
 	float		width,
-				forceTimer,
-				forceScale;
+				chargeTimer,
+				chargeScale;
+
+	int			charging;
 
 } Arrow;
 
 typedef enum
 {
+	RELEASE,
 	WITHPLAYER,
-	CHARGE,
 	MOTION,
 	MOTIONLESS
 } ArrowState;
 
 ArrowState  playerArrowState;
 
-void ArrowRelease(Arrow* arrow);
 void CreateArrow(Arrow* arrow);
-void ArrowPhysics(Arrow* arrow);
+void CalculateNewPosition(Arrow* arrow);
+void ArrowInMotion(Arrow* arrow);
+void ArrowRecall(Arrow* arrow, CP_Vector playerPos);

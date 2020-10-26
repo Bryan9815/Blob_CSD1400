@@ -12,30 +12,34 @@ void CreateArrow(Arrow* arrow)
 
 	arrow->width = CP_System_GetWindowWidth() / 25.0f;
 
-	arrow->forceScale = 0;
-	arrow->forceTimer = 0.0f;
+	arrow->chargeScale = 0;
+	arrow->chargeTimer = 0.0f;
+
+	arrow->charging = 0;
 
 	playerArrowState = WITHPLAYER;
 }
 
-void ArrowRelease(Arrow* arrow) // arrow release
+void CalculateNewPosition(Arrow* arrow)
 {
-	arrow->forceScale = (DEFAULT_FORCE + arrow->forceTimer) / 20;
-	arrow->dir.x = CP_Input_GetMouseX() - arrow->oldPosition.x;
-	arrow->dir.y = CP_Input_GetMouseY() - arrow->oldPosition.y;
-	arrow->dir = CP_Vector_Scale(arrow->dir, arrow->forceScale);
+	arrow->chargeScale = (DEFAULT_FORCE + arrow->chargeTimer) / 50;
+	arrow->dir.x = CP_Input_GetMouseWorldX() - arrow->oldPosition.x;
+	arrow->dir.y = CP_Input_GetMouseWorldY() - arrow->oldPosition.y;
+	arrow->dir = CP_Vector_Scale(arrow->dir, arrow->chargeScale);
 	arrow->newPosition = CP_Vector_Add(arrow->oldPosition, arrow->dir);
-	//arrow->newPosition = CP_Vector_Add(arrow->position, )
-	arrow->forceTimer = 0.0f;
-	playerArrowState = MOTION;
+	arrow->chargeTimer = 0.0f;
 }
 
-void ArrowPhysics(Arrow* arrow)
+void ArrowInMotion(Arrow* arrow)
 {
-	if (playerArrowState == MOTION)
-	{
-		arrow->currentPosition = arrow->newPosition;
-		//barycentirc maybe, newPosition = oldPosition + t(dir), where t is based off delta time and forcescale.
-		//t = distance between oldPos and newPos / 5?
-	}
+	arrow->currentPosition = arrow->newPosition;
+	playerArrowState = MOTIONLESS;
+	//barycentirc maybe, newPosition = oldPosition + t(dir), where t is based off delta time and forcescale.
+	//t = distance between oldPos and newPos / 5?
+}
+
+void ArrowRecall(Arrow* arrow, CP_Vector playerPos)
+{
+	arrow->currentPosition = playerPos;
+	playerArrowState = WITHPLAYER;
 }
