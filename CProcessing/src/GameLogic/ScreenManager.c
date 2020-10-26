@@ -8,6 +8,7 @@
 #include "../Bosses/Boss.h"
 #include "../Bosses/Boss1.h"
 
+GameState preGameState = SCR_INTRO; //For Unloading
 GameState currGameState = SCR_INTRO;
 Fader fader;
 
@@ -91,7 +92,7 @@ void GameUpdate(void)
 
 void GameExit(void)
 {
-	switch (currGameState)
+	switch (preGameState)
 	{
 	case SCR_INTRO:
 		IntroExit();
@@ -105,9 +106,11 @@ void GameExit(void)
 	case SCR_CREDITS:
 		break;
 	case SCR_GAMEPLAY:
+		Level1Exit();
 		break;
 	default:
 		break;
 	}
 	CP_Image_Free(&shield);
+	preGameState = currGameState;
 }
