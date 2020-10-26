@@ -8,6 +8,7 @@
 #include "../Bosses/Boss.h"
 #include "../Bosses/Boss1.h"
 
+GameState preGameState = SCR_INTRO; //For Unloading
 GameState currGameState = SCR_INTRO;
 Fader fader;
 
@@ -59,6 +60,33 @@ void SetGameState(GameState nextState)
 	CP_Engine_SetNextGameStateForced(GameInit, GameUpdate, GameExit);
 }
 
+void GameDraw(void)
+{
+	switch (currGameState)
+	{
+	case SCR_INTRO:
+		//IntroUpdate();
+		break;
+	case SCR_MAIN_MENU:
+		///MainMenuUpdate();
+		break;
+	case SCR_OPTION:
+		//OptionsUpdate();
+		break;
+	case SCR_CREDITS:
+		//CreditsUpdate();
+		break;
+	case SCR_GAMEPLAY:
+		//CameraUpdate(&newPlayer.position, &fader);
+		//Level1Update(&newPlayer);
+		//PlayerUpdate(&newPlayer);
+		//Boss1Battle(newPlayer);
+		break;
+	default:
+		break;
+	}
+}
+
 void GameUpdate(void)
 {
 	switch (currGameState)
@@ -85,13 +113,14 @@ void GameUpdate(void)
 		break;
 	}
 	UpdateFade(&fader);
+	GameDraw();
 }
 
 
 
 void GameExit(void)
 {
-	switch (currGameState)
+	switch (preGameState)
 	{
 	case SCR_INTRO:
 		IntroExit();
@@ -105,9 +134,11 @@ void GameExit(void)
 	case SCR_CREDITS:
 		break;
 	case SCR_GAMEPLAY:
+		Level1Exit();
 		break;
 	default:
 		break;
 	}
 	CP_Image_Free(&shield);
+	preGameState = currGameState;
 }

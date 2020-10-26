@@ -134,8 +134,8 @@ void GridInit(GridUnit* grid)//Add starting point
 #endif
 #if 1
 			grid[j * levelHeight + k].collider.shapeType = COL_RECT;								//RECT COLLIDER
-			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH);
-			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT);
+			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_WIDTH / 2);
 			grid[j * levelHeight + k].collider.width = (float)(GRID_UNIT_WIDTH);
 			grid[j * levelHeight + k].collider.height = (float)(GRID_UNIT_HEIGHT);
 #endif
@@ -192,7 +192,7 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 			CP_Settings_Fill(CP_Color_Create(255, 0, 255, 200));	//RECT COLLIDER
 		else
 			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 30));	//RECT 
-		CP_Settings_RectMode(CP_POSITION_CORNER);
+		CP_Settings_RectMode(CP_POSITION_CENTER);
 		CP_Graphics_DrawRect(	
 			grid[i * levelHeight + j].collider.position.x,
 			grid[i * levelHeight + j].collider.position.y,
@@ -238,4 +238,10 @@ void GridUpdate(GridUnit* grid, Collider playerHitBox)
 			GridDraw(grid, i, j, playerHitBox);
 		}
 	}
+}
+
+void GridExit() 
+{
+
+
 }

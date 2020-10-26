@@ -43,3 +43,4 @@ int GetLevelHeight();
 void LoadMapFile(MAP level);
 void GridInit(GridUnit* grid);
 void GridUpdate(GridUnit* grid, Collider playerHitBox);
+void GridExit();
