@@ -60,7 +60,7 @@ void PlayerDraw(Player* player)
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 100));
 		CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 	}
-	else if ()
+	else
 	{
 		//Draw player
 		CP_Settings_Fill(playerColor);

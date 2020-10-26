@@ -20,7 +20,6 @@ typedef struct
 typedef enum
 {
 	WITHPLAYER,
-	CHARGE,
 	MOTION,
 	MOTIONLESS
 } ArrowState;
