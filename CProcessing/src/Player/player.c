@@ -11,6 +11,7 @@ void CreatePlayer(Player* player) //Default Variables
 {
 	//Set player state
 	playerState = STILL;
+	playerArrowState = WITHPLAYER;
 
 	playerColor = CP_Color_Create(255, 255, 255, 255);
 	//sprite = CP_Image_Load(".dioface.png");
@@ -34,13 +35,12 @@ void CreatePlayer(Player* player) //Default Variables
 #endif
 
 	//Player dodge
-	dodgeDistance = CP_System_GetWindowWidth() / 100.0f;
+	dodgeDistance = CP_System_GetWindowWidth() / 80.0f;
 	dodgeTimer = 0.0f;
 	dodgeBlur = 3;
 	player->numDodge = 2;
 
 	//Player Arrow
-	player->playerHasArrow = 1;
 	CreateArrow(&(player->arrow));
 
 }
@@ -57,7 +57,7 @@ void PlayerDraw(Player* player)
 
 	//Draw arrow
 	CP_Settings_Fill(arrowColor);
-	CP_Graphics_DrawRectAdvanced(player->arrow.position.x, player->arrow.position.y, player->arrow.width, player->arrow.width, player->rotation+45.0f, 1);
+	CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation+45.0f, 1);
 	
 	//HitBox
 	
@@ -179,13 +179,13 @@ void PlayerMovement(Player* player)
 #if 1
 	player->hitBox.position = player->position;		//Circle
 #endif
-	player->arrow.position = player->position;
+	player->arrow.currentPosition = player->position;
 	
 }
 
 void MouseTracking(Player* player)
 {
-	mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseX(), CP_Input_GetMouseY()), player->position);
+	mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), player->position);
 	if (mousePositionVector.x < 0)
 	{
 		player->rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, 1.0f)) + 180.0f;
@@ -194,11 +194,6 @@ void MouseTracking(Player* player)
 	{
 		player->rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, -1.0f));
 	}
-	
-	//if (CP_Vector_DotProduct(mousePositionVector, CP_Vector_Set(0.0f, -1.0f)) < 0)
-	//{
-	//	player->rotation += 90.0f;
-	//}
 
 }
 
@@ -226,7 +221,7 @@ void Dodge(Player* player)
 #if 1
 		player->hitBox.position = player->position;		//Circle
 #endif
-		player->arrow.position = player->position;
+		player->arrow.currentPosition = player->position;
 		PlayerDraw(player);
 	}
 }
@@ -246,14 +241,14 @@ void DodgeRecharge(Player* player) //Recharge Dodge
 
 void ArrowTrigger(Player* player)
 {
-	if (player->playerHasArrow == 1)
+	if (playerArrowState == WITHPLAYER)
 	{
 		if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
 		{
 			if (playerState == STILL)
 			{
-				CP_Settings_Fill(CP_Color_Create(0, 0, 255, 100));
-				CP_Graphics_DrawRectAdvanced(player->arrow.position.x, player->arrow.position.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+				CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+				CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 				if (player->arrow.forceTimer <= 30)
 				{
 					player->arrow.forceTimer += CP_System_GetDt() * 10;
@@ -270,13 +265,7 @@ void ArrowTrigger(Player* player)
 			if (playerState == SHOOTING)
 			{
 				PlayerDraw(player);
-				player->arrow.dir.x = CP_Input_GetMouseX() - player->position.x;
-				player->arrow.dir.y = CP_Input_GetMouseY() - player->position.y;
-				player->arrow.force = DEFAULT_FORCE + player->arrow.forceTimer;
-				player->arrow.forceTimer = 0.0f;
-
-				//player->playerHasArrow = 0;
-
+				ArrowRelease(&(player->arrow));
 			}
 		}
 	}
@@ -293,5 +282,5 @@ void PlayerUpdate(Player* player)
 	PlayerMovement(player);
 	Dodge(player);
 	ArrowTrigger(player);
-	ArrowRelease(&(player)->arrow);
+	ArrowPhysics(&(player->arrow));
 }

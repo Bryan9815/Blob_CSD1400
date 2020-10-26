@@ -74,6 +74,8 @@ void GameUpdate(void)
 		break;
 	case SCR_GAMEPLAY:
 		Level1Update(&newPlayer);
+		PlayerUpdate(&newPlayer);
+		//Boss1Battle(newPlayer);
 		break;
 	default:
 		break;
