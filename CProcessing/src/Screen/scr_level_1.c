@@ -17,6 +17,8 @@ void LevelDraw(Player* player)
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
 	GridUpdate(level[0], player->hitBox);
 	PlayerDraw(&newPlayer);
+	AttackNearDraw(&ArmorSlime);
+	AttackFarDraw(&ArmorSlime, newPlayer);
 	Shield1Draw(ArmorSlime);
 	BossDraw(ArmorSlime); //note that boss is drawn after to be on top of shield
 	
