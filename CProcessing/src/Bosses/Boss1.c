@@ -87,7 +87,7 @@ void AttackFarDraw(Boss* armorboss, Player player)
 		float width = CP_Vector_Distance(player.position, armorboss->Position);
 		float rotation;
 		if (player.position.y > armorboss->Position.y)
-			rotation = CP_Vector_Angle(RightDir, ChargeDir); //clockwise rotation of boss from upward dir
+			rotation = CP_Vector_Angle(RightDir, ChargeDir); //clockwise rotation of boss from rightward dir
 		else
 			rotation = 360.f - CP_Vector_Angle(RightDir, ChargeDir); //counterclockwise rotation
 		CP_Color WarningColor = CP_Color_Create(255, 0, 0, 125);
@@ -114,6 +114,8 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	float PlayerDist = CP_Vector_Distance(player.position, currentboss->Position);
 
 	//-Battle starts in idle -> After 6 sec attack once -> Go back to idle -> Stop once defeated
+	if (currentboss->State == IDLE); //timer should only go up when in idle
+		StateTimer++;
 	if (currentboss->Health == 0) //defeat should come first to stop all other functions
 	{
 		currentboss->State = DEFEAT;
@@ -128,10 +130,6 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	{
 		currentboss->State = ATTACK_FAR;
 		StateTimer = 0;
-	}
-	else if (currentboss->State == IDLE); //timer should only go up when in idle
-	{
-		StateTimer++;
 	}
 }
 

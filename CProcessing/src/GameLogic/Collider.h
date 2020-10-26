@@ -21,5 +21,5 @@ typedef struct
 	COL_SHAPE shapeType;	//COLLIDER SHAPE
 
 }Collider;
-
+float COL_Dist(Collider hitBox1, Collider hitBox2);
 bool COL_IsColliding(Collider hitBox1, Collider hitBox2);
