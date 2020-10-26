@@ -19,7 +19,6 @@ typedef struct
 	Collider	hitBox;
 
 	Arrow		arrow;
-	int			playerHasArrow;
 
 } Player;
 

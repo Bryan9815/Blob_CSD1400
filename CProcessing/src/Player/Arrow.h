@@ -6,17 +6,26 @@ CP_Color		arrowColor;
 
 typedef struct
 {
-	CP_Vector	position,
+	CP_Vector	oldPosition,
+				currentPosition,
 				newPosition,
 				dir;
 
 	float		width,
 				forceTimer,
-				force;
-	int			canShoot;
-	int			hasArrow;
+				forceScale;
 
 } Arrow;
 
+typedef enum
+{
+	WITHPLAYER,
+	MOTION,
+	MOTIONLESS
+} ArrowState;
+
+ArrowState  playerArrowState;
+
 void ArrowRelease(Arrow* arrow);
 void CreateArrow(Arrow* arrow);
+void ArrowPhysics(Arrow* arrow);

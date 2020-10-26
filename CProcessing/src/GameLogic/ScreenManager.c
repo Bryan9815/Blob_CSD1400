@@ -79,7 +79,7 @@ void GameUpdate(void)
 		CameraUpdate(&newPlayer.position, &fader);
 		Level1Update(&newPlayer);
 		PlayerUpdate(&newPlayer);
-		Boss1Battle(newPlayer);
+		//Boss1Battle(newPlayer);
 		break;
 	default:
 		break;
