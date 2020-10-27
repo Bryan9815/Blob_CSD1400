@@ -2,6 +2,8 @@
 #include <cprocessing.h>
 #include "../Player/player.h"
 #include "../GameLogic/Collider.h"
+#include "../GameLogic/grid.h"
+#include "../Screen/scr_level_1.h"
 
 //general functions (init, drawing, movement) for all bosses are here
 typedef enum
