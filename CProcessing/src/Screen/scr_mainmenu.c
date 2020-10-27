@@ -47,6 +47,27 @@ void MainMenuDraw(void)
 	}
 }
 
+void MenuButtonActivate()
+{
+	switch (selectButton)
+	{
+	case START:
+		SetGameState(SCR_GAMEPLAY);
+		break;
+	case OPTION:
+		SetGameState(SCR_OPTION);
+		break;
+	case CREDITS:
+		SetGameState(SCR_CREDITS);
+		break;
+	case EXIT:
+		CP_Engine_Terminate();
+		break;
+	default:
+		break;
+	}
+}
+
 void MainMenuUpdate(void)
 {
 	mousePos = CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY());
@@ -65,7 +86,7 @@ void MainMenuUpdate(void)
 		else
 			selectButton++;
 	}
-	// Mouse check
+	// Mouse Input
 	for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
 	{
 		// Mouse x-pos collision check
@@ -75,34 +96,21 @@ void MainMenuUpdate(void)
 			if (mousePos.y >= (menuList[i].posY - menuList[i].height / 2) && mousePos.y <= (menuList[i].posY + menuList[i].height / 2))
 			{
 				selectButton = i;
+				if (CP_Input_MouseDown(MOUSE_BUTTON_1))
+					menuList[selectButton].isSelected = 1;
+				else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+					MenuButtonActivate();
 			}
+			else
+				menuList[selectButton].isSelected = 0;
 		}
+		else
+			menuList[selectButton].isSelected = 0;
 	}
-	if (CP_Input_MouseDown(MOUSE_BUTTON_1))
-		menuList[selectButton].isSelected = 1;
-	else
-		menuList[selectButton].isSelected = 0;
 
-	if (GetBlobInputTriggered(BLOB_INTERACT) || CP_Input_MouseReleased(MOUSE_BUTTON_1))
-	{
-		switch (selectButton)
-		{
-		case START:
-			SetGameState(SCR_GAMEPLAY);
-			break;
-		case OPTION:
-			SetGameState(SCR_OPTION);
-			break;
-		case CREDITS:
-			SetGameState(SCR_CREDITS);
-			break;
-		case EXIT:
-			CP_Engine_Terminate();
-			break;
-		default:
-			break;
-		}
-	}
+	if (GetBlobInputTriggered(BLOB_INTERACT))
+		MenuButtonActivate();
+
 	MainMenuDraw();
 }
 
