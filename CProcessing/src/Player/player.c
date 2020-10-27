@@ -20,7 +20,7 @@ void CreatePlayer(Player* player) //Default Variables
 
 	//Player Stats and Position
 	player->health = 1;
-	player->radius = CP_System_GetWindowWidth() / 20.0f;
+	player->radius = CP_System_GetWindowWidth() / 40.0f;
 	player->rotation = 0.0f;
 	player->position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
 	player->vel = CP_Vector_Set(0, -1);
@@ -236,8 +236,15 @@ void Dodge(Player* player)
 			dodgeBlur = 3;
 			playerState = STILL;
 		}
-		player->position.x += player->vel.x * (PLAYER_SPEED * (dodgeDistance / 4));
-		player->position.y += player->vel.y * (PLAYER_SPEED * (dodgeDistance / 4));
+		player->vel.x = player->vel.x * (PLAYER_SPEED * (dodgeDistance / 4));
+		player->vel.y = player->vel.y * (PLAYER_SPEED * (dodgeDistance / 4));
+
+		CollisionCheck(&newPlayer, level[0]);
+
+		player->position.x += player->vel.x;
+		player->position.y += player->vel.y;
+		player->hitBox.position = player->position;
+
 		//HitBox
 #if 0
 		player->hitBox.position = CP_Vector_Set(player->position.x - player->width / 2, player->position.y - player->width / 2);	//RECT
