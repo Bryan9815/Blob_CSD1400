@@ -15,6 +15,7 @@ typedef enum {
 CP_Color bgColor;
 Button menuList[MAIN_MENU_BUTTONS];
 int selectButton;
+CP_Vector mousePos;
 
 void MainMenuInit(void)
 {
@@ -37,7 +38,9 @@ void MainMenuDraw(void)
 	// Draw Buttons
 	for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
 	{
-		if (selectButton == i)
+		if(menuList[i].isSelected == 1)
+			DrawButton(menuList[i], 48.f, 1.1f, CP_Color_Create(0, 255, 0, 255));
+		else if (selectButton == i)
 			DrawButton(menuList[i], 48.f, 1.f, CP_Color_Create(0, 255, 0, 255));
 		else
 			DrawButton(menuList[i], 48.f, 1.f, CP_Color_Create(255,255,255,255));
@@ -46,6 +49,7 @@ void MainMenuDraw(void)
 
 void MainMenuUpdate(void)
 {
+	mousePos = CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY());
 	// Input
 	if (GetBlobInputTriggered(BLOB_UP))
 	{
@@ -61,7 +65,25 @@ void MainMenuUpdate(void)
 		else
 			selectButton++;
 	}
-	if (GetBlobInputTriggered(BLOB_INTERACT))
+	// Mouse check
+	for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
+	{
+		// Mouse x-pos collision check
+		if (mousePos.x >= (menuList[i].posX - menuList[i].width / 2) && mousePos.x <= (menuList[i].posX + menuList[i].width / 2))
+		{
+			// Mouse y-pos collision check	
+			if (mousePos.y >= (menuList[i].posY - menuList[i].height / 2) && mousePos.y <= (menuList[i].posY + menuList[i].height / 2))
+			{
+				selectButton = i;
+			}
+		}
+	}
+	if (CP_Input_MouseDown(MOUSE_BUTTON_1))
+		menuList[selectButton].isSelected = 1;
+	else
+		menuList[selectButton].isSelected = 0;
+
+	if (GetBlobInputTriggered(BLOB_INTERACT) || CP_Input_MouseReleased(MOUSE_BUTTON_1))
 	{
 		switch (selectButton)
 		{
