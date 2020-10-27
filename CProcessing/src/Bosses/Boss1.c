@@ -2,8 +2,9 @@
 #include "Boss.h"
 #include "../Player/player.h"
 #include "Boss1.h"
+#include "../GameLogic/grid.h"
 
-float BossRange = 350.f;
+float BossRange = 200.f;
 
 void Shield1Draw(Boss armorboss) //draws shield for boss 1
 {
@@ -11,7 +12,7 @@ void Shield1Draw(Boss armorboss) //draws shield for boss 1
 	CP_Image_DrawAdvanced(shield, armorboss.Position.x, armorboss.Position.y, 270.f, 270.f, 255, armorboss.Rotation);
 }
 
-void AttackNear(Boss* armorboss) //attacks a radius around boss
+void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 {
 	static int AttackTimer = 0;
 	if (AttackTimer <= (2 * CP_System_GetFrameRate())) //warning for 2 sec before attack
@@ -21,13 +22,16 @@ void AttackNear(Boss* armorboss) //attacks a radius around boss
 	}
 	else if (AttackTimer >= (2 * CP_System_GetFrameRate()) && AttackTimer <= (3 * CP_System_GetFrameRate())) // attack after 2 sec, animation 1 sec
 	{
-		//hitbox code is here
 		NearAttack = ATTACK;
+		armorboss->Hitbox.radius = BossRange; //set hitbox for attack
+		if (COL_IsColliding(armorboss->Hitbox, player->hitBox)) //check if player is hit by attack
+			player->health--;
 		AttackTimer++;
 	}
 	else //attack finished
 	{
 		NearAttack = NOT_ATTACK;
+		armorboss->Hitbox.radius = armorboss->Radius; //reset hitbox
 		AttackTimer = 0; //reset timer after attack
 		armorboss->State = IDLE; //change back to idle state
 	}
@@ -39,21 +43,21 @@ void AttackNearDraw(Boss* armorboss)
 	{
 		CP_Color WarningColor = CP_Color_Create(255, 0, 0, 125);
 		CP_Settings_Fill(WarningColor);
-		CP_Graphics_DrawCircle(armorboss->Position.x, armorboss->Position.y, BossRange);
+		CP_Graphics_DrawCircle(armorboss->Position.x, armorboss->Position.y, (BossRange*2));
 	}
 	else if (NearAttack == ATTACK)
 	{
 		CP_Color AttackColor = CP_Color_Create(0, 0, 0, 255);
 		CP_Settings_Fill(AttackColor);
-		CP_Graphics_DrawCircle(armorboss->Position.x, armorboss->Position.y, BossRange);
+		CP_Graphics_DrawCircle(armorboss->Position.x, armorboss->Position.y, (BossRange*2));
 	}
 }
 
 
-void AttackCharge(Player player, Boss* armorboss) //boss charges at player
+void AttackCharge(Player *player, Boss* armorboss/*, GridUnit *grid*/) //boss charges at player
 {
 	//timing and balance later
-	CP_Vector TargetPos = player.position; //get player's position (implement only getting it ONCE)
+	CP_Vector TargetPos = player->position; //get player's position (implement only getting it ONCE)
 	CP_Vector ChargeDir = CP_Vector_Subtract(TargetPos, armorboss->Position); //vector to player
 	static int AttackTimer = 0;
 	if (AttackTimer <= (2 * CP_System_GetFrameRate()))
@@ -69,12 +73,19 @@ void AttackCharge(Player player, Boss* armorboss) //boss charges at player
 		armorboss->Position = CP_Vector_Add(armorboss->Position, ChargeAttack); //update boss position
 
 		CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
-		if (player.position.x < armorboss->Position.x)
+		if (player->position.x < armorboss->Position.x)
 			armorboss->Rotation = CP_Vector_Angle(UpDir, DirVector); //clockwise rotation of boss from upward dir
 		else
 			armorboss->Rotation = 360.f - CP_Vector_Angle(UpDir, DirVector); //counterclockwise rotation
-		//armorboss.State = STUNNED; //stunned if collide with wall
-		//armorboss.State = IDLE; //revert to idle if not
+
+		if (COL_IsColliding(armorboss->Hitbox, player->hitBox)) //if boss runs into player
+			player->health--;
+
+		/*for (int i = 0; i < GRID_SIZE; i++)
+		{
+			if (COL_IsColliding(armorboss->Hitbox, grid[i].collider))
+				armorboss->State = STUNNED;
+		}*/
 	}
 }
 
@@ -87,7 +98,7 @@ void AttackFarDraw(Boss* armorboss, Player player)
 		float width = CP_Vector_Distance(player.position, armorboss->Position);
 		float rotation;
 		if (player.position.y > armorboss->Position.y)
-			rotation = CP_Vector_Angle(RightDir, ChargeDir); //clockwise rotation of boss from upward dir
+			rotation = CP_Vector_Angle(RightDir, ChargeDir); //clockwise rotation of boss from rightward dir
 		else
 			rotation = 360.f - CP_Vector_Angle(RightDir, ChargeDir); //counterclockwise rotation
 		CP_Color WarningColor = CP_Color_Create(255, 0, 0, 125);
@@ -114,24 +125,22 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	float PlayerDist = CP_Vector_Distance(player.position, currentboss->Position);
 
 	//-Battle starts in idle -> After 6 sec attack once -> Go back to idle -> Stop once defeated
+	if (currentboss->State == IDLE); //timer should only go up when in idle
+		StateTimer++;
 	if (currentboss->Health == 0) //defeat should come first to stop all other functions
 	{
 		currentboss->State = DEFEAT;
 		StateTimer = 0;
 	}
-	else if (StateTimer >= (6 * CP_System_GetFrameRate()) && PlayerDist <= BossRange) //if player is within distance after 6 sec
+	else if (StateTimer >= (6 * CP_System_GetFrameRate()) && PlayerDist <= (BossRange * 2)) //if player is within distance after 6 sec
 	{
 		currentboss->State = ATTACK_NEAR;
 		StateTimer = 0;
 	}
-	else if (StateTimer >= (6 * CP_System_GetFrameRate()) && PlayerDist > BossRange) //if player is beyond distance after 6 sec
+	else if (StateTimer >= (6 * CP_System_GetFrameRate()) && PlayerDist > (BossRange * 2)) //if player is beyond distance after 6 sec
 	{
 		currentboss->State = ATTACK_FAR;
 		StateTimer = 0;
-	}
-	else if (currentboss->State == IDLE); //timer should only go up when in idle
-	{
-		StateTimer++;
 	}
 }
 
@@ -145,10 +154,10 @@ void BossAction(Player player) //determines the boss actions, only one should be
 		BossMovement(&ArmorSlime, player); //boss should only be walking in idle
 		break;
 	case ATTACK_NEAR:
-		AttackNear(&ArmorSlime); //boss does close range attack
+		AttackNear(&ArmorSlime, &newPlayer); //boss does close range attack
 		break;
 	case ATTACK_FAR:
-		AttackCharge(player, &ArmorSlime); //boss charge
+		AttackCharge(&player, &ArmorSlime); //boss charge
 		break;
 	case STUNNED:
 		StunTimer(ArmorSlime);
