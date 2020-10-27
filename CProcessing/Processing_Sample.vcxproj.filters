@@ -90,6 +90,9 @@
     <ClCompile Include="src\GameLogic\SaveLoad.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="src\GameLogic\Collision.c">
+      <Filter>src\GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -141,6 +144,9 @@
       <Filter>src\Screens</Filter>
     </ClInclude>
     <ClInclude Include="src\GameLogic\SaveLoad.h">
+      <Filter>src\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameLogic\Collision.h">
       <Filter>src\GameLogic</Filter>
     </ClInclude>
   </ItemGroup>

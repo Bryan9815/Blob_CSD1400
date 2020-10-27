@@ -27,12 +27,12 @@ int GetLevelHeight()//Make error code
 	return levelHeight;
 }
 
-void LoadMapFile (MAP level)	//Call Load before Rendering Map
+void LoadMapFile (MAP _level)	//Call Load before Rendering Map
 {
 	FILE* fp;
 
 	char fileName[40];
-	sprintf_s(fileName, 40, "././Assets/Level/Level%d.txt", (int)level);
+	sprintf_s(fileName, 40, "././Assets/Level/Level%d.txt", (int)_level);
 
 	errno_t err = fopen_s(&fp, fileName, "rt");
 	int i = 0, w = 0, h = 1, finalWidth = 0;

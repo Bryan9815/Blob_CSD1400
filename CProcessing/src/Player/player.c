@@ -2,6 +2,8 @@
 #include <cprocessing.h>
 #include "player.h"
 #include "../GameLogic/BlobInput.h"
+#include "../GameLogic/Collision.h"
+#include "../GameLogic/grid.h"
 
 
 
@@ -102,20 +104,14 @@ void PlayerMovement(Player* player)
 	if (playerState != DODGING)
 	{
 		playerState = STILL;
-		if (CP_Input_KeyTriggered(KEY_SPACE) && (player->numDodge > 0))
-		{
-			playerState = DODGING;
-
-			player->numDodge -= 1;
-
-		}
+		player->vel = CP_Vector_Set(0, 0);
 		//else if (CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_A))
-		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
+		if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(-1, -1);
-			player->position.x += (player->vel.x * PLAYER_SPEED);
-			player->position.y += (player->vel.y * PLAYER_SPEED);
+			//player->position.x += (player->vel.x * PLAYER_SPEED);
+			//player->position.y += (player->vel.y * PLAYER_SPEED);
 			//player->rotation = -45.0f;
 		}
 		//else if ((CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_D)))
@@ -123,8 +119,8 @@ void PlayerMovement(Player* player)
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(1, -1);
-			player->position.x += (player->vel.x * PLAYER_SPEED);
-			player->position.y += (player->vel.y * PLAYER_SPEED);
+			//player->position.x += (player->vel.x * PLAYER_SPEED);
+			//player->position.y += (player->vel.y * PLAYER_SPEED);
 			//player->rotation = 45.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_W))
@@ -132,8 +128,8 @@ void PlayerMovement(Player* player)
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(0, -1);
-			player->position.x += (player->vel.x * PLAYER_SPEED);
-			player->position.y += (player->vel.y * PLAYER_SPEED);
+			//player->position.x += (player->vel.x * PLAYER_SPEED);
+			//player->position.y += (player->vel.y * PLAYER_SPEED);
 			//player->rotation = 0.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_D))
@@ -141,8 +137,8 @@ void PlayerMovement(Player* player)
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(1, 1);
-			player->position.x += (player->vel.x * PLAYER_SPEED);
-			player->position.y += (player->vel.y * PLAYER_SPEED);
+			//player->position.x += (player->vel.x * PLAYER_SPEED);
+			//player->position.y += (player->vel.y * PLAYER_SPEED);
 			//player->rotation = 135.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_A))
@@ -150,8 +146,8 @@ void PlayerMovement(Player* player)
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(-1, 1);
-			player->position.x += (player->vel.x * PLAYER_SPEED);
-			player->position.y += (player->vel.y * PLAYER_SPEED);
+			//player->position.x += (player->vel.x * PLAYER_SPEED);
+			//player->position.y += (player->vel.y * PLAYER_SPEED);
 			//player->rotation = 225.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S))
@@ -159,8 +155,8 @@ void PlayerMovement(Player* player)
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(0, 1);
-			player->position.x += (player->vel.x * PLAYER_SPEED);
-			player->position.y += (player->vel.y * PLAYER_SPEED);
+			//player->position.x += (player->vel.x * PLAYER_SPEED);
+			//player->position.y += (player->vel.y * PLAYER_SPEED);
 			//player->rotation = 180.0f;
 		}
 
@@ -169,8 +165,8 @@ void PlayerMovement(Player* player)
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(-1, 0);
-			player->position.x += (player->vel.x * PLAYER_SPEED);
-			player->position.y += (player->vel.y * PLAYER_SPEED);
+			//player->position.x += (player->vel.x * PLAYER_SPEED);
+			//player->position.y += (player->vel.y * PLAYER_SPEED);
 			//player->rotation = -90.0f;
 		}
 
@@ -179,18 +175,33 @@ void PlayerMovement(Player* player)
 		{
 			playerState = MOVING;
 			player->vel = CP_Vector_Set(1, 0);
-			player->position.x += (player->vel.x * PLAYER_SPEED);
-			player->position.y += (player->vel.y * PLAYER_SPEED);
+			//player->position.x += (player->vel.x * PLAYER_SPEED);
+			//player->position.y += (player->vel.y * PLAYER_SPEED);
 			//player->rotation = 90.0f;
+		}
+
+		if (CP_Input_KeyTriggered(KEY_SPACE) && playerState != STILL && (player->numDodge > 0))
+		{
+			playerState = DODGING;
+
+			player->numDodge -= 1;
+
 		}
 		
 	}
-	//HitBox
+	player->vel.x = (player->vel.x * PLAYER_SPEED);
+	player->vel.y = (player->vel.y * PLAYER_SPEED);
+
+	CollisionCheck(&newPlayer, level[0]);
+	
+	player->position.x += player->vel.x;
+	player->position.y += player->vel.y;
+	player->hitBox.position = player->position;		//Circle
 #if 0
 	player->hitBox.position = CP_Vector_Set(player->position.x - player->width / 2, player->position.y - player->width / 2);	//RECT
 #endif
 #if 1
-	player->hitBox.position = player->position;		//Circle
+	
 #endif
 	player->arrow.currentPosition = player->position;
 	
