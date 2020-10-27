@@ -4,6 +4,8 @@
 #include "BlobInput.h"
 #include "grid.h"
 #include "../Player/player.h"
+#include "../Bosses/Boss.h"
+#include "../Bosses/Boss1.h"
 
 typedef enum GameState 
 {

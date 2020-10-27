@@ -5,9 +5,9 @@
 #include "../Screen/scr_options.h"
 #include "../Screen/scr_credits.h"
 #include "../Screen/scr_level_1.h"
-#include "../Bosses/Boss.h"
-#include "../Bosses/Boss1.h"
 
+
+GameState preGameState = SCR_INTRO; //For Unloading
 GameState currGameState = SCR_INTRO;
 Fader fader;
 
@@ -41,10 +41,7 @@ void GameInit(void)
 		break;
 	case SCR_GAMEPLAY:
 		Level1Init();
-		CreatePlayer(&newPlayer);
-		CameraInit(&newPlayer.position);
-		BossInit(&ArmorSlime, 1, 250.f);
-		shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
+		
 		break;
 	default:
 		break;
@@ -76,10 +73,9 @@ void GameUpdate(void)
 		CreditsUpdate();
 		break;
 	case SCR_GAMEPLAY:
-		CameraUpdate(&newPlayer.position, &fader);
 		Level1Update(&newPlayer);
 		PlayerUpdate(&newPlayer);
-		Boss1Battle(newPlayer);
+		//Boss1Battle(newPlayer);
 		break;
 	default:
 		break;
@@ -91,7 +87,7 @@ void GameUpdate(void)
 
 void GameExit(void)
 {
-	switch (currGameState)
+	switch (preGameState)
 	{
 	case SCR_INTRO:
 		IntroExit();
@@ -105,9 +101,11 @@ void GameExit(void)
 	case SCR_CREDITS:
 		break;
 	case SCR_GAMEPLAY:
+		Level1Exit();
 		break;
 	default:
 		break;
 	}
 	CP_Image_Free(&shield);
+	preGameState = currGameState;
 }

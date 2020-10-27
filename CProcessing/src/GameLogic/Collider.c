@@ -15,9 +15,9 @@ bool Circle_RectCollision(Collider circle, Collider rect) //Check for collision 
 			nearestY = circle.position.y;
 
 	if (circle.position.x < rect.position.x - rect.width / 2)					nearestX = rect.position.x - rect.width / 2;							//Left Edge
-	else if (circle.position.x > rect.position.x + rect.width / 2)				nearestX = rect.position.x + rect.width / 2;			//Right Edge
+	else if (circle.position.x > rect.position.x + rect.width / 2)  nearestX = rect.position.x + rect.width / 2;			//Right Edge
 	if (circle.position.y < rect.position.y - rect.height / 2)					nearestY = rect.position.y - rect.height / 2;							//Top Edge
-	else if (circle.position.y > rect.position.y + rect.height /2)				nearestY = rect.position.y + rect.height / 2;			//Bottom
+	else if (circle.position.y > rect.position.y + rect.height / 2) nearestY = rect.position.y + rect.height / 2;			//Bottom
 
 	//Get Distance from closest Edge
 	/*float distX = circle.position.x - nearestX,
@@ -52,7 +52,7 @@ bool COL_IsColliding (Collider hitBox1, Collider hitBox2) //Collsion checking be
 		{
 			col = (hitBox1.position.x - hitBox1.width / 2 < hitBox2.position.x + hitBox2.width / 2 &&
 				hitBox1.position.x + hitBox1.width / 2 > hitBox2.position.x - hitBox2.width / 2 &&
-				hitBox1.position.y - hitBox1.height / 2 < hitBox2.position.y + hitBox2.height /2 &&
+				hitBox1.position.y - hitBox1.height / 2 < hitBox2.position.y + hitBox2.height / 2 &&
 				hitBox1.position.y + hitBox1.height / 2 > hitBox2.position.y - hitBox2.height / 2)
 				? true : false;
 		}

@@ -17,6 +17,21 @@ int customInputX, customInputY;
 int changingInput;
 Button customInputMenu[BLOB_PAUSE+2][4];
 
+void CustomInputButtonsInit(void)
+{
+	for (int i = 0; i <= BLOB_PAUSE; i++)
+	{
+		customInputMenu[i][0] = CreateButton((float)CP_System_GetWindowWidth() / 6, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobInputName(i));
+		customInputMenu[i][0].objColor = WHITE;
+		for (int j = 1; j <= 3; j++)
+		{
+			customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 6 + 350.f * j, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
+			customInputMenu[i][j].isSelected = 0;
+			customInputMenu[i][j].objColor = WHITE;
+		}
+	}
+}
+
 void OptionsInit(void)
 {
 	selectButton = 0;
@@ -34,17 +49,7 @@ void OptionsInit(void)
 	optionList[CONTROLS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Controls");
 	optionList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 500.f, 50.f, "Return to Main Menu");
 
-	for (int i = 0; i < BLOB_PAUSE+1; i++)
-	{
-		customInputMenu[i][0] = CreateButton((float)CP_System_GetWindowWidth()/6, (float)CP_System_GetWindowHeight()/8 + 75.f * i, 250.f, 50.f, GetBlobInputName(i));
-		customInputMenu[i][0].objColor = WHITE;
-		for (int j = 1; j < 4; j++)
-		{
-			customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 6 + 350.f * j, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
-			customInputMenu[i][j].isSelected = 0;
-			customInputMenu[i][j].objColor = WHITE;
-		}
-	}
+	CustomInputButtonsInit();
 	customInputMenu[6][0] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 8 + 75 * 8, 250.f, 100.f, "Exit");
 	customInputMenu[6][0].objColor = WHITE;
 }
@@ -445,9 +450,7 @@ void OptionsInput(void)
 			if (getInput() != 0)
 			{
 				EditBlobInput(customInputY, customInputX - 1, getInput());
-				customInputMenu[customInputY][customInputX].text = GetBlobKeyName(customInputY, customInputX - 1);
-				customInputMenu[customInputY][customInputX].isSelected = 0;
-				customInputMenu[customInputY][customInputX].objColor = WHITE;
+				CustomInputButtonsInit();
 				changingInput = 0;
 			}
 		}

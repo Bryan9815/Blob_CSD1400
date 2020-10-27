@@ -50,5 +50,5 @@ void IntroUpdate(void)
 
 void IntroExit(void)
 {
-
+	CP_Image_Free(&splashLogo);
 }

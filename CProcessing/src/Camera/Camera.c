@@ -1,10 +1,12 @@
 #include <cprocessing.h>
 #include "../GameLogic/BlobInput.h"
 #include "Camera.h"
+#include <stdio.h>
 
-static CP_Vector currentPosition, centerOffset;
+static CP_Vector currentPosition, cameraPos, cameraOffset, cameraVelocity;
 float centerX;
 float centerY;
+float cameraOffsetDist;
 
 static CP_Matrix scaleMatrix, rotationMatrix, translationMatrix;
 float shakeTimer, shakeValue;
@@ -13,9 +15,10 @@ void CameraInit(CP_Vector *charPos)
 {
 	centerX = CP_System_GetWindowWidth() / 2.0f;
 	centerY = CP_System_GetWindowHeight() / 2.0f;
-	centerOffset = CP_Vector_Set(centerX, centerY);
 	currentPosition = CP_Vector_Set(charPos->x - centerX, charPos->y - centerY);
+	cameraPos = CP_Vector_Set(charPos->x - centerX, charPos->y - centerY);
 	translationMatrix = CP_Matrix_Translate(currentPosition);
+	cameraVelocity = CP_Vector_Set(1, 1);
 	shakeTimer = 0;
 	shakeValue = 15;
 }
@@ -32,7 +35,12 @@ void CameraUpdate(CP_Vector* charPos, Fader* fader)
 	if (shakeTimer <= 0)
 	{
 		currentPosition = CP_Vector_Set(-(charPos->x - centerX), -(charPos->y - centerY));
-		translationMatrix = CP_Matrix_Translate(currentPosition);
+		cameraOffset = CP_Vector_Subtract(currentPosition, cameraPos);
+		cameraOffsetDist = CP_Vector_Distance(currentPosition, cameraPos);
+		
+		cameraPos.x += cameraOffset.x * dt * 2;
+		cameraPos.y += cameraOffset.y * dt * 2.5f;
+		translationMatrix = CP_Matrix_Translate(cameraPos);
 		/*if (CP_Input_KeyTriggered(KEY_R)) // Screen Shake test
 			ScreenShake(0.5f, 15.0f);*/
 	}
@@ -43,8 +51,8 @@ void CameraUpdate(CP_Vector* charPos, Fader* fader)
 		shakeTimer -= dt;
 	}
 
-	fader->fadePosX = -currentPosition.x;
-	fader->fadePosY = -currentPosition.y;
+	fader->fadePosX = -cameraPos.x;
+	fader->fadePosY = -cameraPos.y;
 	CP_Settings_ApplyMatrix(translationMatrix);
 }
 

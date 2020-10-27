@@ -139,8 +139,9 @@ void GridInit(GridUnit* grid)//Add starting point
 #endif
 #if 1
 			grid[j * levelHeight + k].collider.shapeType = COL_RECT;								//RECT COLLIDER
-			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + (GRID_UNIT_WIDTH / 2));
-			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT + (GRID_UNIT_HEIGHT / 2));
+
+			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_WIDTH / 2);
 			grid[j * levelHeight + k].collider.width = (float)(GRID_UNIT_WIDTH);
 			grid[j * levelHeight + k].collider.height = (float)(GRID_UNIT_HEIGHT);
 #endif
@@ -164,9 +165,11 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 	switch (grid[i * levelHeight + j].gridType)
 	{
 	case GE_FlOOR:
+
 		CP_Settings_ImageMode(CP_POSITION_CENTER);
 		CP_Image_Draw(
 			tile1,
+
 			(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
 			(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
 			GRID_UNIT_WIDTH,
@@ -244,4 +247,10 @@ void GridUpdate(GridUnit* grid, Collider playerHitBox)
 			GridDraw(grid, i, j, playerHitBox);
 		}
 	}
+}
+
+void GridExit() 
+{
+
+
 }
