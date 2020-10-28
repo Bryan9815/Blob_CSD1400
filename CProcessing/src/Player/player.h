@@ -2,6 +2,7 @@
 #include <cprocessing.h>
 #include "Arrow.h"
 #include "../GameLogic/Collider.h"
+#include "../GameLogic/grid.h"
 
 #define PLAYER_SPEED	5.0f
 #define DODGE_COOLDOWN	4	//Seconds
@@ -13,7 +14,8 @@ typedef struct
 	float		radius,
 				rotation;
 	CP_Vector	position;	//Position of player
-	CP_Vector   vel;		//direction/velocity
+	CP_Vector   vel;		//velocity
+	CP_Vector	dir;
 
 	int			numDodge;	// number of dodges
 	Collider	hitBox;
@@ -58,3 +60,7 @@ void DodgeRecharge(Player* player);
 
 void ArrowTrigger(Player* player);
 void ArrowStateChange(Player* player, Arrow* arrow);
+
+#if 1
+void DisplayScore(float score);
+#endif

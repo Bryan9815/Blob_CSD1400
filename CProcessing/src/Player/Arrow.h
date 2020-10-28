@@ -1,4 +1,5 @@
 #include <cprocessing.h>
+#include "../GameLogic/Collider.h"
 
 #define DEFAULT_FORCE 50.0f
 
@@ -9,11 +10,14 @@ typedef struct
 	CP_Vector	oldPosition,
 				currentPosition,
 				newPosition,
-				dir;
+				dir,
+				normalizedDir;
 
-	float		width,
+	float		radius,
 				chargeTimer,
 				chargeScale;
+
+	Collider	hitBox;
 
 	int			charging;
 
@@ -28,6 +32,7 @@ typedef enum
 } ArrowState;
 
 ArrowState  playerArrowState;
+float 	travelTimer, travelDistance;
 
 void CreateArrow(Arrow* arrow);
 void CalculateNewPosition(Arrow* arrow);
