@@ -185,12 +185,17 @@ void PlayerMovement(Player* player)
 			playerState = DODGING;
 
 			player->numDodge -= 1;
-
+			player->vel.x = player->vel.x * (PLAYER_SPEED * (dodgeDistance / 4));
+			player->vel.y = player->vel.y * (PLAYER_SPEED * (dodgeDistance / 4));
 		}
-		
+		else if (playerState != DODGING)
+		{
+			player->vel.x = (player->vel.x * PLAYER_SPEED);
+			player->vel.y = (player->vel.y * PLAYER_SPEED);
+		}
+
 	}
-	player->vel.x = (player->vel.x * PLAYER_SPEED);
-	player->vel.y = (player->vel.y * PLAYER_SPEED);
+	Dodge(player);
 
 	CollisionCheck(&newPlayer, level[0]);
 	
@@ -236,14 +241,7 @@ void Dodge(Player* player)
 			dodgeBlur = 3;
 			playerState = STILL;
 		}
-		player->vel.x = player->vel.x * (PLAYER_SPEED * (dodgeDistance / 4));
-		player->vel.y = player->vel.y * (PLAYER_SPEED * (dodgeDistance / 4));
-
-		CollisionCheck(&newPlayer, level[0]);
-
-		player->position.x += player->vel.x;
-		player->position.y += player->vel.y;
-		player->hitBox.position = player->position;
+		
 
 		//HitBox
 #if 0
@@ -309,7 +307,7 @@ void PlayerInit(void)
 void PlayerUpdate(Player* player)
 {
 	PlayerMovement(player);
-	Dodge(player);
+	//Dodge(player);
 	ArrowTrigger(player);
 	ArrowPhysics(&(player->arrow));
 }
