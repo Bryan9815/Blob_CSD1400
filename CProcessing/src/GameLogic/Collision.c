@@ -53,7 +53,7 @@ void CollisionCheck(Player* player, GridUnit* _level)
 			}
 
 			//TOUCH CEILING
-			if (	_level[i * GetLevelHeight() + j].gridType == GE_WALL &&
+			if (	_level[i * GetLevelHeight() + j].gridType == GE_WALL																								&&
 					(Col_PointRect(player->hitBox.position.x, player->hitBox.position.y - player->hitBox.radius + player->vel.y, wallCol)								|| 
 					Col_PointRect(player->hitBox.position.x + player->hitBox.radius - 1, player->hitBox.position.y - player->hitBox.radius + player->vel.y, wallCol)	||		//Point Collision
 					Col_PointRect(player->hitBox.position.x - player->hitBox.radius + 1, player->hitBox.position.y - player->hitBox.radius + player->vel.y, wallCol))	&& 

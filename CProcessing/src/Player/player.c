@@ -248,7 +248,7 @@ void Dodge(Player* player)
 		player->hitBox.position = CP_Vector_Set(player->position.x - player->width / 2, player->position.y - player->width / 2);	//RECT
 #endif
 #if 1
-		player->hitBox.position = player->position;		//Circle
+		//player->hitBox.position = player->position;		//Circle
 #endif
 		player->arrow.currentPosition = player->position;
 	}
