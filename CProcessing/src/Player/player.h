@@ -15,7 +15,6 @@ typedef struct
 				rotation;
 	CP_Vector	position;	//Position of player
 	CP_Vector   vel;		//velocity
-	CP_Vector	dir;
 
 	int			numDodge;	// number of dodges
 	Collider	hitBox;

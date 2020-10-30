@@ -195,8 +195,8 @@ void PlayerMovement(Player* player)
 			playerState = DODGING;
 
 			player->numDodge -= 1;
-			player->vel.x = player->vel.x * (PLAYER_SPEED * (dodgeDistance / 4));
-			player->vel.y = player->vel.y * (PLAYER_SPEED * (dodgeDistance / 4));
+			player->vel.x = player->vel.x * (PLAYER_SPEED * (dodgeDistance / 20));
+			player->vel.y = player->vel.y * (PLAYER_SPEED * (dodgeDistance / 20));
 		}
 		else if (playerState != DODGING)
 		{
@@ -363,8 +363,7 @@ void PlayerUpdate(Player* player)
 {
 	PlayerMovement(player);
 	//Dodge(player);
+	//Dodge(player);
 	ArrowStateChange(player, &(player->arrow));
 	ArrowTrigger(player);
-	DisplayScore(travelTimer);
-	DisplayScore(travelTimer);
 }
