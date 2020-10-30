@@ -126,8 +126,10 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	float PlayerDist = CP_Vector_Distance(player.position, currentboss->Position);
 
 	//-Battle starts in idle -> After 6 sec attack once -> Go back to idle -> Stop once defeated
-	if (currentboss->State == IDLE); //timer should only go up when in idle
+	if (currentboss->State == IDLE) //timer should only go up when in idle
+	{
 		StateTimer++;
+	}
 	if (currentboss->Health == 0) //defeat should come first to stop all other functions
 	{
 		currentboss->State = DEFEAT;

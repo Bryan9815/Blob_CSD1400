@@ -30,25 +30,26 @@ void BossMovement(Boss* currentboss, Player player/*, GridUnit *grid*/) //boss s
 		CP_Vector MoveDir = CP_Vector_Subtract(player.position, currentboss->Position);
 		CP_Vector DirVector = CP_Vector_Normalize(MoveDir); //normalise for direction vector
 		float distance = currentboss->Speed * CP_System_GetDt();
-		/*for (int i = 0; i < GRID_SIZE; i++)
-		{
-			if (COL_IsColliding(currentboss->Hitbox, grid[i].collider))
-			{
-				
-			}
-		}*/
+		CP_Vector Movement;
 		
 		if (COL_Dist(currentboss->Hitbox, player.hitBox) >= (currentboss->Radius + player.radius + distance)) //boss destination does not overlap with player
 		{
-			CP_Vector Movement = CP_Vector_Scale(DirVector, distance); //scale direction vector with speed over dt
-			currentboss->Hitbox.position = currentboss->Position = CP_Vector_Add(Movement, currentboss->Position); //update position
+			Movement = CP_Vector_Scale(DirVector, distance); //scale direction vector with speed over dt
 		}
 		else
 		{
 			distance = COL_Dist(currentboss->Hitbox, player.hitBox) - (currentboss->Radius + player.radius); //find distance from player
-			CP_Vector Movement = CP_Vector_Scale(DirVector, distance); //scale direction vector with remaining distance
-			currentboss->Hitbox.position = currentboss->Position = CP_Vector_Add(Movement, currentboss->Position); //update position
+			Movement = CP_Vector_Scale(DirVector, distance); //scale direction vector with remaining distance
+			
 		}
+		/*for (int i = 0; i < GRID_SIZE; i++)
+		{
+			if (COL_IsColliding(currentboss->Hitbox, grid[i].collider))
+			{
+				COL_Dist
+			}
+		}*/
+		currentboss->Hitbox.position = currentboss->Position = CP_Vector_Add(Movement, currentboss->Position); //update position
 		CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
 		
 		if (player.position.x < currentboss->Position.x)
