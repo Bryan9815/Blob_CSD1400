@@ -1,6 +1,7 @@
 #include "../GameLogic/ScreenManager.h"
+#include "scr_level_1.h"
 
-GridUnit level[GRID_WIDTH][GRID_HEIGHT];
+
 
 void Level1Init(void) 
 {

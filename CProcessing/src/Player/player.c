@@ -2,6 +2,8 @@
 #include <cprocessing.h>
 #include "player.h"
 #include "../GameLogic/BlobInput.h"
+#include "../GameLogic/Collision.h"
+#include "../GameLogic/grid.h"
 
 
 CP_Color backgroundColour;
@@ -17,7 +19,7 @@ void CreatePlayer(Player* player) //Default Variables
 
 	//Player Stats and Position
 	player->health = 1;
-	player->radius = CP_System_GetWindowWidth() / 20.0f;
+	player->radius = CP_System_GetWindowWidth() / 40.0f;
 	player->rotation = 0.0f;
 	player->position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
 	//player->position = CP_Vector_Set((float)GetLevelWidth()*GRID_UNIT_WIDTH, (float)GetLevelHeight()*GRID_UNIT_HEIGHT);
@@ -120,63 +122,53 @@ void PlayerMovement(Player* player)
 	if (playerState != DODGING)
 	{
 		playerState = STILL;
-		if (CP_Input_KeyTriggered(KEY_SPACE) && (player->numDodge > 0))
-		{
-			playerState = DODGING;
-
-			player->numDodge -= 1;
-
-		}
+		player->vel = CP_Vector_Set(0, 0);
 		////else if (CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_A))
-		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
+		if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
-			player->dir = CP_Vector_Set(-1, -1);
+			player->vel = CP_Vector_Set(-1, -1);
+
 			//player->rotation = -45.0f;
 		}
 		////else if ((CP_Input_KeyDown(KEY_W) && CP_Input_KeyDown(KEY_D)))
 		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
-			player->dir = CP_Vector_Set(1, -1);
-			//player->position.x += (player->vel.x * PLAYER_SPEED);
-			//player->position.y += (player->vel.y * PLAYER_SPEED);
+			player->vel = CP_Vector_Set(1, -1);
+
 			//player->rotation = 45.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_W))
 		else if (GetBlobInputDown(BLOB_UP))
 		{
 			playerState = MOVING;
-			player->dir = CP_Vector_Set(0, -1);
-			//player->position.x += (player->vel.x * PLAYER_SPEED);
-			//player->position.y += (player->vel.y * PLAYER_SPEED);
+			player->vel = CP_Vector_Set(0, -1);
+
 			//player->rotation = 0.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_D))
 		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
-			player->dir = CP_Vector_Set(1, 1);
-			//player->position.x += (player->vel.x * PLAYER_SPEED);
-			//player->position.y += (player->vel.y * PLAYER_SPEED);
+			player->vel = CP_Vector_Set(1, 1);
+
 			//player->rotation = 135.0f;
 		}
 		////else if (CP_Input_KeyDown(KEY_S) && CP_Input_KeyDown(KEY_A))
 		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
-			player->dir = CP_Vector_Set(-1, 1);
-			//player->position.x += (player->vel.x * PLAYER_SPEED);
-			//player->position.y += (player->vel.y * PLAYER_SPEED);
+			player->vel = CP_Vector_Set(-1, 1);
+
 			//player->rotation = 225.0f;
 		}
 		//else if (CP_Input_KeyDown(KEY_S))
 		else if (GetBlobInputDown(BLOB_DOWN))
 		{
 			playerState = MOVING;
-			player->dir = CP_Vector_Set(0, 1);
-			//player->position.x += (player->vel.x * PLAYER_SPEED);
-			//player->position.y += (player->vel.y * PLAYER_SPEED);
+			player->vel = CP_Vector_Set(0, 1);
+
 			//player->rotation = 180.0f;
 		}
 
@@ -184,9 +176,8 @@ void PlayerMovement(Player* player)
 		else if (GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
-			player->dir = CP_Vector_Set(-1, 0);
-			//player->position.x += (player->vel.x * PLAYER_SPEED);
-			//player->position.y += (player->vel.y * PLAYER_SPEED);
+			player->vel = CP_Vector_Set(-1, 0);
+
 			//player->rotation = -90.0f;
 		}
 
@@ -194,22 +185,35 @@ void PlayerMovement(Player* player)
 		else if (GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
-			player->dir = CP_Vector_Set(1, 0);
-			//player->position.x += (player->vel.x * PLAYER_SPEED);
-			//player->position.y += (player->vel.y * PLAYER_SPEED);
+			player->vel = CP_Vector_Set(1, 0);
+
 			//player->rotation = 90.0f;
 		}
 
-		if (playerState == MOVING)
+		if (CP_Input_KeyTriggered(KEY_SPACE) && playerState != STILL && (player->numDodge > 0))
 		{
-			player->vel = CP_Vector_Scale(player->dir, PLAYER_SPEED);
-			player->position.x += player->vel.x;
-			player->position.y += player->vel.y;
+			playerState = DODGING;
+
+			player->numDodge -= 1;
+			player->vel.x = player->vel.x * (PLAYER_SPEED * (dodgeDistance / 4));
+			player->vel.y = player->vel.y * (PLAYER_SPEED * (dodgeDistance / 4));
 		}
+		else if (playerState != DODGING)
+		{
+			player->vel.x = (player->vel.x * PLAYER_SPEED);
+			player->vel.y = (player->vel.y * PLAYER_SPEED);
+		}
+
 	}
-	//HitBox
-#if 1
+	Dodge(player);
+
+	CollisionCheck(&newPlayer, level[0]);
+	
+	player->position.x += player->vel.x;
+	player->position.y += player->vel.y;
 	player->hitBox.position = player->position;		//Circle
+#if 1
+	
 #endif
 
 	//Arrow
@@ -249,14 +253,14 @@ void Dodge(Player* player)
 			dodgeBlur = 20;
 			playerState = STILL;
 		}
-		player->position.x += player->dir.x * (PLAYER_SPEED * (dodgeDistance / 20));
-		player->position.y += player->dir.y * (PLAYER_SPEED * (dodgeDistance / 20));
+		
+
 		//HitBox
 #if 0
 		player->hitBox.position = CP_Vector_Set(player->position.x - player->width / 2, player->position.y - player->width / 2);	//RECT
 #endif
 #if 1
-		player->hitBox.position = player->position;		//Circle
+		//player->hitBox.position = player->position;		//Circle
 #endif
 		if (playerArrowState == WITHPLAYER)
 		{
@@ -358,7 +362,7 @@ void DisplayScore(float score) //function to display the score on screen
 void PlayerUpdate(Player* player)
 {
 	PlayerMovement(player);
-	Dodge(player);
+	//Dodge(player);
 	ArrowStateChange(player, &(player->arrow));
 	ArrowTrigger(player);
 	DisplayScore(travelTimer);

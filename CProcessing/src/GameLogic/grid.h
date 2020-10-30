@@ -38,6 +38,8 @@ typedef struct
 
 }GridUnit;
 
+GridUnit level[GRID_WIDTH][GRID_HEIGHT];
+
 int GetLevelWidth();
 int GetLevelHeight();
 void LoadMapFile(MAP level);

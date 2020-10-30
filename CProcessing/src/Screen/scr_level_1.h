@@ -1,3 +1,6 @@
+#pragma once
+
+
 
 void Level1Init(void);
 void LevelDraw(Player* player);

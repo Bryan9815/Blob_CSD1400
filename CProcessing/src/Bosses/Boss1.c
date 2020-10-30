@@ -3,6 +3,7 @@
 #include "../Player/player.h"
 #include "Boss1.h"
 #include "../GameLogic/grid.h"
+#include "../Screen/scr_level_1.h"
 
 float BossRange = 200.f;
 
@@ -54,7 +55,7 @@ void AttackNearDraw(Boss* armorboss)
 }
 
 
-void AttackCharge(Player *player, Boss* armorboss/*, GridUnit *grid*/) //boss charges at player
+void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charges at player
 {
 	//timing and balance later
 	CP_Vector TargetPos = player->position; //get player's position (implement only getting it ONCE)
@@ -81,11 +82,11 @@ void AttackCharge(Player *player, Boss* armorboss/*, GridUnit *grid*/) //boss ch
 		if (COL_IsColliding(armorboss->Hitbox, player->hitBox)) //if boss runs into player
 			player->health--;
 
-		/*for (int i = 0; i < GRID_SIZE; i++)
+		for (int i = 0; i < GRID_SIZE; i++)
 		{
 			if (COL_IsColliding(armorboss->Hitbox, grid[i].collider))
 				armorboss->State = STUNNED;
-		}*/
+		}
 	}
 }
 
@@ -157,7 +158,7 @@ void BossAction(Player player) //determines the boss actions, only one should be
 		AttackNear(&ArmorSlime, &newPlayer); //boss does close range attack
 		break;
 	case ATTACK_FAR:
-		AttackCharge(&player, &ArmorSlime); //boss charge
+		AttackCharge(&player, &ArmorSlime, level[0]); //boss charge
 		break;
 	case STUNNED:
 		StunTimer(ArmorSlime);
