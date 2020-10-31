@@ -34,21 +34,21 @@ void CreateArrow(Arrow* arrow)
 //I barely passed math, I don't know what I'm doing
 void CalculateNewPosition(Arrow* arrow, Body pbody)
 {
-	arrow->oldPosition = arrow->aBody.hitbox.position;
 	if (playerArrowState == RELEASE)	//Release Arrow Calculation
 	{
+		arrow->oldPosition = pbody.hitbox.position;
 		arrow->chargeScale = (DEFAULT_FORCE + (arrow->chargeTimer));
-		arrow->travelVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), arrow->oldPosition);
-		arrow->aBody.velocity = arrow->travelVector;
-		arrow->newPosition = CP_Vector_Add(arrow->oldPosition, CP_Vector_Scale(arrow->travelVector, arrow->chargeScale / 30));
+		arrow->aBody.velocity = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), arrow->oldPosition);
+		arrow->newPosition = CP_Vector_Add(arrow->oldPosition, CP_Vector_Scale(arrow->aBody.velocity, arrow->chargeScale / 30));
 	}
 	else if (playerArrowState == MOTIONLESS)	//Recall Arrow Calculation
 	{
+		arrow->oldPosition = arrow->aBody.hitbox.position;
 		arrow->newPosition = pbody.hitbox.position;
 		arrow->aBody.velocity = CP_Vector_Subtract(pbody.hitbox.position, arrow->oldPosition);
 	}
 
-	arrow->travelVector = CP_Vector_Normalize(arrow->travelVector); //Original Vector
+	//arrow->travelVector = CP_Vector_Normalize(arrow->travelVector); //Original Vector
 	arrow->aBody.velocity = CP_Vector_Normalize(arrow->aBody.velocity);
 	travelDistance = CP_Vector_Distance(arrow->oldPosition, arrow->newPosition);
 	arrow->chargeTimer = 0.0f;
@@ -58,10 +58,11 @@ void ArrowInMotion(Arrow* arrow)
 {
 	// travel chargeScale in 1 sec
 	// every 0.5 seconds, arrow moves 30*normalizeddir
-	if (currentDistance >= travelDistance)
+	if (currentDistance >= travelDistance) //temp, only woirks for release
 	{
 		arrow->oldPosition = arrow->aBody.hitbox.position;
 		currentDistance = 0.0f;
+		travelDistance = 0.0f;
 		playerArrowState = MOTIONLESS;
 		travelTimer = 0.0f;
 	}
@@ -71,19 +72,7 @@ void ArrowInMotion(Arrow* arrow)
 		if (travelTimer >= 0.5)
 		{
 			ArrowCollision(&(arrow->aBody), level[0]);
-			//if (arrowCollisionCheck == true)
-			//{
-			//	//calculate new travel distance 
-			//	if (arrow->aBody.velocity.y != arrow->travelVector.y)
-			//	{
-			//		arrow->newPosition.y = -1 * arrow->newPosition.y;
-			//	}
-			//	else if (arrow->aBody.velocity.x != arrow->travelVector.x)
-			//	{
-			//		arrow->newPosition.x = -1 * arrow->newPosition.x;
-			//	}
-			//}
-			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity,30));
+			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity,15));
 			currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
 			arrow->oldPosition = arrow->aBody.hitbox.position;
 			travelTimer -= CP_System_GetDt();

@@ -8,8 +8,7 @@ CP_Color		arrowColor;
 typedef struct
 {
 	CP_Vector	oldPosition,
-				newPosition,
-				travelVector;
+				newPosition;
 
 	float		chargeTimer,
 				chargeScale;

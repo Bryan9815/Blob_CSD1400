@@ -282,15 +282,11 @@ void ArrowStateChange(Player* player, Arrow* arrow) // arrow release
 		break;
 	}
 
-	if (playerArrowState == MOTION)
+	if (playerArrowState == MOTION || playerArrowState == RECALL)
 	{
 		ArrowInMotion(arrow);
 	}
-	else if (playerArrowState == RECALL)
-	{
-		ArrowPlayerCollision(arrow, player->pBody);
-		ArrowInMotion(arrow);
-	}
+	
 }
 
 void ArrowTrigger(Player* player)
@@ -324,6 +320,18 @@ void ArrowTrigger(Player* player)
 
 }
 
+void DisplayScore(float score) //function to display the score on screen
+{
+	char scoreBuffer[15]; //buffer for value of score
+	sprintf_s(scoreBuffer, 15, "Score: %d", (int)score); // print score into buffer
+
+	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_BASELINE);
+	CP_Color textColor = CP_Color_Create(255, 255, 255, 255); //set text to white, size to 20
+	CP_Settings_Fill(textColor);
+	CP_Settings_TextSize(20);
+	CP_Font_DrawText(scoreBuffer, 30.f, 40.f); //display score at top left corner
+}
+
 /*Update Player*/
 void PlayerUpdate(Player* player)
 {
@@ -332,6 +340,7 @@ void PlayerUpdate(Player* player)
 		PlayerMovement(player);
 		ArrowStateChange(player, &(player->arrow));
 		ArrowTrigger(player);
+		DisplayScore(currentDistance);
 	}
 	else //when player is dead
 	{

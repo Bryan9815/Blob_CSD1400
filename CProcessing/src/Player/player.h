@@ -47,9 +47,11 @@ void PlayerDraw(Player* player);
 void MouseTracking(Player* player);
 
 void PlayerUpdate(Player* player);
-//void PlayerMovement(Player* player);
+void PlayerMovement(Player* player);
 void Dodge(Player* player);
 void DodgeRecharge(Player* player);
 
-//void ArrowTrigger(Player* player);
-//void ArrowStateChange(Player* player, Arrow* arrow);
+void ArrowTrigger(Player* player);
+void ArrowStateChange(Player* player, Arrow* arrow);
+
+void DisplayScore(float score);
