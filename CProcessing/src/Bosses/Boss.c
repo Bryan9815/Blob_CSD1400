@@ -27,18 +27,19 @@ void BossMovement(Boss* currentboss, Player player/*, GridUnit *grid*/) //boss s
 {
 	if ((int)CP_System_GetMillis() % 1000 >= 700) //boss moves for 0.3s every 1s (to be balanced)
 	{
-		CP_Vector MoveDir = CP_Vector_Subtract(player.position, currentboss->BossBody.hitbox.position);
+		CP_Vector MoveDir = CP_Vector_Subtract(player.pBody.hitbox.position, currentboss->BossBody.hitbox.position);
 		CP_Vector DirVector = CP_Vector_Normalize(MoveDir); //normalise for direction vector
 		float distance = 300.f;
 		
-		if (COL_Dist(currentboss->BossBody.hitbox, player.hitBox) >= (currentboss->BossBody.hitbox.radius + player.radius + distance)) //boss destination does not overlap with player body
+		if (COL_Dist(currentboss->BossBody.hitbox, player.pBody.hitbox) >= (currentboss->BossBody.hitbox.radius + player.pBody.hitbox.radius + distance)) //boss destination does not overlap with player
 		{
 			currentboss->BossBody.velocity = CP_Vector_Scale(DirVector, distance); //scale direction vector with speed over dt
 		}
 		else
 		{
-			distance = COL_Dist(currentboss->BossBody.hitbox, player.hitBox) - (currentboss->BossBody.hitbox.radius + player.radius); //find distance from player
+			distance = COL_Dist(currentboss->BossBody.hitbox, player.pBody.hitbox) - (currentboss->BossBody.hitbox.radius + player.pBody.hitbox.radius); //find distance from player
 			currentboss->BossBody.velocity = CP_Vector_Scale(DirVector, distance); //scale direction vector with remaining distance
+			
 		}
 		/*for (int i = 0; i < GRID_SIZE; i++)
 		{
@@ -50,7 +51,8 @@ void BossMovement(Boss* currentboss, Player player/*, GridUnit *grid*/) //boss s
 		currentboss->BossBody.hitbox.position =  CP_Vector_Add(currentboss->BossBody.velocity, currentboss->BossBody.hitbox.position); //update position
 		//For rotation
 		CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
-		if (player.position.x < currentboss->BossBody.hitbox.position.x)
+		
+		if  (player.pBody.hitbox.position.x < currentboss->BossBody.hitbox.position.x)
 			currentboss->Rotation = CP_Vector_Angle(UpDir, DirVector); //clockwise rotation of boss from upward dir
 		else
 			currentboss->Rotation = 360.f - CP_Vector_Angle(UpDir, DirVector); //counterclockwise rotation

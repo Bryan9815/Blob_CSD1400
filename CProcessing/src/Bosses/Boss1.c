@@ -32,7 +32,7 @@ void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 	else if (AttackTimer >= 2 && AttackTimer <= 3) // attack after 2 sec, animation 1 sec
 	{
 		NearAttack = ATTACK;
-		if (COL_IsColliding(Attack, player->hitBox)) //check if player is hit by attack
+		if (COL_IsColliding(Attack, player->pBody.hitbox)) //check if player is hit by attack
 			player->health--;
 		AttackTimer += CP_System_GetDt();
 	}
@@ -64,7 +64,7 @@ void AttackNearDraw(Boss armorboss)
 void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charges at player
 {
 	//timing and balance later
-	CP_Vector ChargeDir = CP_Vector_Subtract(ChargeTarget, armorboss->BossBody.hitbox.position); //vector to player
+	CP_Vector ChargeDir = CP_Vector_Subtract(ChargeTarget, armorboss->BossBody.hitbox.position); //vector to destination
 	static float AttackTimer = 0;
 	if (AttackTimer <= 2)
 	{
@@ -79,12 +79,12 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 		armorboss->BossBody.hitbox.position = CP_Vector_Add(armorboss->BossBody.hitbox.position, armorboss->BossBody.velocity); //update boss position
 
 		CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
-		if (player->position.x < armorboss->BossBody.hitbox.position.x)
+		if (player->pBody.hitbox.position.x < armorboss->BossBody.hitbox.position.x)
 			armorboss->Rotation = CP_Vector_Angle(UpDir, DirVector); //clockwise rotation of boss from upward dir
 		else
 			armorboss->Rotation = 360.f - CP_Vector_Angle(UpDir, DirVector); //counterclockwise rotation
 
-		if (COL_IsColliding(armorboss->BossBody.hitbox, player->hitBox)) //if boss runs into player
+		if (COL_IsColliding(armorboss->BossBody.hitbox, player->pBody.hitbox)) //if boss runs into player
 			player->health--;
 
 		/*for (int i = 0; i < GRID_SIZE; i++)
@@ -100,10 +100,10 @@ void AttackFarDraw(Boss armorboss, Player player)
 	if (FarAttack == WARNING)
 	{
 		CP_Vector RightDir = CP_Vector_Set(1.f, 0.f);
-		CP_Vector ChargeDir = CP_Vector_Subtract(player.position, armorboss.BossBody.hitbox.position); //vector to player
-		float width = CP_Vector_Distance(player.position, armorboss.BossBody.hitbox.position);
+		CP_Vector ChargeDir = CP_Vector_Subtract(player.pBody.hitbox.position, armorboss.BossBody.hitbox.position); //vector to destination
+		float width = CP_Vector_Distance(player.pBody.hitbox.position, armorboss.BossBody.hitbox.position);
 		float rotation;
-		if (player.position.y > armorboss.BossBody.hitbox.position.y)
+		if (player.pBody.hitbox.position.y > armorboss.BossBody.hitbox.position.y)
 			rotation = CP_Vector_Angle(RightDir, ChargeDir); //clockwise rotation of boss from rightward dir
 		else
 			rotation = 360.f - CP_Vector_Angle(RightDir, ChargeDir); //counterclockwise rotation
@@ -128,7 +128,7 @@ void StunTimer(Boss currentboss)
 void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the boss does its actions
 {
 	static float StateTimer = 0;
-	float PlayerDist = CP_Vector_Distance(player.position, currentboss->BossBody.hitbox.position);
+	float PlayerDist = CP_Vector_Distance(player.pBody.hitbox.position, currentboss->BossBody.hitbox.position);
 
 	//-Battle starts in idle -> After 6 sec attack once -> Go back to idle -> Stop once defeated
 	if (currentboss->State == IDLE) //timer should only go up when in idle
@@ -147,7 +147,7 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	}
 	else if (StateTimer >= 6 && PlayerDist > (BossRange * 2)) //if player is beyond distance after 6 sec
 	{
-		ChargeTarget = player.position; //gets player position once
+		ChargeTarget = player.pBody.hitbox.position; //gets player position once
 		currentboss->State = ATTACK_FAR; //change to charge attack state
 		StateTimer = 0;
 	}

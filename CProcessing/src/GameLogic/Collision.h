@@ -1,5 +1,4 @@
 #pragma once
-#include "../Player/player.h"
 #include "grid.h"
 #include <stdbool.h>
 #include "Collider.h"
@@ -10,4 +9,4 @@ typedef struct
 	CP_Vector velocity;
 } Body;
 
-void CollisionCheck(Player* player, GridUnit* level);
+void CollisionCheck(Body* entity, GridUnit* level);
