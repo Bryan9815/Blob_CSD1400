@@ -1,9 +1,9 @@
 #pragma once
 #include <cprocessing.h>
 #include "../Player/player.h"
-#include "../GameLogic/Collider.h"
 #include "../GameLogic/grid.h"
 #include "../Screen/scr_level_1.h"
+#include "../GameLogic/Collision.h"
 
 //general functions (init, drawing, movement) for all bosses are here
 typedef enum
@@ -17,13 +17,10 @@ typedef enum
 
 typedef struct
 {
-	CP_Vector Position; //Position vector of boss
 	float Rotation;		//orientation of boss for drawing
 	int Health;			//Health of boss
-	float Radius;		//Radius of boss for drawing
-	float Speed;		//Movement speed of boss (not charge speed of boss 1)
 	BossState State;	//determines boss actions
-	Collider Hitbox;	//collision for boss
+	Body BossBody;		//position and velocity of boss movement for collision
 } Boss;
 
 typedef enum
@@ -37,4 +34,4 @@ Boss ArmorSlime; //currently only 1 boss
 
 void BossInit(Boss* currentboss, int health, float size);
 void BossDraw(Boss currentboss);
-void BossMovement(Boss* currentboss, Player player);
+void BossMovement(Boss* currentboss, Player player, GridUnit* grid);

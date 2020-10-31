@@ -9,10 +9,10 @@ bool Col_PointRect(float x, float y, Collider rect)
 		y <= rect.position.y + rect.height / 2)				// above the bottom
 		? true : false;
 }
-void CollisionCheck(Body* entity, GridUnit* _level)
+bool CollisionCheck(Body* entity, GridUnit* _level)
 {
 	
-
+	bool Colliding = false;
 	for (int i = 0; i < GetLevelWidth(); i++)
 	{
 		for (int j = 0; j < GetLevelHeight(); j++)
@@ -33,6 +33,7 @@ void CollisionCheck(Body* entity, GridUnit* _level)
 					entity->velocity.y > 0)																																			//Player is moving down
 			{
 				entity->velocity.y = (wallCol.position.y - wallCol.height / 2) - (entity->hitbox.position.y + entity->hitbox.radius);
+				Colliding = true;
 			}
 
 			//TOUCH WALL			 @TODO ADD MORE MATHS SO BAD RIGHT NOW
@@ -42,6 +43,7 @@ void CollisionCheck(Body* entity, GridUnit* _level)
 					entity->velocity.x > 0)																						//Player is moving left
 			{
 				entity->velocity.x = (wallCol.position.x - wallCol.width / 2) - (entity->hitbox.position.x + entity->hitbox.radius);
+				Colliding = true;
 			}
 
 			if (	_level[i * GetLevelHeight() + j].gridType == GE_WALL											&&
@@ -50,6 +52,7 @@ void CollisionCheck(Body* entity, GridUnit* _level)
 					entity->velocity.x < 0)																						//Player is moving right
 			{
 				entity->velocity.x = (wallCol.position.x + wallCol.width / 2) - (entity->hitbox.position.x - entity->hitbox.radius);
+				Colliding = true;
 			}
 
 			//TOUCH CEILING
@@ -61,11 +64,12 @@ void CollisionCheck(Body* entity, GridUnit* _level)
 					entity->velocity.y < 0)																																			//Player is moving up
 			{
 				entity->velocity.y = (wallCol.position.y + wallCol.height / 2) - (entity->hitbox.position.y - entity->hitbox.radius);
+				Colliding = true;
 			}
 
 		}
 
 	}
-
+	return Colliding;
 }
 
