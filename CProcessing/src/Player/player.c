@@ -57,7 +57,7 @@ void PlayerDraw(Player* player)
 
 		//Draw arrow
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 50));
-		CP_Graphics_DrawEllipseAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.radius, player->arrow.radius, player->rotation + 45.0f);
+		CP_Graphics_DrawEllipseAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.hitBox.radius, player->arrow.hitBox.radius, player->rotation + 45.0f);
 		//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 	}
 	else
@@ -78,7 +78,7 @@ void PlayerDraw(Player* player)
 			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 			//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 		}
-		CP_Graphics_DrawEllipseAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.radius, player->arrow.radius, player->rotation + 45.0f);
+		CP_Graphics_DrawEllipseAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.hitBox.radius, player->arrow.hitBox.radius, player->rotation + 45.0f);
 	}
 
 	//Draw Dodge Bar
@@ -286,14 +286,15 @@ void ArrowStateChange(Player* player, Arrow* arrow) // arrow release
 {
 	switch (playerArrowState) {
 	case RELEASE:
-		CalculateNewPosition(arrow);
+		CalculateNewPosition(arrow, player->pBody);
 		playerArrowState = MOTION;
 		break;
 	case MOTIONLESS:
+		ArrowPlayerCollision(arrow, player->pBody); //pickup player
 		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT))
 		{
-			ArrowRecall(arrow, player->pBody.hitbox.position);
-			playerArrowState = WITHPLAYER;
+			CalculateNewPosition(arrow, player->pBody);
+			playerArrowState = RECALL;
 		}
 		break;
 	case WITHPLAYER:
@@ -301,8 +302,14 @@ void ArrowStateChange(Player* player, Arrow* arrow) // arrow release
 	default:
 		break;
 	}
+
 	if (playerArrowState == MOTION)
 	{
+		ArrowInMotion(arrow);
+	}
+	else if (playerArrowState == RECALL)
+	{
+		ArrowPlayerCollision(arrow, player->pBody);
 		ArrowInMotion(arrow);
 	}
 }
@@ -360,9 +367,20 @@ void DisplayScore(float score) //function to display the score on screen
 /*Update Player*/
 void PlayerUpdate(Player* player)
 {
-	PlayerMovement(player);
-	//Dodge(player);
-	//Dodge(player);
-	ArrowStateChange(player, &(player->arrow));
-	ArrowTrigger(player);
+	if (player->health == 1)
+	{
+		PlayerMovement(player);
+		ArrowStateChange(player, &(player->arrow));
+		ArrowTrigger(player);
+	}
+	else
+	{
+		//for now
+		//move to game over screen later
+		//set values to default if needed
+		PlayerMovement(player);
+		ArrowStateChange(player, &(player->arrow));
+		ArrowTrigger(player);
+	}
+
 }

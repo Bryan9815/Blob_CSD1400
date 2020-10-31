@@ -11,7 +11,7 @@ void CreateArrow(Arrow* arrow)
 	arrow->oldPosition = arrow->currentPosition;
 	arrow->dir = CP_Vector_Set(0.0f, 0.0f);
 
-	arrow->radius = CP_System_GetWindowWidth() / 25.0f;
+	//arrow->radius = ;
 
 	arrow->chargeScale = 0;
 	arrow->chargeTimer = 0.0f;
@@ -20,7 +20,7 @@ void CreateArrow(Arrow* arrow)
 
 	arrow->hitBox.shapeType = COL_CIRCLE; //CIRCLE COLLIDER
 	arrow->hitBox.position = arrow->currentPosition;
-	arrow->hitBox.radius = arrow->radius;
+	arrow->hitBox.radius = CP_System_GetWindowWidth() / 25.0f;
 
 	playerArrowState = WITHPLAYER;
 
@@ -28,16 +28,26 @@ void CreateArrow(Arrow* arrow)
 	travelDistance = 0.0f;
 }
 
-void CalculateNewPosition(Arrow* arrow)
+void CalculateNewPosition(Arrow* arrow, Body pbody)
 {
 	arrow->oldPosition = arrow->currentPosition;
-	arrow->chargeScale = (DEFAULT_FORCE + (arrow->chargeTimer));
-	arrow->dir = CP_Vector_Subtract(CP_Vector_Set(
-		CP_Input_GetMouseWorldX(),
-		CP_Input_GetMouseWorldY()),
-		arrow->oldPosition);
+	if (playerArrowState == RELEASE)
+	{
+		arrow->chargeScale = (DEFAULT_FORCE + (arrow->chargeTimer));
+		arrow->dir = CP_Vector_Subtract(CP_Vector_Set(
+			CP_Input_GetMouseWorldX(),
+			CP_Input_GetMouseWorldY()),
+			arrow->oldPosition);
+		arrow->newPosition = CP_Vector_Add(arrow->oldPosition, CP_Vector_Scale(arrow->dir, arrow->chargeScale / 30));
+	}
+	else if (playerArrowState == MOTIONLESS)
+	{
+		arrow->dir = CP_Vector_Subtract(pbody.hitbox.position,
+			arrow->oldPosition);
+		arrow->newPosition = pbody.hitbox.position;
+	}
+
 	arrow->normalizedDir = CP_Vector_Normalize(arrow->dir);
-	arrow->newPosition = CP_Vector_Add(arrow->oldPosition, CP_Vector_Scale(arrow->dir, arrow->chargeScale / 30));
 	travelDistance = CP_Vector_Distance(arrow->oldPosition, arrow->newPosition);
 	arrow->chargeTimer = 0.0f;
 }
@@ -65,11 +75,13 @@ void ArrowInMotion(Arrow* arrow)
 	}
 
 }
-
-void ArrowRecall(Arrow* arrow, CP_Vector playerPos)
+void ArrowPlayerCollision(Arrow* arrow, Body pbody)
 {
-	arrow->currentPosition = playerPos;
-	arrow->oldPosition = playerPos;
-	arrow->newPosition = playerPos;
-	playerArrowState = WITHPLAYER;
+	if (COL_IsColliding(arrow->hitBox, pbody.hitbox) == true)
+	{
+		arrow->currentPosition = pbody.hitbox.position;
+		arrow->oldPosition = pbody.hitbox.position;
+		arrow->newPosition = pbody.hitbox.position;
+		playerArrowState = WITHPLAYER;
+	}
 }
