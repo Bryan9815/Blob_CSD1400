@@ -71,9 +71,7 @@ void ArrowInMotion(Arrow* arrow)
 		travelTimer += CP_System_GetDt();
 		if (travelTimer >= 0.5)
 		{
-			ArrowCollision(&(arrow->aBody), level[0]);
-			
-			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity,15));
+			if (!ArrowCollision(&(arrow->aBody), level[0])) arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
 			currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
 			arrow->oldPosition = arrow->aBody.hitbox.position;
 			travelTimer -= CP_System_GetDt();

@@ -118,6 +118,7 @@ bool ArrowCollision(Body* entity, GridUnit* _level)
 				CP_Matrix rotation = CP_Matrix_Rotate(CP_Math_Degrees((float)theta));
 				entity->velocity = CP_Vector_MatrixMultiply(rotation, entity->velocity);
 				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 10));
+				Colliding = true;
 			}
 			
 			
