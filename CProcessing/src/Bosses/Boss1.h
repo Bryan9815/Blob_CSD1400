@@ -6,6 +6,8 @@
 //functions specifically for boss 1 here
 CP_Image shield;
 AttackState NearAttack, FarAttack;
+Collider Attack;
+CP_Vector ChargeTarget;
 
 void Shield1Draw(Boss armorboss);
 void AttackNear(Boss* armorboss, Player* player);
