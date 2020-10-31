@@ -10,3 +10,4 @@ typedef struct
 } Body;
 
 bool CollisionCheck(Body* entity, GridUnit* level);
+bool ArrowCollision(Body* entity, GridUnit* _level);

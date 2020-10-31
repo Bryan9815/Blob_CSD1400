@@ -8,17 +8,14 @@ CP_Color		arrowColor;
 typedef struct
 {
 	CP_Vector	oldPosition,
-				currentPosition,
 				newPosition,
-				dir,
-				normalizedDir;
+				travelVector;
 
 	float		chargeTimer,
 				chargeScale;
 
-	Collider	hitBox;
-
 	int			charging;
+	Body		aBody;
 
 } Arrow;
 
@@ -32,7 +29,7 @@ typedef enum
 } ArrowState;
 
 ArrowState  playerArrowState;
-float 	travelTimer, travelDistance;
+float 	travelTimer, travelDistance, currentDistance; 
 
 void CreateArrow(Arrow* arrow);
 void CalculateNewPosition(Arrow* arrow, Body pbody);
