@@ -22,7 +22,7 @@ void CreateArrow(Arrow* arrow)
 
 	//Hitbox variables
 	arrow->aBody.hitbox.shapeType = COL_CIRCLE; //CIRCLE COLLIDER
-	arrow->aBody.hitbox.radius = CP_System_GetWindowWidth() / 30.0f;
+	arrow->aBody.hitbox.radius = 25;
 
 	playerArrowState = WITHPLAYER;
 
@@ -70,7 +70,7 @@ void ArrowInMotion(Arrow* arrow)
 		travelTimer += CP_System_GetDt();
 		if (travelTimer >= 0.5)
 		{
-			ArrowCollision(&(arrow->aBody), level[0]);
+			
 			//if (arrowCollisionCheck == true)
 			//{
 			//	//calculate new travel distance 
@@ -83,7 +83,7 @@ void ArrowInMotion(Arrow* arrow)
 			//		arrow->newPosition.x = -1 * arrow->newPosition.x;
 			//	}
 			//}
-			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity,30));
+			if(!ArrowCollision(&(arrow->aBody), level[0])) arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity,10));
 			currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
 			arrow->oldPosition = arrow->aBody.hitbox.position;
 			travelTimer -= CP_System_GetDt();
