@@ -9,7 +9,6 @@
 
 float BossRange = 140.f;
 
-
 void Shield1Draw(Boss armorboss) //draws shield for boss 1
 {
 	CP_Settings_ImageMode(CP_POSITION_CENTER); //draw from center of boss
@@ -60,11 +59,9 @@ void AttackNearDraw(Boss armorboss)
 	}
 }
 
-
 void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charges at player
 {
 	//timing and balance later
-	CP_Vector ChargeDir = CP_Vector_Subtract(ChargeTarget, armorboss->BossBody.hitbox.position); //vector to destination
 	static float AttackTimer = 0;
 	if (AttackTimer <= 2)
 	{
@@ -78,12 +75,6 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 		armorboss->BossBody.velocity = CP_Vector_Scale(DirVector, (CP_System_GetDt() * 600.f)); //boss moves at 2.0x(?) speed to that point
 		armorboss->BossBody.hitbox.position = CP_Vector_Add(armorboss->BossBody.hitbox.position, armorboss->BossBody.velocity); //update boss position
 
-		CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
-		if (player->pBody.hitbox.position.x < armorboss->BossBody.hitbox.position.x)
-			armorboss->Rotation = CP_Vector_Angle(UpDir, DirVector); //clockwise rotation of boss from upward dir
-		else
-			armorboss->Rotation = 360.f - CP_Vector_Angle(UpDir, DirVector); //counterclockwise rotation
-
 		if (COL_IsColliding(armorboss->BossBody.hitbox, player->pBody.hitbox)) //if boss runs into player
 			player->health--;
 		if (CollisionCheck(&(armorboss->BossBody), grid))
@@ -96,7 +87,6 @@ void AttackFarDraw(Boss armorboss, Player player)
 	if (FarAttack == WARNING)
 	{
 		CP_Vector RightDir = CP_Vector_Set(1.f, 0.f);
-		CP_Vector ChargeDir = CP_Vector_Subtract(player.pBody.hitbox.position, armorboss.BossBody.hitbox.position); //vector to destination
 		float width = CP_Vector_Distance(player.pBody.hitbox.position, armorboss.BossBody.hitbox.position);
 		float rotation;
 		if (player.pBody.hitbox.position.y > armorboss.BossBody.hitbox.position.y)
@@ -144,6 +134,7 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	else if (StateTimer >= 6 && PlayerDist > (BossRange * 2)) //if player is beyond distance after 6 sec
 	{
 		ChargeTarget = player.pBody.hitbox.position; //gets player position once
+		ChargeDir = CP_Vector_Subtract(ChargeTarget, currentboss->BossBody.hitbox.position); //vector to destination
 		currentboss->State = ATTACK_FAR; //change to charge attack state
 		StateTimer = 0;
 	}
