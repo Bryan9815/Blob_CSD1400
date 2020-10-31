@@ -11,14 +11,9 @@
 typedef struct
 {
 	int			health;
-	//float		radius,
-	float		rotation;
-	//CP_Vector	position;	//Position of player
-	//CP_Vector   vel;		//velocity
 	Body		pBody;		//Player position and velocity;
+	float		rotation;   //Necessary for sprite
 	int			numDodge;	// number of dodges
-	//Collider	hitBox;
-
 	Arrow		arrow;
 
 } Player;
@@ -46,20 +41,15 @@ float dodgeTimer;		//Timer for dodging cooldown
 float dodgeDistance;	//distance travelled via dodge
 int dodgeBlur;			//Dodge blur effect
 
-void PlayerInit(void);
+void PlayerInit(Player* player);
 
-void CreatePlayer(Player* player);
 void PlayerDraw(Player* player);
 void MouseTracking(Player* player);
 
 void PlayerUpdate(Player* player);
-void PlayerMovement(Player* player);
+//void PlayerMovement(Player* player);
 void Dodge(Player* player);
 void DodgeRecharge(Player* player);
 
-void ArrowTrigger(Player* player);
-void ArrowStateChange(Player* player, Arrow* arrow);
-
-#if 1
-void DisplayScore(float score);
-#endif
+//void ArrowTrigger(Player* player);
+//void ArrowStateChange(Player* player, Arrow* arrow);

@@ -7,7 +7,7 @@ void Level1Init(void)
 {
 	LoadMapFile(Level0);
 	GridInit(level[0]);
-	CreatePlayer(&newPlayer);
+	PlayerInit(&newPlayer);
 	CameraInit(&newPlayer.pBody.hitbox.position);
 	BossInit(&ArmorSlime, 1, 80.f);
 	shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
