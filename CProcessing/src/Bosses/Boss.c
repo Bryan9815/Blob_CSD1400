@@ -27,18 +27,18 @@ void BossMovement(Boss* currentboss, Player player/*, GridUnit *grid*/) //boss s
 {
 	if ((int)CP_System_GetMillis() % 1000 >= 700) //boss moves for 0.3s every 1s (to be balanced)
 	{
-		CP_Vector MoveDir = CP_Vector_Subtract(player.position, currentboss->Position);
+		CP_Vector MoveDir = CP_Vector_Subtract(player.pBody.hitbox.position, currentboss->Position);
 		CP_Vector DirVector = CP_Vector_Normalize(MoveDir); //normalise for direction vector
 		float distance = currentboss->Speed * CP_System_GetDt();
 		CP_Vector Movement;
 		
-		if (COL_Dist(currentboss->Hitbox, player.hitBox) >= (currentboss->Radius + player.radius + distance)) //boss destination does not overlap with player
+		if (COL_Dist(currentboss->Hitbox, player.pBody.hitbox) >= (currentboss->Radius + player.pBody.hitbox.radius + distance)) //boss destination does not overlap with player
 		{
 			Movement = CP_Vector_Scale(DirVector, distance); //scale direction vector with speed over dt
 		}
 		else
 		{
-			distance = COL_Dist(currentboss->Hitbox, player.hitBox) - (currentboss->Radius + player.radius); //find distance from player
+			distance = COL_Dist(currentboss->Hitbox, player.pBody.hitbox) - (currentboss->Radius + player.pBody.hitbox.radius); //find distance from player
 			Movement = CP_Vector_Scale(DirVector, distance); //scale direction vector with remaining distance
 			
 		}
@@ -52,7 +52,7 @@ void BossMovement(Boss* currentboss, Player player/*, GridUnit *grid*/) //boss s
 		currentboss->Hitbox.position = currentboss->Position = CP_Vector_Add(Movement, currentboss->Position); //update position
 		CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
 		
-		if (player.position.x < currentboss->Position.x)
+		if  (player.pBody.hitbox.position.x < currentboss->Position.x)
 			currentboss->Rotation = CP_Vector_Angle(UpDir, DirVector); //clockwise rotation of boss from upward dir
 		else
 			currentboss->Rotation = 360.f - CP_Vector_Angle(UpDir, DirVector); //counterclockwise rotation

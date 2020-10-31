@@ -1,7 +1,7 @@
 #pragma once
 #include <cprocessing.h>
 #include "Arrow.h"
-#include "../GameLogic/Collider.h"
+#include "../GameLogic/Collision.h"
 #include "../GameLogic/grid.h"
 
 #define PLAYER_SPEED	5.0f
@@ -11,13 +11,13 @@
 typedef struct
 {
 	int			health;
-	float		radius,
-				rotation;
-	CP_Vector	position;	//Position of player
-	CP_Vector   vel;		//velocity
-
+	//float		radius,
+	float		rotation;
+	//CP_Vector	position;	//Position of player
+	//CP_Vector   vel;		//velocity
+	Body		pBody;		//Player position and velocity;
 	int			numDodge;	// number of dodges
-	Collider	hitBox;
+	//Collider	hitBox;
 
 	Arrow		arrow;
 
