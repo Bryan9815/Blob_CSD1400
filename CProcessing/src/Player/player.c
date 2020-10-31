@@ -13,7 +13,8 @@ void PlayerInit(Player* player) //Default Variables
 	playerArrowState = WITHPLAYER;
 
 	playerColor = CP_Color_Create(255, 255, 255, 255);
-	//sprite = CP_Image_Load(".dioface.png");
+	sprite = CP_Image_Load("././Assets/player.png");
+
 
 	//Player Stats and Position
 	player->health = 1;
@@ -28,7 +29,7 @@ void PlayerInit(Player* player) //Default Variables
 #if 1
 	player->pBody.hitbox.shapeType = COL_CIRCLE; //CIRCLE COLLIDER
 	player->pBody.hitbox.position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
-	player->pBody.hitbox.radius = CP_System_GetWindowWidth() / 40.0f;
+	player->pBody.hitbox.radius = 40.0f;
 #endif
 
 	//Player dodge
@@ -50,19 +51,25 @@ void PlayerDraw(Player* player)
 	if (playerState == DODGING)
 	{
 		//Draw player
-		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 50));
+		int transparency = 50;
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, transparency));
 		CP_Graphics_DrawEllipseAdvanced(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, player->rotation);
+		
 
 		//Draw arrow
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 50));
 		CP_Graphics_DrawEllipseAdvanced(player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius, player->arrow.aBody.hitbox.radius, player->rotation + 45.0f);
 		//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+
+		//Draw sprite
+		CP_Image_DrawAdvanced(sprite, player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, transparency, player->rotation);
 	}
 	else
 	{
 		//Draw player
 		CP_Settings_Fill(playerColor);
 		CP_Graphics_DrawEllipseAdvanced(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, player->rotation);
+
 
 		//Draw arrow
 		if (player->arrow.charging == 1)
@@ -77,6 +84,7 @@ void PlayerDraw(Player* player)
 			//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 		}
 		CP_Graphics_DrawEllipseAdvanced(player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius, player->arrow.aBody.hitbox.radius, player->rotation + 45.0f);
+		CP_Image_DrawAdvanced(sprite, player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, 255, player->rotation);
 	}
 
 	//Draw Dodge Bar
@@ -89,9 +97,10 @@ void PlayerDraw(Player* player)
 	}
 
 
+
 	//HitBox
-	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 200));	
-#if 1
+	//CP_Settings_Fill(CP_Color_Create(255, 0, 0, 200));	
+#if 0
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Graphics_DrawCircle(					//CIRCLE COLLIDER
 		player->pBody.hitbox.position.x,
@@ -197,9 +206,6 @@ void PlayerMovement(Player* player)
 	
 	player->pBody.hitbox.position.x += player->pBody.velocity.x;		//Circle
 	player->pBody.hitbox.position.y += player->pBody.velocity.y;
-#if 1
-	
-#endif
 
 	//Arrow
 	if (playerArrowState == WITHPLAYER)
@@ -320,18 +326,6 @@ void ArrowTrigger(Player* player)
 
 }
 
-void DisplayScore(float score) //function to display the score on screen
-{
-	char scoreBuffer[15]; //buffer for value of score
-	sprintf_s(scoreBuffer, 15, "Score: %d", (int)score); // print score into buffer
-
-	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_LEFT, CP_TEXT_ALIGN_V_BASELINE);
-	CP_Color textColor = CP_Color_Create(255, 255, 255, 255); //set text to white, size to 20
-	CP_Settings_Fill(textColor);
-	CP_Settings_TextSize(20);
-	CP_Font_DrawText(scoreBuffer, 30.f, 40.f); //display score at top left corner
-}
-
 /*Update Player*/
 void PlayerUpdate(Player* player)
 {
@@ -340,7 +334,6 @@ void PlayerUpdate(Player* player)
 		PlayerMovement(player);
 		ArrowStateChange(player, &(player->arrow));
 		ArrowTrigger(player);
-		DisplayScore(currentDistance);
 	}
 	else //when player is dead
 	{
@@ -352,4 +345,9 @@ void PlayerUpdate(Player* player)
 		ArrowTrigger(player);
 	}
 
+}
+
+void PlayerExit()
+{
+	CP_Image_Free(&sprite);
 }

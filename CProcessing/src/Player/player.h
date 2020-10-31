@@ -10,11 +10,11 @@
 
 typedef struct
 {
-	int			health;
-	Body		pBody;		//Player position and velocity;
 	float		rotation;   //Necessary for sprite
+	int			health;
 	int			numDodge;	// number of dodges
-	Arrow		arrow;
+	Body		pBody;		//Player position and velocity;
+	Arrow		arrow;		//Player arrow
 
 } Player;
 
@@ -31,7 +31,7 @@ Player newPlayer;
 PlayerState playerState;
 CP_Vector	mousePositionVector;
 
-//CP_Image	sprite;
+CP_Image	sprite;
 CP_Color	playerColor;
 CP_Color	backgroundColour;
 
@@ -54,4 +54,3 @@ void DodgeRecharge(Player* player);
 void ArrowTrigger(Player* player);
 void ArrowStateChange(Player* player, Arrow* arrow);
 
-void DisplayScore(float score);
