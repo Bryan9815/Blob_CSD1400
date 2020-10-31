@@ -9,4 +9,4 @@ typedef struct
 	CP_Vector velocity;
 } Body;
 
-void CollisionCheck(Body* entity, GridUnit* level);
+bool CollisionCheck(Body* entity, GridUnit* level);

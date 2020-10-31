@@ -34,4 +34,4 @@ Boss ArmorSlime; //currently only 1 boss
 
 void BossInit(Boss* currentboss, int health, float size);
 void BossDraw(Boss currentboss);
-void BossMovement(Boss* currentboss, Player player);
+void BossMovement(Boss* currentboss, Player player, GridUnit* grid);

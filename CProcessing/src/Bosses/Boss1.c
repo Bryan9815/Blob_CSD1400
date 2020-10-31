@@ -7,13 +7,13 @@
 #include "../GameLogic/Collider.h"
 #include "../GameLogic/Collision.h"
 
-float BossRange = 200.f;
+float BossRange = 140.f;
 
 
 void Shield1Draw(Boss armorboss) //draws shield for boss 1
 {
 	CP_Settings_ImageMode(CP_POSITION_CENTER); //draw from center of boss
-	CP_Image_DrawAdvanced(shield, armorboss.BossBody.hitbox.position.x, armorboss.BossBody.hitbox.position.y, 270.f, 270.f, 255, armorboss.Rotation);
+	CP_Image_DrawAdvanced(shield, armorboss.BossBody.hitbox.position.x, armorboss.BossBody.hitbox.position.y, 200.f, 200.f, 255, armorboss.Rotation);
 }
 
 void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
@@ -86,12 +86,8 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 
 		if (COL_IsColliding(armorboss->BossBody.hitbox, player->pBody.hitbox)) //if boss runs into player
 			player->health--;
-
-		/*for (int i = 0; i < GRID_SIZE; i++)
-		{
-			if (COL_IsColliding(armorboss->BossBody.hitbox, grid[i].collider))
-				armorboss->State = STUNNED;
-		}*/
+		if (CollisionCheck(&(armorboss->BossBody), grid))
+			armorboss->State = STUNNED;
 	}
 }
 
@@ -114,13 +110,13 @@ void AttackFarDraw(Boss armorboss, Player player)
 	}
 }
 
-void StunTimer(Boss currentboss)
+void StunTimer(Boss* currentboss)
 {
 	static float Stuntime = 0;
 	Stuntime+= CP_System_GetDt();
 	if (Stuntime >= 3) //stunned for 3 sec
 	{
-		currentboss.State = IDLE; //revert to idle after
+		currentboss->State = IDLE; //revert to idle after
 		Stuntime = 0;
 	}
 }
@@ -153,14 +149,14 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	}
 }
 
-void BossAction(Player player) //determines the boss actions, only one should be active at any time
+void BossAction(Player player, GridUnit* grid) //determines the boss actions, only one should be active at any time
 {
 	CP_Color errortext = CP_Color_Create(255, 0, 0, 255); //only used for error/bug check, REMOVE BEFORE FINAL
 	char errormessage[] = "ERROR"; //only used for error/bug check, REMOVE BEFORE FINAL
 	switch (ArmorSlime.State) 
 	{
 	case IDLE:
-		BossMovement(&ArmorSlime, player); //boss should only be walking in idle
+		BossMovement(&ArmorSlime, player, grid); //boss should only be walking in idle
 		break;
 	case ATTACK_NEAR:
 		AttackNear(&ArmorSlime, &newPlayer); //boss does close range attack
@@ -169,7 +165,7 @@ void BossAction(Player player) //determines the boss actions, only one should be
 		AttackCharge(&player, &ArmorSlime, level[0]); //boss charge
 		break;
 	case STUNNED:
-		StunTimer(ArmorSlime);
+		StunTimer(&ArmorSlime);
 		break; //boss should stop moving, allowing player to shoot
 	case DEFEAT:
 		break; //should proceed to next stage (main menu/win screen for prototype)
@@ -181,10 +177,10 @@ void BossAction(Player player) //determines the boss actions, only one should be
 	}
 }
 
-void Boss1Battle(Player player)
+void Boss1Battle(Player player, GridUnit* grid)
 {
 	B1_StateChange(player, &ArmorSlime);
-	BossAction(player);
+	BossAction(player, grid);
 }
 
 void Boss1Draw(Boss armorboss, Player player)
