@@ -20,6 +20,9 @@ bool CollisionCheck(Body* entity, GridUnit* _level)
 			Collider wallCol = _level[i * GetLevelHeight() + j].collider;
 			Collider entityCol = entity->hitbox;
 
+			entityCol.shapeType = COL_RECT;					//Im not gonna do math now so just casting entity hitbox to rects for collision
+			entityCol.width = entity->hitbox.radius * 2;
+			entityCol.height = entity->hitbox.radius * 2;
 			entityCol.position.x += entity->velocity.x;
 			
 			//Player can be replaced with any reference a struct with a collider and stores its position there instead, pass entity refer to INTOBJ.AS
