@@ -58,7 +58,6 @@ void ArrowInMotion(Arrow* arrow)
 {
 	// travel chargeScale in 1 sec
 	// every 0.5 seconds, arrow moves 30*normalizeddir
-	//if (CP_Vector_Distance(arrow->oldPosition, arrow->aBody.hitbox.position) >= travelDistance)
 	if (currentDistance >= travelDistance)
 	{
 		arrow->oldPosition = arrow->aBody.hitbox.position;
