@@ -38,19 +38,19 @@ void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 	}
 }
 
-void AttackNearDraw(Boss* armorboss)
+void AttackNearDraw(Boss armorboss)
 {
 	if (NearAttack == WARNING)
 	{
 		CP_Color WarningColor = CP_Color_Create(255, 0, 0, 125);
 		CP_Settings_Fill(WarningColor);
-		CP_Graphics_DrawCircle(armorboss->Position.x, armorboss->Position.y, (BossRange*2));
+		CP_Graphics_DrawCircle(armorboss.Position.x, armorboss.Position.y, (BossRange*2));
 	}
 	else if (NearAttack == ATTACK)
 	{
 		CP_Color AttackColor = CP_Color_Create(0, 0, 0, 255);
 		CP_Settings_Fill(AttackColor);
-		CP_Graphics_DrawCircle(armorboss->Position.x, armorboss->Position.y, (BossRange*2));
+		CP_Graphics_DrawCircle(armorboss.Position.x, armorboss.Position.y, (BossRange*2));
 	}
 }
 
@@ -90,22 +90,22 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 	}
 }
 
-void AttackFarDraw(Boss* armorboss, Player player)
+void AttackFarDraw(Boss armorboss, Player player)
 {
 	if (FarAttack == WARNING)
 	{
 		CP_Vector RightDir = CP_Vector_Set(1.f, 0.f);
-		CP_Vector ChargeDir = CP_Vector_Subtract(player.position, armorboss->Position); //vector to player
-		float width = CP_Vector_Distance(player.position, armorboss->Position);
+		CP_Vector ChargeDir = CP_Vector_Subtract(player.position, armorboss.Position); //vector to player
+		float width = CP_Vector_Distance(player.position, armorboss.Position);
 		float rotation;
-		if (player.position.y > armorboss->Position.y)
+		if (player.position.y > armorboss.Position.y)
 			rotation = CP_Vector_Angle(RightDir, ChargeDir); //clockwise rotation of boss from rightward dir
 		else
 			rotation = 360.f - CP_Vector_Angle(RightDir, ChargeDir); //counterclockwise rotation
 		CP_Color WarningColor = CP_Color_Create(255, 0, 0, 125);
 		CP_Settings_Fill(WarningColor);
 		CP_Settings_RectMode(CP_POSITION_CORNER);
-		CP_Graphics_DrawRectAdvanced(armorboss->Position.x, (armorboss->Position.y - 50.f), width, 100.f, rotation, 0.f);
+		CP_Graphics_DrawRectAdvanced(armorboss.Position.x, (armorboss.Position.y - 50.f), width, 100.f, rotation, 0.f);
 	}
 }
 
@@ -179,4 +179,12 @@ void Boss1Battle(Player player)
 {
 	B1_StateChange(player, &ArmorSlime);
 	BossAction(player);
+}
+
+void Boss1Draw(Boss armorboss, Player player)
+{
+	AttackFarDraw(armorboss, player);
+	AttackNearDraw(armorboss);
+	Shield1Draw(armorboss);
+	BossDraw(armorboss);
 }
