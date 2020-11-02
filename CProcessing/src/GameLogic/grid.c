@@ -172,8 +172,8 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 
 			(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
 			(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
-			GRID_UNIT_WIDTH,
-			GRID_UNIT_HEIGHT,
+			GRID_UNIT_WIDTH+1,
+			GRID_UNIT_HEIGHT+1,
 			255);
 		break;
 	case GE_WALL:
