@@ -2,6 +2,7 @@
 #include <cprocessing.h>
 #include "player.h"
 #include "../GameLogic/BlobInput.h"
+#include "../Bosses/Boss.h"
 
 
 CP_Color backgroundColour;
@@ -203,7 +204,8 @@ void PlayerMovement(Player* player)
 	}
 	Dodge(player);
 
-	CollisionCheck(&newPlayer.pBody, level[0]);
+	CollisionCheck(&(player->pBody), level[0]);
+	//PlayerEntityCollision(&)
 	
 	player->pBody.hitbox.position.x += player->pBody.velocity.x;		//Circle
 	player->pBody.hitbox.position.y += player->pBody.velocity.y;
@@ -289,6 +291,7 @@ void ArrowStateChange(Player* player, Arrow* arrow) // arrow release
 		break;
 	}
 
+
 	if (playerArrowState == MOTION || playerArrowState == RECALL)
 	{
 		ArrowInMotion(arrow);
@@ -333,8 +336,8 @@ void PlayerUpdate(Player* player)
 	if (player->health == 1)
 	{
 		PlayerMovement(player);
-		ArrowStateChange(player, &(player->arrow));
 		ArrowTrigger(player);
+		ArrowStateChange(player, &(player->arrow));
 	}
 	else //when player is dead
 	{
@@ -342,8 +345,8 @@ void PlayerUpdate(Player* player)
 		//move to game over screen later
 		//set values to default if needed
 		PlayerMovement(player);
-		ArrowStateChange(player, &(player->arrow));
 		ArrowTrigger(player);
+		ArrowStateChange(player, &(player->arrow));
 	}
 
 }

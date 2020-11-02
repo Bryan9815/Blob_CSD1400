@@ -126,3 +126,54 @@ bool ArrowCollision(Body* entity, GridUnit* _level)
 	}
 	return Colliding;
 }
+
+//bool EntityCollision(Body* entity1, Body* entity2)
+//{
+//	bool colliding = false;
+//
+//	if (COL_IsColliding(entity1->hitbox, entity2->hitbox))
+//	{
+//		
+//	}
+//
+//}
+
+bool ArrowBossCollision(Body* arrow, Body* boss)
+{
+	bool dealdamage = false;
+	CP_Vector differences = CP_Vector_Subtract(arrow->hitbox.position, boss->hitbox.position);
+	if (COL_IsColliding(arrow->hitbox, boss->hitbox))
+	{
+		if (CP_Math_Degrees(CP_Vector_Angle(CP_Vector_Negate(arrow->velocity), boss->velocity)) >= 160.0f) //CP_Math_Degrees
+		{
+			arrow->velocity = CP_Vector_Set(0.0f, 0.0f);
+			dealdamage = true;
+		}
+		else
+		{
+			
+			float theta = CP_Vector_Angle(CP_Vector_Negate(arrow->velocity), differences);
+			theta = 2 * theta;
+			CP_Matrix rotation = CP_Matrix_Rotate(CP_Math_Degrees(theta));
+			arrow->velocity = CP_Vector_MatrixMultiply(rotation, arrow->velocity);
+		}
+	}
+	return dealdamage;
+}
+
+bool PlayerEntityCollision(Body* player, Body* entity)
+{
+	bool colliding = false;
+
+	if (COL_IsColliding(player->hitbox, entity->hitbox))
+	{
+		CP_Vector differences = CP_Vector_Subtract(player->hitbox.position, entity->hitbox.position);
+		float mag = CP_Vector_Length(differences); //magnitude of diffvector
+		float resMag = player->hitbox.radius + entity->hitbox.radius; //magnitude of resultant vector
+		CP_Vector resultantVector = CP_Vector_Scale(differences, resMag / mag);
+		player->hitbox.position = CP_Vector_Add(entity->hitbox.position, resultantVector);
+		colliding = true;
+	}
+
+	return colliding;
+}

@@ -11,3 +11,5 @@ typedef struct
 
 bool CollisionCheck(Body* entity, GridUnit* level);
 bool ArrowCollision(Body* entity, GridUnit* _level);
+bool PlayerEntityCollision(Body* player, Body* entity);
+bool ArrowBossCollision(Body* arrow, Body* boss);

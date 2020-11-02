@@ -1,6 +1,8 @@
 #include <cprocessing.h>
 #include "Arrow.h"
-#include "../GameLogic/grid.h"
+#include "../Bosses/Boss.h"
+//#include "../GameLogic/grid.h"
+
 
 void CreateArrow(Arrow* arrow)
 {
@@ -72,6 +74,7 @@ void ArrowInMotion(Arrow* arrow)
 		if (travelTimer >= 0.5)
 		{
 			if (!ArrowCollision(&(arrow->aBody), level[0])) arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
+			ArrowBossCollision(&arrow->aBody, &ArmorSlime.BossBody);
 			currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
 			arrow->oldPosition = arrow->aBody.hitbox.position;
 			travelTimer -= CP_System_GetDt();
