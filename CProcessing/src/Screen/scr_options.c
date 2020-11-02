@@ -15,11 +15,13 @@ Button optionList[OPTIONS_BUTTONS];
 int selectButton, overlayNum;
 int customInputX, customInputY;
 int changingInput;
+bool mouseCheck;
 Button customInputMenu[BLOB_PAUSE+2][4];
 CP_Vector mousePos;
 
 void CustomInputButtonsInit(void)
 {
+	mouseCheck = false;
 	for (int i = 0; i <= BLOB_PAUSE; i++)
 	{
 		customInputMenu[i][0] = CreateButton((float)CP_System_GetWindowWidth() / 6, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobInputName(i));
@@ -388,6 +390,7 @@ void ControlMenuActivate(void)
 
 void OptionsInput(void)
 {
+	CP_Vector oldMousePos = CP_Vector_Set(mousePos.x, mousePos.y);
 	mousePos = CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY());
 	// Options Menu
 	if (overlayNum >= OPTIONS_BUTTONS)
@@ -406,25 +409,39 @@ void OptionsInput(void)
 			else
 				selectButton++;
 		}
-		for (int i = 0; i < OPTIONS_BUTTONS; i++)
+		if (!mouseCheck)
 		{
-			// Mouse x-pos collision check
-			if (mousePos.x >= (optionList[i].posX - optionList[i].width / 2) && mousePos.x <= (optionList[i].posX + optionList[i].width / 2))
+			for (int i = 0; i < OPTIONS_BUTTONS; i++)
 			{
-				// Mouse y-pos collision check	
-				if (mousePos.y >= (optionList[i].posY - optionList[i].height / 2) && mousePos.y <= (optionList[i].posY + optionList[i].height / 2))
+				// Mouse x-pos collision check
+				if (mousePos.x >= (optionList[i].posX - optionList[i].width / 2) && mousePos.x <= (optionList[i].posX + optionList[i].width / 2))
 				{
-					selectButton = i;
-					if (CP_Input_MouseDown(MOUSE_BUTTON_1))
-						optionList[selectButton].isSelected = 1;
-					else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
-						OptionsMenuActivate();
+					// Mouse y-pos collision check	
+					if (mousePos.y >= (optionList[i].posY - optionList[i].height / 2) && mousePos.y <= (optionList[i].posY + optionList[i].height / 2))
+					{
+						selectButton = i;
+						mouseCheck = true;
+					}
 				}
-				else
-					optionList[selectButton].isSelected = 0;
 			}
-			else
+		}
+		else
+		{
+			if (CP_Input_MouseDown(MOUSE_BUTTON_1))
+				optionList[selectButton].isSelected = 1;
+			else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+			{
+				OptionsMenuActivate();
 				optionList[selectButton].isSelected = 0;
+				mouseCheck = false;
+			}
+			if ((int)mousePos.x != (int)oldMousePos.x || (int)mousePos.y != (int)oldMousePos.y)
+			{
+				if (mousePos.x < (optionList[selectButton].posX - optionList[selectButton].width / 2) || mousePos.x >(optionList[selectButton].posX + optionList[selectButton].width / 2))
+					mouseCheck = false;
+				if (mousePos.y < (optionList[selectButton].posY - optionList[selectButton].height / 2) || mousePos.y >(optionList[selectButton].posY + optionList[selectButton].height / 2))
+					mouseCheck = false;
+			}
 		}
 		if (GetBlobInputTriggered(BLOB_INTERACT))
 		{
@@ -469,28 +486,42 @@ void OptionsInput(void)
 					else
 						customInputX++;
 				}
-				for (int i = 0; i < BLOB_PAUSE + 2; i++)
+				if(!mouseCheck)
 				{
-					for (int j = 0; j < 4; j++)
+					for (int i = 0; i < BLOB_PAUSE + 2; i++)
 					{
-						// Mouse x-pos collision check
-						if (mousePos.x >= (customInputMenu[i][j].posX - customInputMenu[i][j].width / 2) && mousePos.x <= (customInputMenu[i][j].posX + customInputMenu[i][j].width / 2))
+						for (int j = 0; j < 4; j++)
 						{
-							// Mouse y-pos collision check	
-							if (mousePos.y >= (customInputMenu[i][j].posY - customInputMenu[i][j].height / 2) && mousePos.y <= (customInputMenu[i][j].posY + customInputMenu[i][j].height / 2))
+							// Mouse x-pos collision check
+							if (mousePos.x >= (customInputMenu[i][j].posX - customInputMenu[i][j].width / 2) && mousePos.x <= (customInputMenu[i][j].posX + customInputMenu[i][j].width / 2))
 							{
-								customInputX = j;
-								customInputY = i;
-								if (CP_Input_MouseDown(MOUSE_BUTTON_1))
-									customInputMenu[i][j].isSelected = 1;
-								else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
-									ControlMenuActivate();
+								// Mouse y-pos collision check	
+								if (mousePos.y >= (customInputMenu[i][j].posY - customInputMenu[i][j].height / 2) && mousePos.y <= (customInputMenu[i][j].posY + customInputMenu[i][j].height / 2))
+								{
+									customInputX = j;
+									customInputY = i;
+									mouseCheck = true;
+								}
 							}
-							else
-								optionList[selectButton].isSelected = 0;
 						}
-						else
-							optionList[selectButton].isSelected = 0;
+					}
+				}
+				else
+				{
+					if (CP_Input_MouseDown(MOUSE_BUTTON_1))
+						customInputMenu[customInputY][customInputX].isSelected = 1;
+					else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+					{
+						ControlMenuActivate();
+						customInputMenu[customInputY][customInputX].isSelected = 0;
+						mouseCheck = true;
+					}
+					if ((int)mousePos.x != (int)oldMousePos.x || (int)mousePos.y != (int)oldMousePos.y)
+					{
+						if (mousePos.x < (customInputMenu[customInputY][customInputX].posX - customInputMenu[customInputY][customInputX].width / 2) || mousePos.x >(customInputMenu[customInputY][customInputX].posX + customInputMenu[customInputY][customInputX].width / 2))
+							mouseCheck = false;
+						if (mousePos.y < (customInputMenu[customInputY][customInputX].posY - customInputMenu[customInputY][customInputX].height / 2) || mousePos.y >(customInputMenu[customInputY][customInputX].posY + customInputMenu[customInputY][customInputX].height / 2))
+							mouseCheck = false;
 					}
 				}
 				if (GetBlobInputTriggered(BLOB_INTERACT))
