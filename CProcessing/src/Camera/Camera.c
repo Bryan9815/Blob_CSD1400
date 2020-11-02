@@ -61,6 +61,12 @@ void CameraUpdate(CP_Vector* charPos, Fader* fader)
 	CP_Settings_ApplyMatrix(translationMatrix);
 }
 
+CP_Vector GetCameraPos()
+{
+	CP_Vector returnVec = CP_Vector_Set(-cameraPos.x, -cameraPos.y);
+	return returnVec;
+}
+
 void CameraExit(void)
 {
 
