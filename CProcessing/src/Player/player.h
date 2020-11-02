@@ -4,8 +4,7 @@
 #include "../GameLogic/Collision.h"
 #include "../GameLogic/grid.h"
 
-
-#define PLAYER_SPEED	5.0f
+#define PLAYER_SPEED	2.0f
 #define DODGE_COOLDOWN	4	//Seconds
 #define MAX_DODGE		2
 
