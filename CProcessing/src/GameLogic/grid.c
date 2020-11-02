@@ -35,7 +35,7 @@ void LoadMapFile (MAP _level)	//Call Load before Rendering Map
 	sprintf_s(fileName, 40, "././Assets/Level/Level%d.txt", (int)_level);
 
 	errno_t err = fopen_s(&fp, fileName, "rt");
-	int i = 0, w = 0, h = 1, finalWidth = 0;
+	int i = 0, w = 0, h = 0, finalWidth = 0;
 	
 	if (err == 0 && fp != NULL) /*Checks if file is open*/
 	{
@@ -172,8 +172,8 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 
 			(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
 			(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
-			GRID_UNIT_WIDTH,
-			GRID_UNIT_HEIGHT,
+			GRID_UNIT_WIDTH + 1,
+			GRID_UNIT_HEIGHT + 1,
 			255);
 		break;
 	case GE_WALL:
@@ -182,8 +182,8 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 			tile2,
 			(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
 			(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
-			GRID_UNIT_WIDTH,
-			GRID_UNIT_HEIGHT,
+			GRID_UNIT_WIDTH + 1,
+			GRID_UNIT_HEIGHT + 1,
 			255);
 #if 0
 		if (COL_IsColliding(grid[i * levelHeight + j].collider, playerHitBox))
@@ -195,7 +195,7 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 			grid[i * levelHeight + j].collider.position.y,
 			grid[i * levelHeight + j].collider.radius * 2);
 #endif
-#if 1
+#if 0
 		CP_Settings_RectMode(CP_POSITION_CENTER);
 		if(COL_IsColliding(grid[i * levelHeight + j].collider, playerHitBox))
 			CP_Settings_Fill(CP_Color_Create(255, 0, 255, 200));	//RECT COLLIDER
@@ -211,7 +211,7 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 
 		break;
 	case GE_VOID:
-		CP_Settings_ImageMode(CP_POSITION_CENTER);
+		CP_Settings_RectMode(CP_POSITION_CENTER);
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 30));
 		CP_Graphics_DrawRect(
 			(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
