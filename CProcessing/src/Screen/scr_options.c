@@ -16,6 +16,7 @@ int selectButton, overlayNum;
 int customInputX, customInputY;
 int changingInput;
 Button customInputMenu[BLOB_PAUSE+2][4];
+CP_Vector mousePos;
 
 void CustomInputButtonsInit(void)
 {
@@ -356,8 +357,39 @@ CP_KEY getInput()
 		return 0;
 }
 
+void OptionsMenuActivate(void)
+{
+	switch (selectButton)
+	{
+	case SOUND:
+		break;
+	case CONTROLS:
+		overlayNum = CONTROLS;
+		break;
+	case EXIT:
+		SetGameState(SCR_MAIN_MENU);
+		break;
+	default:
+		break;
+	}
+}
+
+void ControlMenuActivate(void)
+{
+	if (customInputY == BLOB_PAUSE + 1) // if at Exit button
+		overlayNum = OPTIONS_BUTTONS;
+	else
+	{
+		customInputMenu[customInputY][customInputX].isSelected = 1;
+		customInputMenu[customInputY][customInputX].objColor = CP_Color_Create(255, 255, 0, 255);
+		changingInput = 1;
+	}
+}
+
 void OptionsInput(void)
 {
+	mousePos = CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY());
+	// Options Menu
 	if (overlayNum >= OPTIONS_BUTTONS)
 	{
 		if (GetBlobInputTriggered(BLOB_UP))
@@ -374,24 +406,32 @@ void OptionsInput(void)
 			else
 				selectButton++;
 		}
+		for (int i = 0; i < OPTIONS_BUTTONS; i++)
+		{
+			// Mouse x-pos collision check
+			if (mousePos.x >= (optionList[i].posX - optionList[i].width / 2) && mousePos.x <= (optionList[i].posX + optionList[i].width / 2))
+			{
+				// Mouse y-pos collision check	
+				if (mousePos.y >= (optionList[i].posY - optionList[i].height / 2) && mousePos.y <= (optionList[i].posY + optionList[i].height / 2))
+				{
+					selectButton = i;
+					if (CP_Input_MouseDown(MOUSE_BUTTON_1))
+						optionList[selectButton].isSelected = 1;
+					else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+						OptionsMenuActivate();
+				}
+				else
+					optionList[selectButton].isSelected = 0;
+			}
+			else
+				optionList[selectButton].isSelected = 0;
+		}
 		if (GetBlobInputTriggered(BLOB_INTERACT))
 		{
-			switch (selectButton)
-			{
-			case SOUND:
-				break;
-			case CONTROLS:
-				overlayNum = CONTROLS;
-				break;
-			case EXIT:
-				SetGameState(SCR_MAIN_MENU);
-				break;
-			default:
-				break;
-			}
+			OptionsMenuActivate();
 		}
 	}
-	else
+	else // Overlays
 	{
 		if (changingInput == 0)
 		{
@@ -429,16 +469,33 @@ void OptionsInput(void)
 					else
 						customInputX++;
 				}
+				for (int i = 0; i < BLOB_PAUSE + 2; i++)
+				{
+					for (int j = 0; j < 4; j++)
+					{
+						// Mouse x-pos collision check
+						if (mousePos.x >= (customInputMenu[i][j].posX - customInputMenu[i][j].width / 2) && mousePos.x <= (customInputMenu[i][j].posX + customInputMenu[i][j].width / 2))
+						{
+							// Mouse y-pos collision check	
+							if (mousePos.y >= (customInputMenu[i][j].posY - customInputMenu[i][j].height / 2) && mousePos.y <= (customInputMenu[i][j].posY + customInputMenu[i][j].height / 2))
+							{
+								customInputX = j;
+								customInputY = i;
+								if (CP_Input_MouseDown(MOUSE_BUTTON_1))
+									customInputMenu[i][j].isSelected = 1;
+								else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+									ControlMenuActivate();
+							}
+							else
+								optionList[selectButton].isSelected = 0;
+						}
+						else
+							optionList[selectButton].isSelected = 0;
+					}
+				}
 				if (GetBlobInputTriggered(BLOB_INTERACT))
 				{
-					if (customInputY == BLOB_PAUSE + 1) // if at Exit button
-						overlayNum = OPTIONS_BUTTONS;
-					else
-					{
-						customInputMenu[customInputY][customInputX].isSelected = 1;
-						customInputMenu[customInputY][customInputX].objColor = CP_Color_Create(255, 255, 0, 255);
-						changingInput = 1;
-					}
+					ControlMenuActivate();
 				}
 				break;
 			default:
