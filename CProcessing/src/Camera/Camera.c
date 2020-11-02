@@ -41,19 +41,30 @@ void CameraUpdate(CP_Vector* charPos, Fader* fader)
 		cameraPos.x += cameraOffset.x * dt * 2;
 		cameraPos.y += cameraOffset.y * dt * 2.5f;
 		translationMatrix = CP_Matrix_Translate(cameraPos);
-		/*if (CP_Input_KeyTriggered(KEY_R)) // Screen Shake test
-			ScreenShake(0.5f, 15.0f);*/
+		//if (CP_Input_KeyTriggered(KEY_R)) // Screen Shake test
+		//	ScreenShake(0.5f, 150.0f);
 	}
 	else
 	{
 		currentPosition = CP_Vector_Set(-(charPos->x - centerX + (CP_Random_RangeFloat(-shakeValue, shakeValue))), -(charPos->y - centerY + (CP_Random_RangeFloat(-shakeValue, shakeValue))));
-		translationMatrix = CP_Matrix_Translate(currentPosition);
+		cameraOffset = CP_Vector_Subtract(currentPosition, cameraPos);
+		cameraOffsetDist = CP_Vector_Distance(currentPosition, cameraPos);
+
+		cameraPos.x += cameraOffset.x * dt * 2;
+		cameraPos.y += cameraOffset.y * dt * 2.5f;
+		translationMatrix = CP_Matrix_Translate(cameraPos);
 		shakeTimer -= dt;
 	}
 
 	fader->fadePosX = -cameraPos.x;
 	fader->fadePosY = -cameraPos.y;
 	CP_Settings_ApplyMatrix(translationMatrix);
+}
+
+CP_Vector GetCameraPos()
+{
+	CP_Vector returnVec = CP_Vector_Set(-cameraPos.x, -cameraPos.y);
+	return returnVec;
 }
 
 void CameraExit(void)

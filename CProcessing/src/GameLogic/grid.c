@@ -43,7 +43,7 @@ void LoadMapFile (MAP _level)	//Call Load before Rendering Map
 		{
 			
 			levelData[i++] = (char)fgetc(fp);
-			if (levelData[i - 1] == '\n')
+			if (levelData[i - 1] == '\n' || levelData[i - 1] == EOF)
 			{
 				if (finalWidth < w)
 					finalWidth = w - 1;
@@ -172,8 +172,8 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 
 			(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
 			(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
-			GRID_UNIT_WIDTH,
-			GRID_UNIT_HEIGHT,
+			GRID_UNIT_WIDTH+1,
+			GRID_UNIT_HEIGHT+1,
 			255);
 		break;
 	case GE_WALL:
@@ -211,8 +211,8 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 
 		break;
 	case GE_VOID:
-		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 30));
 		CP_Settings_ImageMode(CP_POSITION_CENTER);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 30));
 		CP_Graphics_DrawRect(
 			(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
 			(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),

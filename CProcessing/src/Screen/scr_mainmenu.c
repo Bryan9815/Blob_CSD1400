@@ -15,11 +15,13 @@ typedef enum {
 CP_Color bgColor;
 Button menuList[MAIN_MENU_BUTTONS];
 int selectButton;
+bool mouseCheck;
 CP_Vector mousePos;
 
 void MainMenuInit(void)
 {
 	selectButton = 0;
+	mouseCheck = false;
 	bgColor = CP_Color_Create(0, 0, 0, 255);
 	float buttonBufferY = 125.f;
 
@@ -70,6 +72,7 @@ void MenuButtonActivate()
 
 void MainMenuUpdate(void)
 {
+	CP_Vector oldMousePos = CP_Vector_Set(mousePos.x, mousePos.y);
 	mousePos = CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY());
 	// Input
 	if (GetBlobInputTriggered(BLOB_UP))
@@ -87,25 +90,39 @@ void MainMenuUpdate(void)
 			selectButton++;
 	}
 	// Mouse Input
-	for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
+	if (!mouseCheck)
 	{
-		// Mouse x-pos collision check
-		if (mousePos.x >= (menuList[i].posX - menuList[i].width / 2) && mousePos.x <= (menuList[i].posX + menuList[i].width / 2))
+		for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
 		{
-			// Mouse y-pos collision check	
-			if (mousePos.y >= (menuList[i].posY - menuList[i].height / 2) && mousePos.y <= (menuList[i].posY + menuList[i].height / 2))
+			// Mouse x-pos collision check
+			if (mousePos.x >= (menuList[i].posX - menuList[i].width / 2) && mousePos.x <= (menuList[i].posX + menuList[i].width / 2))
 			{
-				selectButton = i;
-				if (CP_Input_MouseDown(MOUSE_BUTTON_1))
-					menuList[selectButton].isSelected = 1;
-				else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
-					MenuButtonActivate();
+				// Mouse y-pos collision check	
+				if (mousePos.y >= (menuList[i].posY - menuList[i].height / 2) && mousePos.y <= (menuList[i].posY + menuList[i].height / 2))
+				{
+					selectButton = i;
+					mouseCheck = true;
+				}
 			}
-			else
-				menuList[selectButton].isSelected = 0;
 		}
-		else
+	}
+	else
+	{
+		if (CP_Input_MouseDown(MOUSE_BUTTON_1))
+			menuList[selectButton].isSelected = 1;
+		else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+		{
+			MenuButtonActivate();
 			menuList[selectButton].isSelected = 0;
+			mouseCheck = false;
+		}
+		if ((int)mousePos.x != (int)oldMousePos.x || (int)mousePos.y != (int)oldMousePos.y)
+		{
+			if (mousePos.x < (menuList[selectButton].posX - menuList[selectButton].width / 2) || mousePos.x >(menuList[selectButton].posX + menuList[selectButton].width / 2))
+				mouseCheck = false;
+			if (mousePos.y < (menuList[selectButton].posY - menuList[selectButton].height / 2) || mousePos.y >(menuList[selectButton].posY + menuList[selectButton].height / 2))
+				mouseCheck = false;
+		}
 	}
 
 	if (GetBlobInputTriggered(BLOB_INTERACT))
