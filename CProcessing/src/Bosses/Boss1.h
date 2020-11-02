@@ -13,7 +13,7 @@ void Shield1Draw(Boss armorboss);
 void AttackNear(Boss* armorboss, Player* player);
 void AttackNearDraw(Boss armorboss);
 void AttackCharge(Player* player, Boss* armorboss, GridUnit *grid);
-void AttackFarDraw(Boss armorboss, Player player);
+void AttackFarDraw(Boss armorboss);
 void StunTimer(Boss* currentboss);
 void B1_StateChange(Player player, Boss* currentboss);
 void BossAction(Player player, GridUnit* grid);
