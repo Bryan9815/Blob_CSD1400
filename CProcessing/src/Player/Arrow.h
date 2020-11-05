@@ -6,8 +6,20 @@
 
 CP_Color		arrowColor;
 
+typedef enum
+{
+	RELEASE,
+	RECALL,
+	WITHPLAYER,
+	MOTION,
+	MOTIONLESS
+} ArrowState;
+
+
 typedef struct
 {
+	ArrowState  arrowState;
+
 	CP_Vector	oldPosition,
 				newPosition;
 
@@ -19,19 +31,14 @@ typedef struct
 
 } Arrow;
 
-typedef enum
-{
-	RELEASE,
-	RECALL,
-	WITHPLAYER,
-	MOTION,
-	MOTIONLESS
-} ArrowState;
 
-ArrowState  playerArrowState;
+
 float 	travelTimer, travelDistance, currentDistance; 
 
 void CreateArrow(Arrow* arrow);
-void CalculateNewPosition(Arrow* arrow, Body pbody);
-void ArrowInMotion(Arrow* arrow);
-void ArrowPlayerCollision(Arrow* arrow, Body pbody);
+void DrawArrow(Arrow* arrow);
+bool ArrowStateChange(Body* pBody, Body* bBody, Arrow* arrow);
+void CalculateNewPosition(Arrow* arrow, Body* pBody);
+bool ArrowInMotion(Arrow* arrow, Body* bBody);
+void ArrowPlayerCollision(Arrow* arrow, Body* pBody);
+bool ArrowBossCollision(Body* arrow, Body* bBody);

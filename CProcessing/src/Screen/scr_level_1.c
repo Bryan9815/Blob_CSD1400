@@ -22,6 +22,7 @@ void LevelDraw(Player* player)
 		GridUpdate(level[0], player->pBody.hitbox);
 		PlayerDraw(&newPlayer);
 		Boss1Draw(ArmorSlime, newPlayer);
+		DrawArrow(&newPlayer.arrow);
 	}
 	else
 	{
@@ -41,6 +42,11 @@ void Level1Update(Player* player)
 		}
 		PlayerUpdate(&newPlayer);
 		Boss1Battle(newPlayer, level[0]);
+		bool dealdamage = ArrowStateChange(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
+		if (dealdamage == true)
+		{
+			ArmorSlime.Health = 0;
+		}
 	}
 	else
 	{

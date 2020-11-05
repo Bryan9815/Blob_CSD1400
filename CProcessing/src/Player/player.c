@@ -11,15 +11,15 @@ void PlayerInit(Player* player) //Default Variables
 {
 	//Set Player and Arrow state
 	playerState = STILL;
-	playerArrowState = WITHPLAYER;
+	player->arrow.arrowState = WITHPLAYER;
 
 	playerColor = CP_Color_Create(255, 255, 255, 255);
-	sprite = CP_Image_Load("././Assets/player.png");
+	sprite = CP_Image_Load("././Assets/player.png"); //KONO DIO DA!
 
 
 	//Player Stats and Position
 	player->health = 1;
-	player->rotation = 0.0f;
+	player->pBody.rotation = 0.0f;
 
 #if 0
 	player->hitBox.shapeType = COL_RECT; //RECT COLLIDER
@@ -54,38 +54,23 @@ void PlayerDraw(Player* player)
 		//Draw player
 		int transparency = 50;
 		CP_Settings_Fill(CP_Color_Create(255, 255, 255, transparency));
-		CP_Graphics_DrawEllipseAdvanced(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, player->rotation);
+		CP_Graphics_DrawEllipseAdvanced(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, player->pBody.rotation);
 		
 		//Draw sprite
-		CP_Image_DrawAdvanced(sprite, player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, transparency, player->rotation);
+		CP_Image_DrawAdvanced(sprite, player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, transparency, player->pBody.rotation);
 
 		//Draw arrow
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 50));
-		CP_Graphics_DrawEllipseAdvanced(player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius, player->arrow.aBody.hitbox.radius, player->rotation + 45.0f);
-		//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
+		CP_Graphics_DrawEllipseAdvanced(player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius, player->arrow.aBody.hitbox.radius, player->pBody.rotation + 45.0f);
 
 	}
 	else
 	{
 		//Draw player
 		CP_Settings_Fill(playerColor);
-		CP_Graphics_DrawEllipseAdvanced(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, player->rotation);
+		CP_Graphics_DrawEllipseAdvanced(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, player->pBody.rotation);
 
-		CP_Image_DrawAdvanced(sprite, player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, 255, player->rotation);
-
-		//Draw arrow
-		if (player->arrow.charging == 1)
-		{
-			//Draw arrow
-			CP_Settings_Fill(CP_Color_Create(255, 255, 0, 100));
-		}
-		else if (player->arrow.charging == 0)
-		{
-			//Draw arrow
-			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-			//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
-		}
-		CP_Graphics_DrawEllipseAdvanced(player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius, player->arrow.aBody.hitbox.radius, player->rotation + 45.0f);
+		CP_Image_DrawAdvanced(sprite, player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, 255, player->pBody.rotation);
 
 	}
 
@@ -205,17 +190,12 @@ void PlayerMovement(Player* player)
 	Dodge(player);
 
 	CollisionCheck(&(player->pBody), level[0]);
-	//PlayerEntityCollision(&)
+	PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
 	
 	player->pBody.hitbox.position.x += player->pBody.velocity.x;		//Circle
 	player->pBody.hitbox.position.y += player->pBody.velocity.y;
 
 	//Arrow
-	if (playerArrowState == WITHPLAYER)
-	{
-		player->arrow.aBody.hitbox.position = player->pBody.hitbox.position;
-	}
-
 }
 
 
@@ -224,11 +204,11 @@ void MouseTracking(Player* player)
 	mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), player->pBody.hitbox.position);
 	if (mousePositionVector.x < 0)
 	{
-		player->rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, 1.0f)) + 180.0f;
+		player->pBody.rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, 1.0f)) + 180.0f;
 	}
 	else
 	{
-		player->rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, -1.0f));
+		player->pBody.rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, -1.0f));
 	}
 }
 
@@ -248,7 +228,7 @@ void Dodge(Player* player)
 			playerState = STILL;
 		}
 		
-		if (playerArrowState == WITHPLAYER)
+		if (player->arrow.arrowState == WITHPLAYER)
 		{
 			player->arrow.aBody.hitbox.position = player->pBody.hitbox.position;
 		}
@@ -269,39 +249,43 @@ void DodgeRecharge(Player* player) //Recharge Dodge
 	}
 }
 
-void ArrowStateChange(Player* player, Arrow* arrow) // arrow release
-{
-	switch (playerArrowState) {
-	case RELEASE:
-		CalculateNewPosition(arrow, player->pBody);
-		playerArrowState = MOTION;
-		break;
-	case MOTIONLESS:
-		ArrowPlayerCollision(arrow, player->pBody); //pickup player
-		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT))
-		{
-			CalculateNewPosition(arrow, player->pBody);
-			playerArrowState = RECALL;
-		}
-		break;
-	case WITHPLAYER:
-		arrow->aBody.hitbox.position = player->pBody.hitbox.position;
-		break;
-	default:
-		break;
-	}
-
-
-	if (playerArrowState == MOTION || playerArrowState == RECALL)
-	{
-		ArrowInMotion(arrow);
-	}
-	
-}
+//void ArrowStateChange(Player* player, Arrow* arrow) // arrow release
+//{
+//	switch (playerArrowState) {
+//	case RELEASE:
+//		CalculateNewPosition(arrow, player->pBody);
+//		playerArrowState = MOTION;
+//		break;
+//	case MOTIONLESS:
+//		ArrowPlayerCollision(arrow, player->pBody); //pickup player
+//		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT))
+//		{
+//			CalculateNewPosition(arrow, player->pBody);
+//			playerArrowState = RECALL;
+//		}
+//		break;
+//	case WITHPLAYER:
+//		arrow->aBody.hitbox.position = player->pBody.hitbox.position;
+//		break;
+//	default:
+//		break;
+//	}
+//
+//
+//	if (playerArrowState == MOTION || playerArrowState == RECALL)
+//	{
+//		bool hit = ArrowInMotion(arrow);
+//		if (hit == true)
+//		{
+//			ArmorSlime.Health = 0; //decrease boss health
+//		}
+//	}
+//	
+//}
 
 void ArrowTrigger(Player* player)
 {
-	if (playerState == STILL && playerArrowState == WITHPLAYER)
+	if (playerState == STILL && player->arrow.arrowState == WITHPLAYER)
 	{
 		if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
 		{
@@ -316,7 +300,7 @@ void ArrowTrigger(Player* player)
 		{
 			if (player->arrow.charging == 1)
 			{
-				playerArrowState = RELEASE;
+				player->arrow.arrowState = RELEASE;
 				player->arrow.charging = 0;
 			}
 		}
@@ -327,7 +311,6 @@ void ArrowTrigger(Player* player)
 		player->arrow.chargeTimer = 0.0f;
 		player->arrow.charging = 0;
 	}
-
 }
 
 /*Update Player*/
@@ -337,7 +320,7 @@ void PlayerUpdate(Player* player)
 	{
 		PlayerMovement(player);
 		ArrowTrigger(player);
-		ArrowStateChange(player, &(player->arrow));
+		//ArrowStateChange(player, &(player->arrow));
 	}
 	else //when player is dead
 	{
@@ -346,7 +329,7 @@ void PlayerUpdate(Player* player)
 		//set values to default if needed
 		PlayerMovement(player);
 		ArrowTrigger(player);
-		ArrowStateChange(player, &(player->arrow));
+		//ArrowStateChange(player, &(player->arrow));
 	}
 
 }

@@ -1,18 +1,18 @@
 #include <cprocessing.h>
 #include "Boss.h"
-#include "../Player/player.h"
+//#include "../Player/player.h"
 #include "Boss1.h"
-#include "../GameLogic/grid.h"
-#include "../Screen/scr_level_1.h"
+//#include "../GameLogic/grid.h"
+//#include "../Screen/scr_level_1.h"
 #include "../GameLogic/Collider.h"
-#include "../GameLogic/Collision.h"
+//#include "../GameLogic/Collision.h"
 
 float BossRange = 200.f;
 
 void Shield1Draw(Boss armorboss) //draws shield for boss 1
 {
 	CP_Settings_ImageMode(CP_POSITION_CENTER); //draw from center of boss
-	CP_Image_DrawAdvanced(shield, armorboss.BossBody.hitbox.position.x, armorboss.BossBody.hitbox.position.y, 200.f, 200.f, 255, armorboss.Rotation);
+	CP_Image_DrawAdvanced(shield, armorboss.BossBody.hitbox.position.x, armorboss.BossBody.hitbox.position.y, 200.f, 200.f, 30, armorboss.BossBody.rotation);
 }
 
 void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss

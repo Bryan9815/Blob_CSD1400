@@ -138,29 +138,6 @@ bool ArrowCollision(Body* entity, GridUnit* _level)
 //
 //}
 
-bool ArrowBossCollision(Body* arrow, Body* boss)
-{
-	bool dealdamage = false;
-	CP_Vector differences = CP_Vector_Subtract(arrow->hitbox.position, boss->hitbox.position);
-	if (COL_IsColliding(arrow->hitbox, boss->hitbox))
-	{
-		if (CP_Math_Degrees(CP_Vector_Angle(CP_Vector_Negate(arrow->velocity), boss->velocity)) >= 160.0f) //CP_Math_Degrees
-		{
-			arrow->velocity = CP_Vector_Set(0.0f, 0.0f);
-			dealdamage = true;
-		}
-		else
-		{
-			
-			float theta = CP_Vector_Angle(CP_Vector_Negate(arrow->velocity), differences);
-			theta = 2 * theta;
-			CP_Matrix rotation = CP_Matrix_Rotate(CP_Math_Degrees(theta));
-			arrow->velocity = CP_Vector_MatrixMultiply(rotation, arrow->velocity);
-		}
-	}
-	return dealdamage;
-}
-
 bool PlayerEntityCollision(Body* player, Body* entity)
 {
 	bool colliding = false;

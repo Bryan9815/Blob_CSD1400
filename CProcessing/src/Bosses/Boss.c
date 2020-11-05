@@ -13,12 +13,13 @@ void BossInit(Boss *currentboss, int health, float size) //function to set varia
 	currentboss->Health = health;
 	currentboss->BossBody.hitbox.radius = size;
 	currentboss->BossBody.velocity = CP_Vector_Set(0.f,0.f); //to be balanced
+	currentboss->BossBody.rotation = 0.0f;
 	currentboss->State = IDLE;
 }
 
 void BossDraw(Boss currentboss) //function to draw boss(es)
 {
-	CP_Color BossColor = CP_Color_Create(0, 255, 255, 255);
+	CP_Color BossColor = CP_Color_Create(0, 255, 255, 60);
 	CP_Settings_Fill(BossColor);
 	CP_Graphics_DrawCircle(currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius*2)); //replace with image once finalised
 }
@@ -54,8 +55,12 @@ void BossRotation(Boss* currentboss, CP_Vector position)
 	CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
 	CP_Vector MoveDir = CP_Vector_Subtract(position, currentboss->BossBody.hitbox.position);
 
+	//if (position.x < currentboss->BossBody.hitbox.position.x)
+	//	currentboss->Rotation = CP_Vector_Angle(UpDir, MoveDir); //clockwise rotation of boss from upward dir
+	//else
+	//	currentboss->Rotation = 360.f - CP_Vector_Angle(UpDir,MoveDir); //find the larger angle if > 180 degrees
 	if (position.x < currentboss->BossBody.hitbox.position.x)
-		currentboss->Rotation = CP_Vector_Angle(UpDir, MoveDir); //clockwise rotation of boss from upward dir
+		currentboss->BossBody.rotation = CP_Vector_Angle(UpDir, MoveDir); //clockwise rotation of boss from upward dir
 	else
-		currentboss->Rotation = 360.f - CP_Vector_Angle(UpDir,MoveDir); //find the larger angle if > 180 degrees
+		currentboss->BossBody.rotation = 360.f - CP_Vector_Angle(UpDir, MoveDir); //find the larger angle if > 180 degrees
 }

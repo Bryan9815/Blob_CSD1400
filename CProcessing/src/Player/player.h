@@ -4,13 +4,13 @@
 #include "../GameLogic/Collision.h"
 #include "../GameLogic/grid.h"
 
-#define PLAYER_SPEED	2.0f
+#define PLAYER_SPEED	7.0f
 #define DODGE_COOLDOWN	4	//Seconds
 #define MAX_DODGE		2
 
 typedef struct
 {
-	float		rotation;   //Necessary for sprite
+	//float		rotation;   //Necessary for sprite
 	int			health;
 	int			numDodge;	// number of dodges
 	Body		pBody;		//Player position and velocity;
@@ -52,5 +52,4 @@ void Dodge(Player* player);
 void DodgeRecharge(Player* player);
 
 void ArrowTrigger(Player* player);
-void ArrowStateChange(Player* player, Arrow* arrow);
 
