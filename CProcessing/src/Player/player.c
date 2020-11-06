@@ -190,10 +190,10 @@ void PlayerMovement(Player* player)
 	Dodge(player);
 
 	bool playerBossCol = PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
-	bool playerWallCol = CollisionCheck(&(player->pBody), level[0]);
-	if (playerWallCol == true && playerBossCol == true)
+	CollisionCheck(&(player->pBody), level[0]);
+	if (playerBossCol == true && playerState == DODGING)
 	{
-		printf("X: %.2f, Y: %.2f", player->pBody.velocity.x, player->pBody.velocity.y);
+		player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
 	}
 
 	player->pBody.hitbox.position.x += player->pBody.velocity.x;		//Circle

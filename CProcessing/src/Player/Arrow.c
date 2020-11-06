@@ -112,6 +112,7 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 {
 	// travel chargeScale in 1 sec
 	// every 0.5 seconds, arrow moves 30*normalizeddir
+	bool arrowBossCol = ArrowBossCollision(&arrow->aBody, bBody);
 	if (currentDistance >= travelDistance)
 	{
 		arrow->oldPosition = arrow->aBody.hitbox.position;
@@ -132,7 +133,7 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 		//travelTimer -= CP_System_GetDt();
 		//}
 	}
-	return ArrowBossCollision(&arrow->aBody, bBody);
+	return arrowBossCol;
 }
 
 void ArrowPlayerCollision(Arrow* arrow, Body* pBody)
