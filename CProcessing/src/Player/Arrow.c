@@ -122,15 +122,15 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 	}
 	else
 	{
-		travelTimer += CP_System_GetDt();
-		if (travelTimer >= 0.5)
-		{
-			if (!ArrowCollision(&(arrow->aBody), level[0])) arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
-			currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
-			arrow->oldPosition = arrow->aBody.hitbox.position;
-			//travelTimer -= travelTimer;
-			travelTimer -= CP_System_GetDt();
-		}
+		//travelTimer += CP_System_GetDt();
+		//if (travelTimer >= 0.0)
+		//{
+		if (!ArrowCollision(&(arrow->aBody), level[0])) arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
+		currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
+		arrow->oldPosition = arrow->aBody.hitbox.position;
+		//travelTimer -= travelTimer;
+		//travelTimer -= CP_System_GetDt();
+		//}
 	}
 	return ArrowBossCollision(&arrow->aBody, bBody);
 }

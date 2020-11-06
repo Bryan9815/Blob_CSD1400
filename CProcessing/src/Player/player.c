@@ -189,9 +189,13 @@ void PlayerMovement(Player* player)
 	}
 	Dodge(player);
 
-	CollisionCheck(&(player->pBody), level[0]);
-	PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
-	
+	bool playerBossCol = PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
+	bool playerWallCol = CollisionCheck(&(player->pBody), level[0]);
+	if (playerWallCol == true && playerBossCol == true)
+	{
+		printf("X: %.2f, Y: %.2f", player->pBody.velocity.x, player->pBody.velocity.y);
+	}
+
 	player->pBody.hitbox.position.x += player->pBody.velocity.x;		//Circle
 	player->pBody.hitbox.position.y += player->pBody.velocity.y;
 

@@ -47,6 +47,7 @@ bool CollisionCheck(Body* entity, GridUnit* _level)
 					entity->velocity.y > 0)																																			//Player is moving down
 			{
 				entity->velocity.y = (wallCol.position.y - wallCol.height / 2) - (entity->hitbox.position.y + entity->hitbox.radius);
+
 				Colliding = true;
 			}
 
@@ -127,16 +128,6 @@ bool ArrowCollision(Body* entity, GridUnit* _level)
 	return Colliding;
 }
 
-//bool EntityCollision(Body* entity1, Body* entity2)
-//{
-//	bool colliding = false;
-//
-//	if (COL_IsColliding(entity1->hitbox, entity2->hitbox))
-//	{
-//		
-//	}
-//
-//}
 
 bool PlayerEntityCollision(Body* player, Body* entity)
 {
@@ -154,3 +145,5 @@ bool PlayerEntityCollision(Body* player, Body* entity)
 
 	return colliding;
 }
+
+//bool PlayerMultiCollision(Body *player, Body* entity, GridUnit* _level)
