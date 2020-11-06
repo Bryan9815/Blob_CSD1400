@@ -6,14 +6,15 @@
 //#include "../Screen/scr_level_1.h"
 #include "../GameLogic/Collider.h"
 //#include "../GameLogic/Collision.h"
+#include "../GameLogic/ScreenManager.h"
 
 float BossRange = 200.f;
 
-void Shield1Draw(Boss armorboss) //draws shield for boss 1
+/*void Shield1Draw(Boss armorboss) //draws shield for boss 1
 {
 	CP_Settings_ImageMode(CP_POSITION_CENTER); //draw from center of boss
 	CP_Image_DrawAdvanced(shield, armorboss.BossBody.hitbox.position.x, armorboss.BossBody.hitbox.position.y, 200.f, 200.f, 30, armorboss.BossBody.rotation);
-}
+}*/
 
 void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 {
@@ -108,7 +109,7 @@ void AttackFarDraw(Boss armorboss)
 			rotation = 360 - CP_Vector_Angle(RightDir, ChargeDir); //find the larger angle if > 180 degrees
 		
 		//draw rectangle, adjust so it draws from the centre of the short side
-		if (ChargeTarget.x >= armorboss.BossBody.hitbox.position.x) 
+		if (ChargeTarget.x > armorboss.BossBody.hitbox.position.x) 
 			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y - 50.f), width, 100.f, rotation, 0.f);
 		else
 			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y + 50.f), width, 100.f, rotation, 0.f);
@@ -134,7 +135,7 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	static float AttackCount = 0;
 	float PlayerDist = CP_Vector_Distance(player.pBody.hitbox.position, currentboss->BossBody.hitbox.position);
 
-	//-Battle starts in idle -> After 6 sec attack once -> Go back to idle -> Stop once defeated
+	//-Battle starts in idle -> if near for 2 sec do near attack -> if near 3x or far for 2 sec do charge
 	if (currentboss->State == IDLE)
 	{
 		if (PlayerDist <= BossRange && AttackCount < 3)
@@ -184,7 +185,8 @@ void BossAction(Player player, GridUnit* grid) //determines the boss actions, on
 		StunTimer(&ArmorSlime);
 		break; //boss should stop moving, allowing player to shoot
 	case DEFEAT:
-		break; //should proceed to next stage (main menu/win screen for prototype)
+		SetGameState(SCR_MAIN_MENU); //proceed to next stage (main menu/win screen for prototype)
+		break; 
 	default: //this is mainly to check for bugs/errors
 		CP_Settings_Fill(errortext);
 		CP_Settings_TextSize(100.f);
@@ -210,6 +212,6 @@ void Boss1Draw(Boss armorboss, Player player)
 {
 	AttackFarDraw(armorboss);
 	AttackNearDraw(armorboss);
-	Shield1Draw(armorboss);
+	//Shield1Draw(armorboss);
 	BossDraw(armorboss);
 }

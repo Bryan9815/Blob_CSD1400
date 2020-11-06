@@ -9,7 +9,7 @@ AttackState NearAttack, FarAttack;
 Collider Attack;
 CP_Vector ChargeTarget, ChargeDir;
 
-void Shield1Draw(Boss armorboss);
+//void Shield1Draw(Boss armorboss);
 void AttackNear(Boss* armorboss, Player* player);
 void AttackNearDraw(Boss armorboss);
 void AttackCharge(Player* player, Boss* armorboss, GridUnit *grid);
