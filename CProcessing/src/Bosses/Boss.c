@@ -5,9 +5,10 @@
 #include "../GameLogic/grid.h"
 #include "../Screen/scr_level_1.h"
 
-
+CP_Image bosssprite;
 void BossInit(Boss *currentboss, int health, float size) //function to set variables of boss(es)
 {
+	bosssprite = CP_Image_Load("././Assets/Boss1.png");
 	currentboss->BossBody.hitbox.shapeType = COL_CIRCLE;
 	currentboss->BossBody.hitbox.position = CP_Vector_Set(200.f,200.f); //temp(?)
 	currentboss->Health = health;
@@ -19,9 +20,11 @@ void BossInit(Boss *currentboss, int health, float size) //function to set varia
 
 void BossDraw(Boss currentboss) //function to draw boss(es)
 {
-	CP_Color BossColor = CP_Color_Create(0, 255, 255, 60);
-	CP_Settings_Fill(BossColor);
-	CP_Graphics_DrawCircle(currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius*2)); //replace with image once finalised
+
+	//CP_Color BossColor = CP_Color_Create(0, 255, 255, 60);
+	//CP_Settings_Fill(BossColor);
+	CP_Image_DrawAdvanced(bosssprite, currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius * 2), (currentboss.BossBody.hitbox.radius * 2), 255, currentboss.BossBody.rotation);
+	//CP_Graphics_DrawCircle(currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius*2)); //replace with image once finalised
 }
 
 void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //boss slowly moves toward player

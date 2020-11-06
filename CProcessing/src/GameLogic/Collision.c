@@ -38,6 +38,8 @@ bool CollisionCheck(Body* entity, GridUnit* _level)
 			
 			//Player can be replaced with any reference a struct with a collider and stores its position there instead, pass entity refer to INTOBJ.AS
 
+
+			//@REDO
 			//TOUCH FLOOR
 			if (	_level[i * GetLevelHeight() + j].gridType == GE_WALL &&
 					(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol)								||
@@ -138,8 +140,8 @@ bool PlayerEntityCollision(Body* player, Body* entity)
 		CP_Vector differences = CP_Vector_Subtract(player->hitbox.position, entity->hitbox.position);
 		float mag = CP_Vector_Length(differences); //magnitude of diffvector
 		float resMag = player->hitbox.radius + entity->hitbox.radius; //magnitude of resultant vector
-		CP_Vector resultantVector = CP_Vector_Scale(differences, resMag / mag);
-		player->hitbox.position = CP_Vector_Add(entity->hitbox.position, resultantVector);
+		CP_Vector resultantVector = CP_Vector_Scale(differences, (resMag-mag)/mag );
+		player->velocity = CP_Vector_Add(player->velocity, resultantVector);
 		colliding = true;
 	}
 

@@ -69,7 +69,7 @@ void GridInit(GridUnit* grid)//Add starting point
 {
 	
 	tile1 = CP_Image_Load("././Assets/Tile1.png");
-	tile2 = CP_Image_Load("././Assets/Tile2.png");
+	tile2 = CP_Image_Load("././Assets/Tile3.png");
 #if 0
 	//Boundary 1D
 	for (int i = 0; i < GRID_SIZE; i++) {
