@@ -17,10 +17,20 @@ This is for casting a grid
 typedef enum 
 {
 	GE_VOID,
-	GE_FlOOR,
+	GE_FLOOR,
 	GE_WALL,	
 
 }GRID_ELEMENTS;
+
+typedef enum
+{
+	GA_VOID,
+	GA_FLOOR,
+	GA_WALL1,
+	GA_WALL2,
+	GA_WALL3,
+
+}GRID_ASSET;
 
 typedef enum
 {
@@ -35,6 +45,8 @@ typedef struct
 	Collider collider;
 
 	GRID_ELEMENTS gridType;
+
+	GRID_ASSET gridAsset;
 
 }GridUnit;
 
