@@ -191,15 +191,15 @@ void PlayerMovement(Player* player)
 				player->pBody.velocity = dir;
 			}
 
-			player->pBody.velocity.x = player->pBody.velocity.x * (PLAYER_SPEED * (dodgeDistance / 20));
-			player->pBody.velocity.y = player->pBody.velocity.y * (PLAYER_SPEED * (dodgeDistance / 20));
+			player->pBody.velocity.x = player->pBody.velocity.x * (PLAYER_SPEED*CP_System_GetDt() * (dodgeDistance / 20));
+			player->pBody.velocity.y = player->pBody.velocity.y * (PLAYER_SPEED*CP_System_GetDt() * (dodgeDistance / 20));
 			playerState = DODGING;
 		}
 
 		if (playerState != DODGING)
 		{
-			player->pBody.velocity.x = (player->pBody.velocity.x * PLAYER_SPEED);
-			player->pBody.velocity.y = (player->pBody.velocity.y * PLAYER_SPEED);
+			player->pBody.velocity.x = (player->pBody.velocity.x * PLAYER_SPEED * CP_System_GetDt());
+			player->pBody.velocity.y = (player->pBody.velocity.y * PLAYER_SPEED * CP_System_GetDt());
 		}
 	}
 
@@ -210,6 +210,7 @@ void PlayerMovement(Player* player)
 		player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
 	}
 	Dodge(player);
+
 	player->pBody.hitbox.position.x += player->pBody.velocity.x;		//Circle
 	player->pBody.hitbox.position.y += player->pBody.velocity.y;
 
@@ -267,40 +268,6 @@ void DodgeRecharge(Player* player) //Recharge Dodge
 	}
 }
 
-//void ArrowStateChange(Player* player, Arrow* arrow) // arrow release
-//{
-//	switch (playerArrowState) {
-//	case RELEASE:
-//		CalculateNewPosition(arrow, player->pBody);
-//		playerArrowState = MOTION;
-//		break;
-//	case MOTIONLESS:
-//		ArrowPlayerCollision(arrow, player->pBody); //pickup player
-//		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT))
-//		{
-//			CalculateNewPosition(arrow, player->pBody);
-//			playerArrowState = RECALL;
-//		}
-//		break;
-//	case WITHPLAYER:
-//		arrow->aBody.hitbox.position = player->pBody.hitbox.position;
-//		break;
-//	default:
-//		break;
-//	}
-//
-//
-//	if (playerArrowState == MOTION || playerArrowState == RECALL)
-//	{
-//		bool hit = ArrowInMotion(arrow);
-//		if (hit == true)
-//		{
-//			ArmorSlime.Health = 0; //decrease boss health
-//		}
-//	}
-//	
-//}
-
 void ArrowTrigger(Player* player)
 {
 	if (playerState == STILL && player->arrow.arrowState == WITHPLAYER)
@@ -338,7 +305,6 @@ void PlayerUpdate(Player* player)
 	{
 		PlayerMovement(player);
 		ArrowTrigger(player);
-		//ArrowStateChange(player, &(player->arrow));
 	}
 	else //when player is dead
 	{

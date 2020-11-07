@@ -4,7 +4,7 @@
 #include "../GameLogic/Collision.h"
 #include "../GameLogic/grid.h"
 
-#define PLAYER_SPEED	7.0f
+#define PLAYER_SPEED	320.0f
 #define DODGE_COOLDOWN	4	//Seconds
 #define MAX_DODGE		2
 
@@ -34,8 +34,6 @@ CP_Vector	mousePositionVector;
 CP_Image	sprite;
 CP_Color	playerColor;
 CP_Color	backgroundColour;
-
-
 
 float dodgeTimer;		//Timer for dodging cooldown
 float dodgeDistance;	//distance travelled via dodge
