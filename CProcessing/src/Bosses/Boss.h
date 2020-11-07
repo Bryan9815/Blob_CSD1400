@@ -17,6 +17,7 @@ typedef enum
 
 typedef struct
 {
+	CP_Image bosssprite;//image for boss
 	float Rotation;		//orientation of boss for drawing
 	int Health;			//Health of boss
 	BossState State;	//determines boss actions
@@ -29,6 +30,7 @@ typedef enum
 	WARNING,
 	ATTACK
 } AttackState;
+
 
 Boss ArmorSlime; //currently only 1 boss
 
