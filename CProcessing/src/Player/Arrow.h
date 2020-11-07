@@ -18,6 +18,7 @@ typedef enum
 
 typedef struct
 {
+	CP_Image	arrowSprite;
 	ArrowState  arrowState;
 
 	CP_Vector	oldPosition,
@@ -30,8 +31,6 @@ typedef struct
 	Body		aBody;
 
 } Arrow;
-
-CP_Image arrowSprite;
 
 float 	travelTimer, travelDistance, currentDistance; 
 

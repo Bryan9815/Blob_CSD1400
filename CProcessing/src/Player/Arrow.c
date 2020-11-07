@@ -8,28 +8,23 @@ int timer = 0;
 void DrawArrow(Arrow* arrow)
 {
 	
-	//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 	//Draw arrow
+	int alpha = 255;
+	//if (arrow->charging == 1)
+	//{
 
-	if (arrow->charging == 1)
-	{
-		//Draw arrow
-		CP_Settings_Fill(CP_Color_Create(255, 255, 0, 100));
-	}
-	else if (arrow->charging == 0)
-	{
-		//Draw arrow
-		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-		//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, arrow->.width, player->arrow.width, player->rotation + 45.0f, 1);
-	}
-	CP_Graphics_DrawEllipseAdvanced(arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, arrow->aBody.rotation); // add rotation bij
-	CP_Image_DrawAdvanced(arrowSprite, arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, 255, arrow->aBody.rotation);
+	//}
+	//else if (arrow->charging == 0)
+	//{
+
+	//}
+	CP_Image_DrawAdvanced(arrow->arrowSprite, arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, alpha, arrow->aBody.rotation);
 }
 
 void CreateArrow(Arrow* arrow)
 {
 	arrowColor = CP_Color_Create(255, 0, 0, 255);
-	arrowSprite = CP_Image_Load("././Assets/arrow.png");
+	arrow->arrowSprite = CP_Image_Load("././Assets/arrow.png");
 
 	//Arrow Positiion
 	//arrow->currentPosition = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);

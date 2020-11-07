@@ -15,7 +15,7 @@ void PlayerInit(Player* player) //Default Variables
 	player->arrow.arrowState = WITHPLAYER;
 
 	playerColor = CP_Color_Create(255, 255, 255, 255);
-	sprite = CP_Image_Load("././Assets/player.png"); // NO MORE KONO DIO DA!
+	sprite = CP_Image_Load("././Assets/slime.png"); // NO MORE KONO DIO DA!
 
 
 	//Player Stats and Position
@@ -54,15 +54,12 @@ void PlayerDraw(Player* player)
 	{
 		//Draw player
 		int transparency = 50;
-		//CP_Settings_Fill(CP_Color_Create(255, 255, 255, transparency));
-		//CP_Graphics_DrawEllipseAdvanced(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, player->pBody.rotation);
 		
 		//Draw player sprite
 		CP_Image_DrawAdvanced(sprite, player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, transparency, player->pBody.rotation);
 
 		//Draw arrow
-		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 50));
-		CP_Graphics_DrawEllipseAdvanced(player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius, player->arrow.aBody.hitbox.radius, player->pBody.rotation + 45.0f);
+		CP_Image_DrawAdvanced(player->arrow.arrowSprite, player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius, player->arrow.aBody.hitbox.radius, transparency, player->arrow.aBody.rotation);
 
 	}
 	else
