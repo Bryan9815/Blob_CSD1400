@@ -45,7 +45,7 @@ void CreateArrow(Arrow* arrow)
 
 	//Hitbox variables
 	arrow->aBody.hitbox.shapeType = COL_CIRCLE; //CIRCLE COLLIDER
-	arrow->aBody.hitbox.radius = 25;
+	arrow->aBody.hitbox.radius = 25.0f;
 
 	arrow->arrowState = WITHPLAYER;
 

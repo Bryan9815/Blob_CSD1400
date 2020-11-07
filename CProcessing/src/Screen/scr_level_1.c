@@ -10,8 +10,8 @@ void Level1Init(void)
 	GridInit(level[0]);
 	PlayerInit(&newPlayer);
 	CameraInit(&newPlayer.pBody.hitbox.position);
-	BossInit(&ArmorSlime, 1, 80.f);
-	shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
+	Boss1Init();
+	//shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
 }
 
 void LevelDraw(Player* player)
@@ -21,7 +21,7 @@ void LevelDraw(Player* player)
 	{
 		GridUpdate(level[0], player->pBody.hitbox);
 		PlayerDraw(&newPlayer);
-		Boss1Draw(ArmorSlime, newPlayer);
+		Boss1Draw(ArmorSlime);
 		DrawArrow(&newPlayer.arrow);
 	}
 	else
@@ -41,7 +41,7 @@ void Level1Update(Player* player)
 			pause = true;
 		}
 		PlayerUpdate(&newPlayer);
-		Boss1Battle(newPlayer, level[0]);
+		Boss1Battle();
 		bool dealdamage = ArrowStateChange(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
 		if (dealdamage == true)
 		{
@@ -61,5 +61,6 @@ void Level1Update(Player* player)
 
 void Level1Exit(void) 
 {
-	
+	SetGameState(SCR_MAIN_MENU);
+	Boss1Exit();
 }

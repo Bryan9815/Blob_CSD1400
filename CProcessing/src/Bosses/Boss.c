@@ -23,7 +23,7 @@ void BossDraw(Boss currentboss) //function to draw boss(es)
 
 	//CP_Color BossColor = CP_Color_Create(0, 255, 255, 60);
 	//CP_Settings_Fill(BossColor);
-	CP_Image_DrawAdvanced(bosssprite, currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius * 2), (currentboss.BossBody.hitbox.radius * 2), 255, currentboss.BossBody.rotation);
+	CP_Image_DrawAdvanced(currentboss.bosssprite, currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius * 2), (currentboss.BossBody.hitbox.radius * 2), 255, currentboss.BossBody.rotation);
 	//CP_Graphics_DrawCircle(currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius*2)); //replace with image once finalised
 }
 
