@@ -35,7 +35,7 @@ void PlayerInit(Player* player) //Default Variables
 #endif
 
 	//Player dodge
-	dodgeDistance = CP_System_GetWindowWidth() / 30.0f;
+	dodgeDistance = 55.0f;
 	dodgeTimer = 0.0f;
 	dodgeBlur = 20;
 	player->numDodge = 2;
@@ -119,14 +119,18 @@ void PlayerMovement(Player* player)
 		if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
-			player->pBody.velocity = CP_Vector_Set(-1, -1);
+			//player->pBody.velocity = CP_Vector_Set(-1, -1);
+			CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
+			player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
 
 			//player->rotation = -45.0f;
 		}
 		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
-			player->pBody.velocity = CP_Vector_Set(1, -1);
+			//player->pBody.velocity = CP_Vector_Set(1, -1);
+			CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
+			player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
 
 			//player->rotation = 45.0f;
 		}
@@ -140,14 +144,18 @@ void PlayerMovement(Player* player)
 		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_RIGHT))
 		{
 			playerState = MOVING;
-			player->pBody.velocity = CP_Vector_Set(1, 1);
+			//player->pBody.velocity = CP_Vector_Set(1, 1);
+			CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
+			player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
 
 			//player->rotation = 135.0f;
 		}
 		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_LEFT))
 		{
 			playerState = MOVING;
-			player->pBody.velocity = CP_Vector_Set(-1, 1);
+			//player->pBody.velocity = CP_Vector_Set(-1, 1);
+			CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
+			player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
 
 			//player->rotation = 225.0f;
 		}
@@ -173,22 +181,27 @@ void PlayerMovement(Player* player)
 			//player->rotation = 90.0f;
 		}
 
-		if (CP_Input_KeyTriggered(KEY_SPACE) && playerState != STILL && (player->numDodge > 0))
+		if (CP_Input_KeyTriggered(KEY_SPACE) && (player->numDodge > 0))
 		{
-			playerState = DODGING;
-
 			player->numDodge -= 1;
+			if (playerState == STILL)
+			{
+				CP_Matrix rotatedir = CP_Matrix_Rotate(player->pBody.rotation); //rotation matrix
+				CP_Vector dir = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f)); //rotate based off (0,1) to get direction vector
+				player->pBody.velocity = dir;
+			}
+
 			player->pBody.velocity.x = player->pBody.velocity.x * (PLAYER_SPEED * (dodgeDistance / 20));
 			player->pBody.velocity.y = player->pBody.velocity.y * (PLAYER_SPEED * (dodgeDistance / 20));
+			playerState = DODGING;
 		}
-		else if (playerState != DODGING)
+
+		if (playerState != DODGING)
 		{
 			player->pBody.velocity.x = (player->pBody.velocity.x * PLAYER_SPEED);
 			player->pBody.velocity.y = (player->pBody.velocity.y * PLAYER_SPEED);
 		}
-
 	}
-	Dodge(player);
 
 	bool playerBossCol = PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
 	CollisionCheck(&(player->pBody), level[0]);
@@ -196,7 +209,7 @@ void PlayerMovement(Player* player)
 	{
 		player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
 	}
-
+	Dodge(player);
 	player->pBody.hitbox.position.x += player->pBody.velocity.x;		//Circle
 	player->pBody.hitbox.position.y += player->pBody.velocity.y;
 
