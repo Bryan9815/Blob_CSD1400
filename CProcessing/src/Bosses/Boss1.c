@@ -14,7 +14,7 @@ float BossRange = 200.f, NearAttackTimer = 0.f, FarAttackTimer = 0.f;
 void Boss1Init(void)
 {
 	BossInit(&ArmorSlime, 1, 80.f);
-	ArmorSlime.bosssprite = CP_Image_Load("././Assets/Boss1merged.png");
+	ArmorSlime.bosssprite = CP_Image_Load("././Assets/Boss1.png");
 	NearAttack = FarAttack = NOT_ATTACK; //reset attack states
 	FarAttackTimer = NearAttackTimer = 0.f; //reset timers
 }

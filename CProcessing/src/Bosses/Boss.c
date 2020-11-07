@@ -8,7 +8,6 @@
 CP_Image bosssprite;
 void BossInit(Boss *currentboss, int health, float size) //function to set variables of boss(es)
 {
-	bosssprite = CP_Image_Load("././Assets/Boss1.png");
 	currentboss->BossBody.hitbox.shapeType = COL_CIRCLE;
 	currentboss->BossBody.hitbox.position = CP_Vector_Set(200.f,200.f); //temp(?)
 	currentboss->Health = health;
