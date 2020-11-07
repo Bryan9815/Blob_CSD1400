@@ -42,7 +42,6 @@ int dodgeBlur;			//Dodge blur effect
 void PlayerInit(Player* player);
 
 void PlayerDraw(Player* player);
-void MouseTracking(Player* player);
 
 void PlayerUpdate(Player* player);
 void PlayerMovement(Player* player);

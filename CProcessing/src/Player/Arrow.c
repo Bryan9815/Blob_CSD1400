@@ -10,6 +10,7 @@ void DrawArrow(Arrow* arrow)
 	
 	//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, player->arrow.width, player->arrow.width, player->rotation + 45.0f, 1);
 	//Draw arrow
+
 	if (arrow->charging == 1)
 	{
 		//Draw arrow
@@ -21,12 +22,14 @@ void DrawArrow(Arrow* arrow)
 		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 		//CP_Graphics_DrawRectAdvanced(player->arrow.currentPosition.x, player->arrow.currentPosition.y, arrow->.width, player->arrow.width, player->rotation + 45.0f, 1);
 	}
-	CP_Graphics_DrawEllipseAdvanced(arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, arrow->aBody.rotation); //add rotation bij
+	CP_Graphics_DrawEllipseAdvanced(arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, arrow->aBody.rotation); // add rotation bij
+	CP_Image_DrawAdvanced(arrowSprite, arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, 255, arrow->aBody.rotation);
 }
 
 void CreateArrow(Arrow* arrow)
 {
 	arrowColor = CP_Color_Create(255, 0, 0, 255);
+	arrowSprite = CP_Image_Load("././Assets/arrow.png");
 
 	//Arrow Positiion
 	//arrow->currentPosition = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
@@ -77,6 +80,24 @@ void CalculateNewPosition(Arrow* arrow, Body* pbody)
 	arrow->chargeTimer = 0.0f;
 }
 
+void CalculateRotation(Body* aBody, CP_Vector vector)
+{
+	if (vector.x < 0)
+	{
+		aBody->rotation = CP_Vector_Angle(vector, CP_Vector_Set(0.0f, 1.0f)) + 180.0f;
+	}
+	else
+	{
+		aBody->rotation = CP_Vector_Angle(vector, CP_Vector_Set(0.0f, -1.0f));
+	}
+}
+
+void MouseTracking(Body* aBody)
+{
+	CP_Vector mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), aBody->hitbox.position);
+	CalculateRotation(aBody, mousePositionVector);
+}
+
 bool ArrowStateChange(Body* pBody, Body* bBody, Arrow* arrow) // arrow release
 {
 	switch (arrow->arrowState) {
@@ -94,6 +115,7 @@ bool ArrowStateChange(Body* pBody, Body* bBody, Arrow* arrow) // arrow release
 		break;
 	case WITHPLAYER:
 		arrow->aBody.hitbox.position = pBody->hitbox.position;
+		MouseTracking(&arrow->aBody);
 		break;
 	default:
 		break;
@@ -123,15 +145,14 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 	}
 	else
 	{
-		//travelTimer += CP_System_GetDt();
-		//if (travelTimer >= 0.0)
-		//{
-		if (!ArrowCollision(&(arrow->aBody), level[0])) arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
+		if (!ArrowCollision(&(arrow->aBody), level[0]))
+		{
+			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
+			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
+		}
 		currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
 		arrow->oldPosition = arrow->aBody.hitbox.position;
-		//travelTimer -= travelTimer;
-		//travelTimer -= CP_System_GetDt();
-		//}
+
 	}
 	return arrowBossCol;
 }
@@ -147,13 +168,12 @@ void ArrowPlayerCollision(Arrow* arrow, Body* pBody)
 	}
 }
 
-
 //end me now
-bool ArrowBossCollision(Body* arrow, Body* bBody)
+bool ArrowBossCollision(Body* aBody, Body* bBody)
 {
 	bool dealdamage = false;
-	CP_Vector differences = CP_Vector_Subtract(arrow->hitbox.position, bBody->hitbox.position); //Vector from boss position to arrow position
-	if (COL_IsColliding(arrow->hitbox, bBody->hitbox))
+	CP_Vector differences = CP_Vector_Subtract(aBody->hitbox.position, bBody->hitbox.position); //Vector from boss position to arrow position
+	if (COL_IsColliding(aBody->hitbox, bBody->hitbox))
 	{
 		CP_Matrix rotatedir = CP_Matrix_Rotate(bBody->rotation); //rotation matrix
 		CP_Vector dir = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f)); //rotate based off (0,1) to get direction vector 
@@ -170,10 +190,12 @@ bool ArrowBossCollision(Body* arrow, Body* bBody)
 			//r = d-2(d.n)n
 			
 			CP_Vector normal = CP_Vector_Normalize(differences);
-			float dotproduct = CP_Vector_DotProduct(arrow->velocity, normal);
-			CP_Vector resultantVector = CP_Vector_Subtract(arrow->velocity, CP_Vector_Scale(normal,2*dotproduct));
-			arrow->velocity = resultantVector;
-			arrow->hitbox.position = CP_Vector_Add(CP_Vector_Add(arrow->hitbox.position, CP_Vector_Scale(resultantVector,10)),bBody->velocity);
+			float dotproduct = CP_Vector_DotProduct(aBody->velocity, normal);
+			CP_Vector resultantVector = CP_Vector_Subtract(aBody->velocity, CP_Vector_Scale(normal,2*dotproduct));
+			//Adjust arrow rotation Here
+			aBody->velocity = resultantVector;
+			CalculateRotation(aBody, aBody->velocity);
+			aBody->hitbox.position = CP_Vector_Add(CP_Vector_Add(aBody->hitbox.position, CP_Vector_Scale(resultantVector,10)),bBody->velocity);
 		}
 	}
 	return dealdamage;

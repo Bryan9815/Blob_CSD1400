@@ -31,7 +31,7 @@ typedef struct
 
 } Arrow;
 
-
+CP_Image arrowSprite;
 
 float 	travelTimer, travelDistance, currentDistance; 
 
@@ -40,5 +40,6 @@ void DrawArrow(Arrow* arrow);
 bool ArrowStateChange(Body* pBody, Body* bBody, Arrow* arrow);
 void CalculateNewPosition(Arrow* arrow, Body* pBody);
 bool ArrowInMotion(Arrow* arrow, Body* bBody);
+void MouseTracking(Body* aBody);
 void ArrowPlayerCollision(Arrow* arrow, Body* pBody);
 bool ArrowBossCollision(Body* arrow, Body* bBody);

@@ -49,7 +49,7 @@ void PlayerDraw(Player* player)
 {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
-	MouseTracking(player);
+	MouseTracking(&player->pBody);
 	if (playerState == DODGING)
 	{
 		//Draw player
@@ -213,23 +213,21 @@ void PlayerMovement(Player* player)
 
 	player->pBody.hitbox.position.x += player->pBody.velocity.x;		//Circle
 	player->pBody.hitbox.position.y += player->pBody.velocity.y;
-
-	//Arrow
 }
 
 
-void MouseTracking(Player* player)
-{
-	mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), player->pBody.hitbox.position);
-	if (mousePositionVector.x < 0)
-	{
-		player->pBody.rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, 1.0f)) + 180.0f;
-	}
-	else
-	{
-		player->pBody.rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, -1.0f));
-	}
-}
+//void MouseTracking(Player* player)
+//{
+//	mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), player->pBody.hitbox.position);
+//	if (mousePositionVector.x < 0)
+//	{
+//		player->pBody.rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, 1.0f)) + 180.0f;
+//	}
+//	else
+//	{
+//		player->pBody.rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, -1.0f));
+//	}
+//}
 
 void Dodge(Player* player)
 {
@@ -314,7 +312,6 @@ void PlayerUpdate(Player* player)
 		Level1Exit(); //added by Leonard, send to main menu if player dies for now
 		PlayerMovement(player);
 		ArrowTrigger(player);
-		//ArrowStateChange(player, &(player->arrow));
 	}
 
 }
