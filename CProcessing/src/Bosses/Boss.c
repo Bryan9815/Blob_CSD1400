@@ -5,7 +5,7 @@
 #include "../GameLogic/grid.h"
 #include "../Screen/scr_level_1.h"
 
-
+CP_Image bosssprite;
 void BossInit(Boss *currentboss, int health, float size) //function to set variables of boss(es)
 {
 	currentboss->BossBody.hitbox.shapeType = COL_CIRCLE;
