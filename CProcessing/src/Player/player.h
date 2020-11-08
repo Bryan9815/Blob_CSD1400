@@ -48,5 +48,5 @@ void PlayerMovement(Player* player);
 void Dodge(Player* player);
 void DodgeRecharge(Player* player);
 
-void ArrowTrigger(Player* player);
+bool ArrowTrigger(Player* player);
 

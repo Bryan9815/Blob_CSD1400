@@ -108,95 +108,98 @@ void PlayerDraw(Player* player)
 void PlayerMovement(Player* player)
 {
 	CP_Settings_Background(backgroundColour);
-
-	if (playerState != DODGING)
+	bool shooting = ArrowTrigger(player);
+	if (shooting == false)
 	{
-		playerState = STILL;
-		player->pBody.velocity = CP_Vector_Set(0, 0);
-		if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
-		{
-			playerState = MOVING;
-			//player->pBody.velocity = CP_Vector_Set(-1, -1);
-			CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
-			player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
-
-			//player->rotation = -45.0f;
-		}
-		else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_RIGHT))
-		{
-			playerState = MOVING;
-			//player->pBody.velocity = CP_Vector_Set(1, -1);
-			CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
-			player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
-
-			//player->rotation = 45.0f;
-		}
-		else if (GetBlobInputDown(BLOB_UP))
-		{
-			playerState = MOVING;
-			player->pBody.velocity = CP_Vector_Set(0, -1);
-
-			//player->rotation = 0.0f;
-		}
-		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_RIGHT))
-		{
-			playerState = MOVING;
-			//player->pBody.velocity = CP_Vector_Set(1, 1);
-			CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
-			player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
-
-			//player->rotation = 135.0f;
-		}
-		else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_LEFT))
-		{
-			playerState = MOVING;
-			//player->pBody.velocity = CP_Vector_Set(-1, 1);
-			CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
-			player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
-
-			//player->rotation = 225.0f;
-		}
-		else if (GetBlobInputDown(BLOB_DOWN))
-		{
-			playerState = MOVING;
-			player->pBody.velocity = CP_Vector_Set(0, 1);
-
-			//player->rotation = 180.0f;
-		}
-		else if (GetBlobInputDown(BLOB_LEFT))
-		{
-			playerState = MOVING;
-			player->pBody.velocity = CP_Vector_Set(-1, 0);
-
-			//player->rotation = -90.0f;
-		}
-		else if (GetBlobInputDown(BLOB_RIGHT))
-		{
-			playerState = MOVING;
-			player->pBody.velocity = CP_Vector_Set(1, 0);
-
-			//player->rotation = 90.0f;
-		}
-
-		if (CP_Input_KeyTriggered(KEY_SPACE) && (player->numDodge > 0))
-		{
-			player->numDodge -= 1;
-			if (playerState == STILL)
-			{
-				CP_Matrix rotatedir = CP_Matrix_Rotate(player->pBody.rotation); //rotation matrix
-				CP_Vector dir = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f)); //rotate based off (0,1) to get direction vector
-				player->pBody.velocity = dir;
-			}
-
-			player->pBody.velocity.x = player->pBody.velocity.x * (PLAYER_SPEED*CP_System_GetDt() * (dodgeDistance / 20));
-			player->pBody.velocity.y = player->pBody.velocity.y * (PLAYER_SPEED*CP_System_GetDt() * (dodgeDistance / 20));
-			playerState = DODGING;
-		}
-
 		if (playerState != DODGING)
 		{
-			player->pBody.velocity.x = (player->pBody.velocity.x * PLAYER_SPEED * CP_System_GetDt());
-			player->pBody.velocity.y = (player->pBody.velocity.y * PLAYER_SPEED * CP_System_GetDt());
+			playerState = STILL;
+			player->pBody.velocity = CP_Vector_Set(0, 0);
+			if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
+			{
+				playerState = MOVING;
+				//player->pBody.velocity = CP_Vector_Set(-1, -1);
+				CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
+				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
+
+				//player->rotation = -45.0f;
+			}
+			else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_RIGHT))
+			{
+				playerState = MOVING;
+				//player->pBody.velocity = CP_Vector_Set(1, -1);
+				CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
+				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
+
+				//player->rotation = 45.0f;
+			}
+			else if (GetBlobInputDown(BLOB_UP))
+			{
+				playerState = MOVING;
+				player->pBody.velocity = CP_Vector_Set(0, -1);
+
+				//player->rotation = 0.0f;
+			}
+			else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_RIGHT))
+			{
+				playerState = MOVING;
+				//player->pBody.velocity = CP_Vector_Set(1, 1);
+				CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
+				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
+
+				//player->rotation = 135.0f;
+			}
+			else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_LEFT))
+			{
+				playerState = MOVING;
+				//player->pBody.velocity = CP_Vector_Set(-1, 1);
+				CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
+				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
+
+				//player->rotation = 225.0f;
+			}
+			else if (GetBlobInputDown(BLOB_DOWN))
+			{
+				playerState = MOVING;
+				player->pBody.velocity = CP_Vector_Set(0, 1);
+
+				//player->rotation = 180.0f;
+			}
+			else if (GetBlobInputDown(BLOB_LEFT))
+			{
+				playerState = MOVING;
+				player->pBody.velocity = CP_Vector_Set(-1, 0);
+
+				//player->rotation = -90.0f;
+			}
+			else if (GetBlobInputDown(BLOB_RIGHT))
+			{
+				playerState = MOVING;
+				player->pBody.velocity = CP_Vector_Set(1, 0);
+
+				//player->rotation = 90.0f;
+			}
+
+			if (CP_Input_KeyTriggered(KEY_SPACE) && (player->numDodge > 0))
+			{
+				player->numDodge -= 1;
+				if (playerState == STILL)
+				{
+					CP_Matrix rotatedir = CP_Matrix_Rotate(player->pBody.rotation); //rotation matrix
+					CP_Vector dir = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f)); //rotate based off (0,1) to get direction vector
+					player->pBody.velocity = dir;
+				}
+
+				player->pBody.velocity.x = player->pBody.velocity.x * (PLAYER_SPEED * CP_System_GetDt() * (dodgeDistance / 20));
+				player->pBody.velocity.y = player->pBody.velocity.y * (PLAYER_SPEED * CP_System_GetDt() * (dodgeDistance / 20));
+				playerState = DODGING;
+			}
+
+			if (playerState != DODGING)
+			{
+				player->pBody.velocity.x = (player->pBody.velocity.x * PLAYER_SPEED * CP_System_GetDt());
+				player->pBody.velocity.y = (player->pBody.velocity.y * PLAYER_SPEED * CP_System_GetDt());
+			}
 		}
 	}
 
@@ -211,20 +214,6 @@ void PlayerMovement(Player* player)
 	player->pBody.hitbox.position.x += player->pBody.velocity.x;		//Circle
 	player->pBody.hitbox.position.y += player->pBody.velocity.y;
 }
-
-
-//void MouseTracking(Player* player)
-//{
-//	mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), player->pBody.hitbox.position);
-//	if (mousePositionVector.x < 0)
-//	{
-//		player->pBody.rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, 1.0f)) + 180.0f;
-//	}
-//	else
-//	{
-//		player->pBody.rotation = CP_Vector_Angle(mousePositionVector, CP_Vector_Set(0.0f, -1.0f));
-//	}
-//}
 
 void Dodge(Player* player)
 {
@@ -263,16 +252,19 @@ void DodgeRecharge(Player* player) //Recharge Dodge
 	}
 }
 
-void ArrowTrigger(Player* player)
+bool ArrowTrigger(Player* player)
 {
-	if (playerState == STILL && player->arrow.arrowState == WITHPLAYER)
+	if (player->arrow.arrowState == WITHPLAYER)
 	{
 		if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
 		{
+			player->pBody.velocity.x = 0.0f;
+			player->pBody.velocity.y = 0.0f;
 			player->arrow.charging = 1;
-			if (player->arrow.chargeTimer <= 60)
+			if (player->arrow.chargeTimer <= (MAX_FORCE - DEFAULT_FORCE))
 			{
-				player->arrow.chargeTimer += CP_System_GetDt() * 20;
+				player->arrow.chargeTimer += CP_System_GetDt() * 10;
+				return true;
 			}
 
 		}
@@ -282,6 +274,7 @@ void ArrowTrigger(Player* player)
 			{
 				player->arrow.arrowState = RELEASE;
 				player->arrow.charging = 0;
+				return false;
 			}
 		}
 	}
@@ -291,6 +284,7 @@ void ArrowTrigger(Player* player)
 		player->arrow.chargeTimer = 0.0f;
 		player->arrow.charging = 0;
 	}
+	return false;
 }
 
 /*Update Player*/
