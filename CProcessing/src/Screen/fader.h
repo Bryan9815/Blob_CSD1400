@@ -25,3 +25,4 @@ void CreateFader(Fader* fader);
 void StartFade(Fader* fader, FadeType fadeType);
 void StopFade(Fader* fader, FadeType fadeType);
 void UpdateFade(Fader* fader);
+void ResetFader(Fader* fader);

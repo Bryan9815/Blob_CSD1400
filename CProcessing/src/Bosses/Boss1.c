@@ -202,7 +202,7 @@ void BossAction(void) //determines the boss actions, only one should be active a
 		StunTimer(&ArmorSlime); //boss should stop moving, allowing player to shoot
 		break; 
 	case DEFEAT:
-		SetGameState(SCR_MAIN_MENU); //proceed to next stage (main menu/win screen for prototype)
+		SetGameState(SCR_GAME_OVER); //proceed to next stage (main menu/win screen for prototype)
 		break; 
 	default: //this is mainly to check for bugs/errors
 		CP_Settings_Fill(errortext);

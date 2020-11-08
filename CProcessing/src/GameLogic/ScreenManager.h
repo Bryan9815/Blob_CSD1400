@@ -13,6 +13,7 @@ typedef enum GameState
 	SCR_MAIN_MENU,
 	SCR_OPTION,
 	SCR_GAMEPLAY,
+	SCR_GAME_OVER,
 	SCR_CREDITS,
 
 }GameState;
