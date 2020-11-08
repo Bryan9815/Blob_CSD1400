@@ -123,13 +123,24 @@ void AttackFarDraw(Boss armorboss)
 			rotation = CP_Vector_Angle(RightDir, ChargeDir); //clockwise rotation of boss from rightward dir
 		else
 			rotation = 360 - CP_Vector_Angle(RightDir, ChargeDir); //find the larger angle if > 180 degrees
-		
-		//todo: fix drawing of rectangle
+
 		//draw rectangle, adjust so it draws from the centre of the short side
-		if (ChargeTarget.x > armorboss.BossBody.hitbox.position.x) 
-			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y - 50.f), width, 100.f, rotation, 0.f);
+		if (rotation <= 120 && rotation >= 60)
+		{
+			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x + armorboss.BossBody.hitbox.radius), armorboss.BossBody.hitbox.position.y, width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+		}
+		else if (rotation <= 300 && rotation >= 240)
+		{
+			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x - armorboss.BossBody.hitbox.radius), armorboss.BossBody.hitbox.position.y, width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+		}
+		else if (ChargeTarget.x > armorboss.BossBody.hitbox.position.x)
+		{
+			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y - armorboss.BossBody.hitbox.radius), width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+		}
 		else
-			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y + 50.f), width, 100.f, rotation, 0.f);
+		{
+			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y + armorboss.BossBody.hitbox.radius), width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+		}
 	}
 }
 
@@ -182,8 +193,6 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 
 void BossAction(void) //determines the boss actions, only one should be active at any time
 {
-	CP_Color errortext = CP_Color_Create(255, 0, 0, 255); //only used for error/bug check, REMOVE BEFORE FINAL
-	char errormessage[] = "ERROR"; //only used for error/bug check, REMOVE BEFORE FINAL
 	switch (ArmorSlime.State) 
 	{
 	case IDLE:
@@ -204,10 +213,8 @@ void BossAction(void) //determines the boss actions, only one should be active a
 	case DEFEAT:
 		SetGameState(SCR_GAME_OVER_WIN); //proceed to next stage (main menu/win screen for prototype)
 		break; 
-	default: //this is mainly to check for bugs/errors
-		CP_Settings_Fill(errortext);
-		CP_Settings_TextSize(100.f);
-		CP_Font_DrawText(errormessage, (float)(CP_System_GetWindowWidth() / 2), (float)(CP_System_GetDisplayHeight() / 2));
+	default: //In case it ends up being something else
+		ArmorSlime.State = IDLE;
 		break;
 	}
 }
