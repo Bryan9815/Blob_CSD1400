@@ -61,7 +61,6 @@ void Level1Update(Player* player)
 
 void Level1Exit(void) 
 {
-	SetGameState(SCR_GAME_OVER);
 	ResetFader(GetFader());
 	Boss1Exit();
 }

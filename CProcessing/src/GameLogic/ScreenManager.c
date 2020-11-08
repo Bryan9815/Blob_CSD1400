@@ -43,8 +43,11 @@ void GameInit(void)
 	case SCR_GAMEPLAY:
 		Level1Init();
 		break;
-	case SCR_GAME_OVER:
-		GameOverInit();
+	case SCR_GAME_OVER_WIN:
+		GameOverInit(true);
+		break;
+	case SCR_GAME_OVER_LOSE:
+		GameOverInit(false);
 		break;
 	default:
 		break;
@@ -78,7 +81,9 @@ void GameUpdate(void)
 	case SCR_GAMEPLAY:
 		Level1Update(&newPlayer);
 		break;
-	case SCR_GAME_OVER:
+	case SCR_GAME_OVER_WIN:
+		GameOverUpdate();
+	case SCR_GAME_OVER_LOSE:
 		GameOverUpdate();
 	default:
 		break;
@@ -105,7 +110,10 @@ void GameExit(void)
 		break;
 	case SCR_GAMEPLAY:
 		Level1Exit();
-	case SCR_GAME_OVER:
+	case SCR_GAME_OVER_WIN:
+		GameOverExit();
+		break;
+	case SCR_GAME_OVER_LOSE:
 		GameOverExit();
 		break;
 	default:

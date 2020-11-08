@@ -1,5 +1,4 @@
 #include <cprocessing.h>
-#include <stdio.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
 #include "scr_mainmenu.h"
