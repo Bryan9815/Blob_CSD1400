@@ -10,10 +10,11 @@ void DrawArrow(Arrow* arrow)
 	
 	//Draw arrow
 	int alpha = 255;
-	//if (arrow->charging == 1)
-	//{
-
-	//}
+	if (arrow->charging == 1)
+	{
+		CP_Vector lineend = CP_Vector_Add(arrow->aBody.hitbox.position,CP_Vector_Scale(CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), arrow->aBody.hitbox.position),arrow->chargeTimer/ARROW_SSCALE));
+		CP_Graphics_DrawLine(arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, lineend.x, lineend.y);
+	}
 	//else if (arrow->charging == 0)
 	//{
 
@@ -72,7 +73,6 @@ void CalculateNewPosition(Arrow* arrow, Body* pbody)
 	//arrow->travelVector = CP_Vector_Normalize(arrow->travelVector); //Original Vector
 	arrow->aBody.velocity = CP_Vector_Normalize(arrow->aBody.velocity);
 	travelDistance = CP_Vector_Distance(arrow->oldPosition, arrow->newPosition);
-	arrow->chargeTimer = 0.0f;
 }
 
 void CalculateRotation(Body* aBody, CP_Vector vector)
@@ -133,6 +133,7 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 	if (currentDistance >= travelDistance)
 	{
 		arrow->oldPosition = arrow->aBody.hitbox.position;
+		arrow->chargeTimer = 0.0f;
 		currentDistance = 0.0f;
 		travelDistance = 0.0f;
 		arrow->arrowState = MOTIONLESS;
@@ -142,7 +143,9 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 	{
 		if (!ArrowCollision(&(arrow->aBody), level[0]))
 		{
-			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
+			CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * ARROW_SPEED * CP_System_GetDt() * ((arrow->chargeTimer/ ARROW_SSCALE)+1), arrow->aBody.velocity.y * ARROW_SPEED * CP_System_GetDt() * ((arrow->chargeTimer / ARROW_SSCALE) + 1));
+			//arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
+			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, newVel);
 			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
 		}
 		currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
