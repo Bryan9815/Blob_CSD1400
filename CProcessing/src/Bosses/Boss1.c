@@ -218,11 +218,9 @@ void Boss1Battle(void)
 	{
 		ArmorSlime.State = DEFEAT;
 	}
-	else
-	{
-		B1_StateChange(newPlayer, &ArmorSlime); //determines boss state (other than defeat)
-		BossAction(); //determine boss action
-	}
+
+	B1_StateChange(newPlayer, &ArmorSlime); //determines boss state (other than defeat)
+	BossAction(); //determine boss action
 }
 
 void Boss1Draw(Boss armorboss)
