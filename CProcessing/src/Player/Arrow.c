@@ -10,10 +10,11 @@ void DrawArrow(Arrow* arrow)
 	
 	//Draw arrow
 	int alpha = 255;
-	//if (arrow->charging == 1)
-	//{
-		  
-	//}
+	if (arrow->charging == 1)
+	{
+		CP_Vector lineend = CP_Vector_Add(arrow->aBody.hitbox.position,CP_Vector_Scale(CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), arrow->aBody.hitbox.position),arrow->chargeTimer/ARROW_SSCALE));
+		CP_Graphics_DrawLine(arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, lineend.x, lineend.y);
+	}
 	//else if (arrow->charging == 0)
 	//{
 

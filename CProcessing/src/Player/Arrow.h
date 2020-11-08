@@ -2,8 +2,8 @@
 #include <cprocessing.h>
 #include "../GameLogic/Collision.h"
 
-#define DEFAULT_FORCE 40.0f
-#define MAX_FORCE 70.0f
+#define DEFAULT_FORCE 30.0f
+#define MAX_FORCE 60.0f
 #define ARROW_SPEED 400.0f
 #define ARROW_SSCALE 45
 
