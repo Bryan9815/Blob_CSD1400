@@ -4,7 +4,7 @@
 
 #define DEFAULT_FORCE 30.0f
 #define MAX_FORCE 60.0f
-#define ARROW_SPEED 400.0f
+#define ARROW_SPEED 450.0f
 #define ARROW_SSCALE 45
 
 CP_Color		arrowColor;
@@ -44,4 +44,4 @@ void CalculateNewPosition(Arrow* arrow, Body* pBody);
 bool ArrowInMotion(Arrow* arrow, Body* bBody);
 void MouseTracking(Body* aBody);
 void ArrowPlayerCollision(Arrow* arrow, Body* pBody);
-bool ArrowBossCollision(Body* arrow, Body* bBody);
+bool ArrowBossCollision(Arrow* arrow, Body* bBody);

@@ -15,10 +15,6 @@ void DrawArrow(Arrow* arrow)
 		CP_Vector lineend = CP_Vector_Add(arrow->aBody.hitbox.position,CP_Vector_Scale(CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), arrow->aBody.hitbox.position),arrow->chargeTimer/ARROW_SSCALE));
 		CP_Graphics_DrawLine(arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, lineend.x, lineend.y);
 	}
-	//else if (arrow->charging == 0)
-	//{
-
-	//}
 	CP_Image_DrawAdvanced(arrow->arrowSprite, arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, alpha, arrow->aBody.rotation);
 }
 
@@ -95,14 +91,15 @@ void MouseTracking(Body* aBody)
 
 bool ArrowStateChange(Body* pBody, Body* bBody, Arrow* arrow) // arrow release
 {
-	switch (arrow->arrowState) {
+	switch (arrow->arrowState)
+	{
 	case RELEASE:
 		CalculateNewPosition(arrow, pBody);
 		arrow->arrowState = MOTION;
 		break;
 	case MOTIONLESS:
 		ArrowPlayerCollision(arrow, pBody); //pickup player
-		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT))
+		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT) && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox))
 		{
 			CalculateNewPosition(arrow, pBody);
 			arrow->arrowState = RECALL;
@@ -116,7 +113,6 @@ bool ArrowStateChange(Body* pBody, Body* bBody, Arrow* arrow) // arrow release
 		break;
 	}
 
-
 	if (arrow->arrowState == MOTION || arrow->arrowState == RECALL)
 	{
 		bool hit = ArrowInMotion(arrow, bBody);
@@ -129,7 +125,7 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 {
 	// travel chargeScale in 1 sec
 	// every 0.5 seconds, arrow moves 30*normalizeddir
-	bool arrowBossCol = ArrowBossCollision(&arrow->aBody, bBody);
+	bool arrowBossCol = ArrowBossCollision(arrow, bBody);
 	if (currentDistance >= travelDistance)
 	{
 		arrow->oldPosition = arrow->aBody.hitbox.position;
@@ -167,16 +163,17 @@ void ArrowPlayerCollision(Arrow* arrow, Body* pBody)
 }
 
 //end me now
-bool ArrowBossCollision(Body* aBody, Body* bBody)
+bool ArrowBossCollision(Arrow* arrow, Body* bBody)
 {
 	bool dealdamage = false;
-	CP_Vector differences = CP_Vector_Subtract(aBody->hitbox.position, bBody->hitbox.position); //Vector from boss position to arrow position
-	if (COL_IsColliding(aBody->hitbox, bBody->hitbox))
+	CP_Vector differences = CP_Vector_Subtract(arrow->aBody.hitbox.position, bBody->hitbox.position); //Vector from boss position to arrow position
+	if (COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox))
 	{
+
 		CP_Matrix rotatedir = CP_Matrix_Rotate(bBody->rotation); //rotation matrix
 		CP_Vector dir = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f)); //rotate based off (0,1) to get direction vector 
 		float theta = CP_Vector_Angle(differences, dir); //angle between dir vector and arrow vector
-		if (theta >= 150.0f ) //Assumes gap is 60 degress wide, May need adjusting
+		if (theta >= 150.0f) //Assumes gap is 60 degress wide, May need adjusting
 		{
 			dealdamage = true;
 			currentDistance = 0.0f;
@@ -186,17 +183,17 @@ bool ArrowBossCollision(Body* aBody, Body* bBody)
 		else
 		{
 			//r = d-2(d.n)n
-			
+
 			CP_Vector normal = CP_Vector_Normalize(differences);
-			float dotproduct = CP_Vector_DotProduct(aBody->velocity, normal);
-			CP_Vector resultantVector = CP_Vector_Subtract(aBody->velocity, CP_Vector_Scale(normal,2*dotproduct));
+			float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
+			CP_Vector resultantVector = CP_Vector_Subtract(arrow->aBody.velocity, CP_Vector_Scale(normal, 2 * dotproduct));
 			//Adjust arrow rotation Here
-			aBody->velocity = resultantVector;
-			CalculateRotation(aBody, aBody->velocity);
-			aBody->hitbox.position = CP_Vector_Add(CP_Vector_Add(aBody->hitbox.position, CP_Vector_Scale(resultantVector,10)),bBody->velocity);
+			arrow->aBody.velocity = resultantVector;
+			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
+			arrow->aBody.hitbox.position = CP_Vector_Add(CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(resultantVector, 10)), bBody->velocity);
 		}
+
 	}
 	return dealdamage;
-
 }
 
