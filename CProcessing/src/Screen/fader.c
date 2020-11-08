@@ -61,5 +61,8 @@ void UpdateFade(Fader* fader)	//Drawcall for Fader
 
 }
 
-
-
+void ResetFader(Fader* fader)
+{
+	fader->fadePosX = 0;
+	fader->fadePosY = 0;
+}

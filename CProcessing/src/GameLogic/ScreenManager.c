@@ -5,6 +5,7 @@
 #include "../Screen/scr_options.h"
 #include "../Screen/scr_credits.h"
 #include "../Screen/scr_level_1.h"
+#include "../Screen/scr_gameover.h"
 
 
 GameState preGameState = SCR_INTRO; //For Unloading
@@ -41,7 +42,12 @@ void GameInit(void)
 		break;
 	case SCR_GAMEPLAY:
 		Level1Init();
-		
+		break;
+	case SCR_GAME_OVER_WIN:
+		GameOverInit(true);
+		break;
+	case SCR_GAME_OVER_LOSE:
+		GameOverInit(false);
 		break;
 	default:
 		break;
@@ -74,9 +80,11 @@ void GameUpdate(void)
 		break;
 	case SCR_GAMEPLAY:
 		Level1Update(&newPlayer);
-		//PlayerUpdate(&newPlayer);
-		//Boss1Battle(newPlayer);
 		break;
+	case SCR_GAME_OVER_WIN:
+		GameOverUpdate();
+	case SCR_GAME_OVER_LOSE:
+		GameOverUpdate();
 	default:
 		break;
 	}
@@ -102,6 +110,11 @@ void GameExit(void)
 		break;
 	case SCR_GAMEPLAY:
 		Level1Exit();
+	case SCR_GAME_OVER_WIN:
+		GameOverExit();
+		break;
+	case SCR_GAME_OVER_LOSE:
+		GameOverExit();
 		break;
 	default:
 		break;

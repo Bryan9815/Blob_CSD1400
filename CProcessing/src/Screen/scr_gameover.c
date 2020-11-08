@@ -1,48 +1,53 @@
 #include <cprocessing.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
-#include "scr_mainmenu.h"
-#define MAIN_MENU_BUTTONS 4
+#include "scr_GameOver.h"
+#define GAME_OVER_BUTTONS 3
 
 typedef enum {
-	START,
-	OPTION,
-	CREDITS,
+	RETRY,
+	MAIN_MENU,
 	EXIT,
 }ButtonList;
 
 CP_Color bgColor;
-Button menuList[MAIN_MENU_BUTTONS];
+Button menuList[GAME_OVER_BUTTONS];
 int selectButton;
 bool mouseCheck;
+bool lose;
 CP_Vector mousePos;
 
-void MainMenuInit(void)
+void GameOverInit(bool win)
 {
 	selectButton = 0;
 	mouseCheck = false;
+	lose = !win;
 	bgColor = CP_Color_Create(0, 0, 0, 255);
 	float buttonBufferY = 125.f;
 
-	menuList[START] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, 250.f, 100.f, "Start");
-	menuList[OPTION] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Options");
-	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Credits");
-	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 250.f, 100.f, "Quit");
+	menuList[RETRY] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, 250.f, 100.f, "Retry");
+	menuList[MAIN_MENU] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Main Menu");
+	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Quit");
 }
 
-
-
-void MainMenuDraw(void)
+void GameOverDraw(void)
 {
 	CP_Settings_Background(bgColor);
 
 	//Title
 	CP_Settings_TextSize(200.0f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Font_DrawText("BLOB", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 3);
+	if (lose)
+	{
+		CP_Font_DrawText("GAME OVER", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 3);
+	}
+	else
+	{
+		CP_Font_DrawText("YOU WIN!", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 3);
+	}
 
 	// Draw Buttons
-	for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
+	for (int i = 0; i < GAME_OVER_BUTTONS; i++)
 	{
 		if(menuList[i].isSelected == 1)
 			DrawButton(menuList[i], 48.f, 1.1f, CP_Color_Create(0, 255, 0, 255));
@@ -53,18 +58,15 @@ void MainMenuDraw(void)
 	}
 }
 
-void MenuButtonActivate()
+void GameOverButtonActivate()
 {
 	switch (selectButton)
 	{
-	case START:
+	case RETRY:
 		SetGameState(SCR_GAMEPLAY);
 		break;
-	case OPTION:
-		SetGameState(SCR_OPTION);
-		break;
-	case CREDITS:
-		SetGameState(SCR_CREDITS);
+	case MAIN_MENU:
+		SetGameState(SCR_MAIN_MENU);
 		break;
 	case EXIT:
 		CP_Engine_Terminate();
@@ -74,7 +76,7 @@ void MenuButtonActivate()
 	}
 }
 
-void MainMenuUpdate(void)
+void GameOverUpdate(void)
 {
 	CP_Vector oldMousePos = CP_Vector_Set(mousePos.x, mousePos.y);
 	mousePos = CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY());
@@ -82,13 +84,13 @@ void MainMenuUpdate(void)
 	if (GetBlobInputTriggered(BLOB_UP))
 	{
 		if (selectButton == 0)
-			selectButton = MAIN_MENU_BUTTONS - 1;
+			selectButton = GAME_OVER_BUTTONS - 1;
 		else
 			selectButton--;
 	}
 	else if (GetBlobInputTriggered(BLOB_DOWN))
 	{
-		if (selectButton == MAIN_MENU_BUTTONS - 1)
+		if (selectButton == GAME_OVER_BUTTONS - 1)
 			selectButton = 0;
 		else
 			selectButton++;
@@ -96,7 +98,7 @@ void MainMenuUpdate(void)
 	// Mouse Input
 	if (!mouseCheck)
 	{
-		for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
+		for (int i = 0; i < GAME_OVER_BUTTONS; i++)
 		{
 			// Mouse x-pos collision check
 			if (mousePos.x >= (menuList[i].posX - menuList[i].width / 2) && mousePos.x <= (menuList[i].posX + menuList[i].width / 2))
@@ -116,7 +118,7 @@ void MainMenuUpdate(void)
 			menuList[selectButton].isSelected = 1;
 		else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
 		{
-			MenuButtonActivate();
+			GameOverButtonActivate();
 			menuList[selectButton].isSelected = 0;
 			mouseCheck = false;
 		}
@@ -130,14 +132,14 @@ void MainMenuUpdate(void)
 	}
 
 	if (GetBlobInputTriggered(BLOB_INTERACT))
-		MenuButtonActivate();
+		GameOverButtonActivate();
 
-	MainMenuDraw();
+	GameOverDraw();
 }
 
 
 
-void MainMenuExit(void)
+void GameOverExit(void)
 {	
 	
 }

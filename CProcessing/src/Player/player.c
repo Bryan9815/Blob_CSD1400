@@ -4,6 +4,7 @@
 #include "../GameLogic/BlobInput.h"
 #include "../Bosses/Boss.h"
 #include "../Screen/scr_level_1.h"
+#include "../GameLogic//ScreenManager.h"
 
 
 CP_Color backgroundColour;
@@ -300,7 +301,7 @@ void PlayerUpdate(Player* player)
 		//for now
 		//move to game over screen later
 		//set values to default if needed
-		Level1Exit(); //added by Leonard, send to main menu if player dies for now
+		SetGameState(SCR_GAME_OVER_LOSE);
 		PlayerMovement(player);
 		ArrowTrigger(player);
 	}
