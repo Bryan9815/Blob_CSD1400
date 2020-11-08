@@ -29,7 +29,6 @@
     <ClCompile Include="src\GameLogic\Collider.c" />
     <ClCompile Include="src\GameLogic\SaveLoad.c" />
     <ClCompile Include="src\GameLogic\ScreenManager.c" />
-    <ClCompile Include="src\Input\InputManager.c" />
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\Player\Arrow.c" />
     <ClCompile Include="src\Player\player.c" />

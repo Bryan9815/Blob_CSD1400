@@ -4,23 +4,14 @@
     <Filter Include="src">
       <UniqueIdentifier>{35ca5b8a-72cf-4a68-b39c-057703e6af52}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\Input">
-      <UniqueIdentifier>{3799d3b0-4a0d-4b85-9d10-ee7ed4be0591}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src\Player">
       <UniqueIdentifier>{0ab0b579-822b-4ef8-8332-e0eb89100805}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Save/Load">
-      <UniqueIdentifier>{a16a14d3-54df-4663-9073-c4ed80458ddf}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Boss">
       <UniqueIdentifier>{7c34b233-641a-42c1-9b07-757a725d977f}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\Camera">
       <UniqueIdentifier>{0bd5d2a0-db79-48bf-b11f-9b342a9ecf9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Level">
-      <UniqueIdentifier>{9e41956f-c5da-4e46-927b-1546170a7f37}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\UI">
       <UniqueIdentifier>{dd27d7bc-a048-48eb-a387-8b81cf1d99a5}</UniqueIdentifier>
@@ -38,9 +29,6 @@
     </ClCompile>
     <ClCompile Include="src\Player\player.c">
       <Filter>src\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Input\InputManager.c">
-      <Filter>src\Input</Filter>
     </ClCompile>
     <ClCompile Include="src\Bosses\Boss.c">
       <Filter>src\Boss</Filter>
