@@ -50,7 +50,6 @@ void PlayerDraw(Player* player)
 {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
-	MouseTracking(&player->pBody);
 	if (playerState == DODGING)
 	{
 		//Draw player
@@ -291,6 +290,7 @@ bool ArrowTrigger(Player* player)
 /*Update Player*/
 void PlayerUpdate(Player* player)
 {
+	MouseTracking(&player->pBody);
 	if (player->health == 1)
 	{
 		PlayerMovement(player);

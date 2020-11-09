@@ -96,6 +96,7 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 		}
 		if (CollisionCheck(&(armorboss->BossBody), grid))
 		{
+			ScreenShake(0.5f, 500);
 			armorboss->State = STUNNED;
 			FarAttackTimer = 0;
 		}

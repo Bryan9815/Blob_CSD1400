@@ -17,18 +17,20 @@ void Level1Init(void)
 void LevelDraw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
-	if (!pause)
+	GridUpdate(level[0], player->pBody.hitbox);
+	PlayerDraw(&newPlayer);
+	Boss1Draw(ArmorSlime);
+	DrawArrow(&newPlayer.arrow);
+
+	if(pause)
 	{
-		GridUpdate(level[0], player->pBody.hitbox);
-		PlayerDraw(&newPlayer);
-		Boss1Draw(ArmorSlime);
-		DrawArrow(&newPlayer.arrow);
-	}
-	else
-	{
+		CP_Vector overlayCenter = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);
+		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 150));
+		CP_Settings_RectMode(CP_POSITION_CENTER);
+		CP_Graphics_DrawRect(overlayCenter.x, overlayCenter.y, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight());
 		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
 		CP_Settings_TextSize(96);
-		CP_Font_DrawText("PAUSE", (float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);
+		CP_Font_DrawText("PAUSE", overlayCenter.x, overlayCenter.y);
 	}
 }
 
