@@ -9,14 +9,21 @@
 //#include "../GameLogic/Collision.h"
 #include "../GameLogic/ScreenManager.h"
 
-float BossRange = 200.f, NearAttackTimer = 0.f, FarAttackTimer = 0.f;
+float BossRange = 200.f;
+float NearAttackTimer;
+float FarAttackTimer = 0.f;
+float NearTimer = 0;
+float FarTimer = 0;
+float ChargeTimer = 0;
+float AttackCount = 0;
+float Stuntime = 0;
 
 void Boss1Init(void)
 {
-	BossInit(&ArmorSlime, 1, 80.f);
+	BossInit(&ArmorSlime, 1, 80.f, CP_Vector_Set(200.f,200.f));
 	ArmorSlime.bosssprite = CP_Image_Load("././Assets/Boss1.png");
 	NearAttack = FarAttack = NOT_ATTACK; //reset attack states
-	FarAttackTimer = NearAttackTimer = 0.f; //reset timers
+	FarAttackTimer = NearAttackTimer = NearTimer = FarTimer = ChargeTimer = AttackCount = Stuntime = 0.f; //reset timers
 }
 
 /*void Shield1Draw(Boss armorboss) //draws shield for boss 1, left here in case needed
@@ -146,7 +153,7 @@ void AttackFarDraw(Boss armorboss)
 
 void StunTimer(Boss* currentboss)
 {
-	static float Stuntime = 0;
+	
 	Stuntime+= CP_System_GetDt();
 	if (Stuntime >= 3) //stunned for 3 sec
 	{
@@ -157,10 +164,7 @@ void StunTimer(Boss* currentboss)
 
 void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the boss does its actions
 {
-	static float NearTimer = 0;
-	static float FarTimer = 0;
-	static float ChargeTimer = 0;
-	static float AttackCount = 0;
+	
 	float PlayerDist = CP_Vector_Distance(player.pBody.hitbox.position, currentboss->BossBody.hitbox.position);
 
 	//-Battle starts in idle -> if near for 2 sec do near attack -> if near 3x or far for 2 sec do charge

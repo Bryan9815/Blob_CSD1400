@@ -6,17 +6,16 @@
 #include "../Screen/scr_level_1.h"
 
 CP_Image bosssprite;
-void BossInit(Boss *currentboss, int health, float size) //function to set variables of boss(es)
+void BossInit(Boss *currentboss, int health, float size, CP_Vector startPos) //function to set variables of boss(es)
 {
 	currentboss->BossBody.hitbox.shapeType = COL_CIRCLE;
-	currentboss->BossBody.hitbox.position = CP_Vector_Set(200.f,200.f); //temp(?)
+	currentboss->BossBody.hitbox.position = startPos; //temp(?)
 	currentboss->Health = health;
 	currentboss->BossBody.hitbox.radius = size;
 	currentboss->BossBody.velocity = CP_Vector_Set(0.f,0.f); //to be balanced
 	currentboss->BossBody.rotation = 0.0f;
 	currentboss->State = IDLE;
 }
-
 void BossDraw(Boss currentboss) //function to draw boss(es)
 {
 
@@ -47,7 +46,7 @@ void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //boss slowl
 		currentboss->BossBody.velocity = CP_Vector_Scale(DirVector, distance); //scale direction vector with remaining distance
 		CollisionCheck(&(currentboss->BossBody), grid);
 	}
-
+	
 	currentboss->BossBody.hitbox.position =  CP_Vector_Add(currentboss->BossBody.velocity, currentboss->BossBody.hitbox.position); //update position	
 }
 
