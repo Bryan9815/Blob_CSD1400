@@ -9,8 +9,7 @@ typedef enum {
 	MAIN_MENU,
 	EXIT,
 }ButtonList;
-
-CP_Color bgColor;
+;
 Button menuList[GAME_OVER_BUTTONS];
 int selectButton;
 float buttonBuffer = 125.f;
@@ -23,7 +22,6 @@ void PauseInit()
 	selectButton = 0;
 	mouseCheck = false;
 	overlayCenter = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);
-	bgColor = CP_Color_Create(50, 50, 50, 150);
 
 	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
 	menuList[MAIN_MENU] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBuffer, 250.f, 100.f, "Main Menu");
@@ -32,7 +30,7 @@ void PauseInit()
 
 void PauseDraw(void)
 {
-	CP_Settings_Fill(bgColor);
+	CP_Settings_Fill(CP_Color_Create(50, 50, 50, 150));
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Graphics_DrawRect(overlayCenter.x, overlayCenter.y, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight());
 

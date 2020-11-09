@@ -25,12 +25,12 @@ Fader* GetFader()
 void GameInit(void)
 {
 	currPlayState = GAME_PLAY;
-	PauseInit();
 	switch (currGameState)
 	{
 	case SCR_INTRO:
 		CreateFader(&fader);
 		BlobInputInit();
+		PauseInit();
 		IntroInit();
 		break;
 	case SCR_MAIN_MENU:
