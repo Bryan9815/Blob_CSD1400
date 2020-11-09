@@ -34,7 +34,7 @@ typedef enum
 
 Boss ArmorSlime; //currently only 1 boss
 
-void BossInit(Boss* currentboss, int health, float size);
+void BossInit(Boss* currentboss, int health, float size, CP_Vector startPos);
 void BossDraw(Boss currentboss);
 void BossMovement(Boss* currentboss, Player player, GridUnit* grid);
 void BossRotation(Boss* currentboss, CP_Vector position);
