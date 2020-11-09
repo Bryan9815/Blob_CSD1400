@@ -24,6 +24,7 @@ Fader* GetFader()
 
 void GameInit(void)
 {
+	currPlayState = GAME_PLAY;
 	switch (currGameState)
 	{
 	case SCR_INTRO:
@@ -43,12 +44,6 @@ void GameInit(void)
 	case SCR_GAMEPLAY:
 		Level1Init();
 		break;
-	case SCR_GAME_OVER_WIN:
-		GameOverInit(true);
-		break;
-	case SCR_GAME_OVER_LOSE:
-		GameOverInit(false);
-		break;
 	default:
 		break;
 	}
@@ -56,10 +51,33 @@ void GameInit(void)
 	//Level1Init();
 }
 
-void SetGameState(GameState nextState)
+void SetGameState(GameState nextGameState)
 {
-	currGameState = nextState;
+	currGameState = nextGameState;
 	CP_Engine_SetNextGameStateForced(GameInit, GameUpdate, GameExit);
+}
+
+void DrawOverlay(void)
+{
+	CP_Vector overlayCenter = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);
+	switch (currPlayState)
+	{
+	case GAME_PLAY:
+		break;
+	case GAME_PAUSE:
+		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 150));
+		CP_Settings_RectMode(CP_POSITION_CENTER);
+		CP_Graphics_DrawRect(overlayCenter.x, overlayCenter.y, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight());
+		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+		CP_Settings_TextSize(96);
+		CP_Font_DrawText("PAUSE", overlayCenter.x, overlayCenter.y);
+		break;
+	case GAME_OVER:
+		GameOverUpdate();
+		break;
+	default:
+		break;
+	}
 }
 
 void GameUpdate(void)
@@ -81,17 +99,22 @@ void GameUpdate(void)
 	case SCR_GAMEPLAY:
 		Level1Update(&newPlayer);
 		break;
-	case SCR_GAME_OVER_WIN:
-		GameOverUpdate();
-	case SCR_GAME_OVER_LOSE:
-		GameOverUpdate();
 	default:
 		break;
 	}
 	UpdateFade(&fader);
 }
 
+void SetPlayState(PlayState nextPlayState)
+{
+	currPlayState = nextPlayState;
+}
 
+void SetGameOver(bool win)
+{
+	GameOverInit(win);
+	SetPlayState(GAME_OVER);
+}
 
 void GameExit(void)
 {
@@ -110,11 +133,11 @@ void GameExit(void)
 		break;
 	case SCR_GAMEPLAY:
 		Level1Exit();
-	case SCR_GAME_OVER_WIN:
+	/*case SCR_GAME_OVER_WIN:
 		GameOverExit();
 		break;
 	case SCR_GAME_OVER_LOSE:
-		GameOverExit();
+		GameOverExit();*/
 		break;
 	default:
 		break;

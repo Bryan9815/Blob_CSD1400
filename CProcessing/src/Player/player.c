@@ -301,7 +301,7 @@ void PlayerUpdate(Player* player)
 		//for now
 		//move to game over screen later
 		//set values to default if needed
-		SetGameState(SCR_GAME_OVER_LOSE);
+		SetGameOver(false);
 		PlayerMovement(player);
 		ArrowTrigger(player);
 	}

@@ -212,7 +212,7 @@ void BossAction(void) //determines the boss actions, only one should be active a
 		StunTimer(&ArmorSlime); //boss should stop moving, allowing player to shoot
 		break; 
 	case DEFEAT:
-		SetGameState(SCR_GAME_OVER_WIN); //proceed to next stage (main menu/win screen for prototype)
+		SetGameOver(true); //proceed to next stage (main menu/win screen for prototype)
 		break; 
 	default: //In case it ends up being something else
 		ArmorSlime.State = IDLE;

@@ -13,40 +13,46 @@ typedef enum {
 CP_Color bgColor;
 Button menuList[GAME_OVER_BUTTONS];
 int selectButton;
+float buttonBufferY = 125.f;
 bool mouseCheck;
 bool lose;
-CP_Vector mousePos;
+CP_Vector mousePos, overlayCenter;
 
 void GameOverInit(bool win)
 {
 	selectButton = 0;
 	mouseCheck = false;
+	overlayCenter = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);;
 	lose = !win;
-	bgColor = CP_Color_Create(0, 0, 0, 255);
-	float buttonBufferY = 125.f;
+	bgColor = CP_Color_Create(50, 50, 50, 150);
 
-	menuList[RETRY] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, 250.f, 100.f, "Retry");
-	menuList[MAIN_MENU] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Main Menu");
-	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Quit");
+	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
+	menuList[MAIN_MENU] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBufferY, 250.f, 100.f, "Main Menu");
+	menuList[EXIT] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBufferY * 2, 250.f, 100.f, "Quit");
 }
 
 void GameOverDraw(void)
 {
-	CP_Settings_Background(bgColor);
+	CP_Settings_Fill(bgColor);
+	CP_Settings_RectMode(CP_POSITION_CENTER);
+	CP_Graphics_DrawRect(overlayCenter.x, overlayCenter.y, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight());
 
 	//Title
 	CP_Settings_TextSize(200.0f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	if (lose)
 	{
-		CP_Font_DrawText("GAME OVER", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 3);
+		CP_Font_DrawText("GAME OVER", overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 4);
 	}
 	else
 	{
-		CP_Font_DrawText("YOU WIN!", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 3);
+		CP_Font_DrawText("YOU WIN!", overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 4);
 	}
 
 	// Draw Buttons
+	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
+	menuList[MAIN_MENU] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBufferY, 250.f, 100.f, "Main Menu");
+	menuList[EXIT] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBufferY * 2, 250.f, 100.f, "Quit");
 	for (int i = 0; i < GAME_OVER_BUTTONS; i++)
 	{
 		if(menuList[i].isSelected == 1)
@@ -80,6 +86,8 @@ void GameOverUpdate(void)
 {
 	CP_Vector oldMousePos = CP_Vector_Set(mousePos.x, mousePos.y);
 	mousePos = CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY());
+	overlayCenter = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);;
+
 	// Input
 	if (GetBlobInputTriggered(BLOB_UP))
 	{
