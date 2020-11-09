@@ -4,9 +4,9 @@
 
 #define DEFAULT_FORCE 30.0f
 #define MAX_FORCE 60.0f
-#define ARROW_SPEED 450.0f
 #define ARROW_SSCALE 45
 
+float arrowSpeed;
 CP_Color		arrowColor;
 
 typedef enum

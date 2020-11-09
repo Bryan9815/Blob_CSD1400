@@ -47,6 +47,7 @@ void CreateArrow(Arrow* arrow)
 	travelTimer = 0.5f;
 	travelDistance = 0.0f;
 	currentDistance = 0.0f;
+	arrowSpeed = 500.0f;
 }
 
 //I barely passed math, I don't know what I'm doing
@@ -142,8 +143,18 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 	{
 		if (!ArrowCollision(&(arrow->aBody), level[0]))
 		{
-			CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * ARROW_SPEED * CP_System_GetDt() * ((arrow->chargeTimer/ ARROW_SSCALE)+1),
-											 arrow->aBody.velocity.y * ARROW_SPEED * CP_System_GetDt() * ((arrow->chargeTimer / ARROW_SSCALE) + 1));
+			if (arrow->arrowState == RECALL)
+			{
+				arrowSpeed = 600.0f;
+			}
+			else if (arrow->arrowState == MOTION)
+			{
+				arrowSpeed = 500.0f;
+			}
+
+			CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * arrowSpeed * CP_System_GetDt() * ((arrow->chargeTimer / ARROW_SSCALE) + 1),
+					arrow->aBody.velocity.y * arrowSpeed * CP_System_GetDt() * ((arrow->chargeTimer / ARROW_SSCALE) + 1));
+			
 			//arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
 			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, newVel);
 			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
