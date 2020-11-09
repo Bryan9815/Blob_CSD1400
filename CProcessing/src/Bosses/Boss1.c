@@ -42,7 +42,7 @@ void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 		NearAttack = ATTACK;
 		if (COL_IsColliding(Attack, player->pBody.hitbox)) //check if player is hit by attack
 		{
-			player->health = 1;
+			player->health = 0;
 		}
 		NearAttackTimer += CP_System_GetDt();
 	}
@@ -92,7 +92,7 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 
 		if (COL_IsColliding(Attack, player->pBody.hitbox)) //if boss runs into player
 		{
-			player->health = 1;
+			player->health = 0;
 		}
 		if (CollisionCheck(&(armorboss->BossBody), grid))
 		{
