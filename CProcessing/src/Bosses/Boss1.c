@@ -49,7 +49,7 @@ void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 		NearAttack = ATTACK;
 		if (COL_IsColliding(Attack, player->pBody.hitbox)) //check if player is hit by attack
 		{
-			player->health = 0;
+			player->health = 1;
 		}
 		NearAttackTimer += CP_System_GetDt();
 	}
@@ -99,10 +99,11 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 
 		if (COL_IsColliding(Attack, player->pBody.hitbox)) //if boss runs into player
 		{
-			player->health = 0;
+			player->health = 1;
 		}
 		if (CollisionCheck(&(armorboss->BossBody), grid))
 		{
+			ScreenShake(0.5f, 500);
 			armorboss->State = STUNNED;
 			FarAttackTimer = 0;
 		}
@@ -215,7 +216,7 @@ void BossAction(void) //determines the boss actions, only one should be active a
 		StunTimer(&ArmorSlime); //boss should stop moving, allowing player to shoot
 		break; 
 	case DEFEAT:
-		SetGameState(SCR_GAME_OVER_WIN); //proceed to next stage (main menu/win screen for prototype)
+		SetGameOver(true); //proceed to next stage (main menu/win screen for prototype)
 		break; 
 	default: //In case it ends up being something else
 		ArmorSlime.State = IDLE;

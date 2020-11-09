@@ -13,16 +13,26 @@ typedef enum GameState
 	SCR_MAIN_MENU,
 	SCR_OPTION,
 	SCR_GAMEPLAY,
-	SCR_GAME_OVER_WIN,
-	SCR_GAME_OVER_LOSE,
 	SCR_CREDITS,
 
 }GameState;
 
+typedef enum PlayState
+{
+	GAME_PLAY,
+	GAME_PAUSE,
+	GAME_OVER,
+}PlayState;
+
+PlayState currPlayState;
+
 void GameInit(void);
 void GameUpdate(void);
 void GameExit(void);
-void SetGameState(GameState nextState);
+void SetGameState(GameState nextGameState);
 
 void ScreenStartFade(FadeType fadeType);
+void DrawOverlay(void);
+void SetPlayState(PlayState nextPlayState);
+void SetGameOver(bool win);
 Fader* GetFader();

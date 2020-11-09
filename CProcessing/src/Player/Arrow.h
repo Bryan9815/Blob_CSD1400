@@ -4,9 +4,9 @@
 
 #define DEFAULT_FORCE 30.0f
 #define MAX_FORCE 60.0f
-#define ARROW_SPEED 450.0f
 #define ARROW_SSCALE 45
 
+float arrowSpeed;
 CP_Color		arrowColor;
 
 typedef enum
@@ -45,3 +45,4 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody);
 void MouseTracking(Body* aBody);
 void ArrowPlayerCollision(Arrow* arrow, Body* pBody);
 bool ArrowBossCollision(Arrow* arrow, Body* bBody);
+void IdleArrowBossCollision(Body* aBody, Body* bBody);

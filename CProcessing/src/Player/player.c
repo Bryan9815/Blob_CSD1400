@@ -50,7 +50,6 @@ void PlayerDraw(Player* player)
 {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
-	MouseTracking(&player->pBody);
 	if (playerState == DODGING)
 	{
 		//Draw player
@@ -291,6 +290,7 @@ bool ArrowTrigger(Player* player)
 /*Update Player*/
 void PlayerUpdate(Player* player)
 {
+	MouseTracking(&player->pBody);
 	if (player->health == 1)
 	{
 		PlayerMovement(player);
@@ -301,7 +301,7 @@ void PlayerUpdate(Player* player)
 		//for now
 		//move to game over screen later
 		//set values to default if needed
-		SetGameState(SCR_GAME_OVER_LOSE);
+		SetGameOver(false);
 		PlayerMovement(player);
 		ArrowTrigger(player);
 	}
