@@ -6,7 +6,7 @@
 #include "../Screen/scr_credits.h"
 #include "../Screen/scr_level_1.h"
 #include "../Screen/scr_gameover.h"
-
+#include "../Screen/pause_overlay.h"
 
 GameState preGameState = SCR_INTRO; //For Unloading
 GameState currGameState = SCR_INTRO;
@@ -30,6 +30,7 @@ void GameInit(void)
 	case SCR_INTRO:
 		CreateFader(&fader);
 		BlobInputInit();
+		PauseInit();
 		IntroInit();
 		break;
 	case SCR_MAIN_MENU:
@@ -59,18 +60,12 @@ void SetGameState(GameState nextGameState)
 
 void DrawOverlay(void)
 {
-	CP_Vector overlayCenter = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);
 	switch (currPlayState)
 	{
 	case GAME_PLAY:
 		break;
 	case GAME_PAUSE:
-		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 150));
-		CP_Settings_RectMode(CP_POSITION_CENTER);
-		CP_Graphics_DrawRect(overlayCenter.x, overlayCenter.y, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight());
-		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-		CP_Settings_TextSize(96);
-		CP_Font_DrawText("PAUSE", overlayCenter.x, overlayCenter.y);
+		PauseUpdate();
 		break;
 	case GAME_OVER:
 		GameOverUpdate();

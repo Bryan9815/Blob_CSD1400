@@ -5,7 +5,6 @@
 void AudioInit()
 {
 	BGM_Boss1 = CP_Sound_LoadMusic("../../Assets/Audio/boss1.wav");
-	
 }
 
 void AudioLvl1()

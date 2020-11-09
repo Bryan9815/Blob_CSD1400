@@ -90,6 +90,9 @@
     <ClCompile Include="src\Audio\AudioManager.c">
       <Filter>src\Audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\Screen\pause_overlay.c">
+      <Filter>src\Screens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -151,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="src\Audio\AudioManager.h">
       <Filter>src\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Screen\pause_overlay.h">
+      <Filter>src\Screens</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
