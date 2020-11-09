@@ -1,11 +1,9 @@
 #include "../GameLogic/ScreenManager.h"
 #include "scr_level_1.h"
-bool pause;
 
 
 void Level1Init(void) 
 {
-	pause = false;
 	LoadMapFile(Level0);
 	GridInit(level[0]);
 	PlayerInit(&newPlayer);
@@ -17,28 +15,28 @@ void Level1Init(void)
 void LevelDraw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
-	if (!pause)
+	GridUpdate(level[0], player->pBody.hitbox);
+	PlayerDraw(&newPlayer);
+	Boss1Draw(ArmorSlime);
+	DrawArrow(&newPlayer.arrow);
+	switch (currPlayState)
 	{
-		GridUpdate(level[0], player->pBody.hitbox);
-		PlayerDraw(&newPlayer);
-		Boss1Draw(ArmorSlime);
-		DrawArrow(&newPlayer.arrow);
-	}
-	else
-	{
-		CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-		CP_Settings_TextSize(96);
-		CP_Font_DrawText("PAUSE", (float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);
+	case GAME_PLAY:
+		break;
+	default:
+		DrawOverlay();
+		break;
 	}
 }
 
 void Level1Update(Player* player)
 {
-	if (!pause)
+	switch(currPlayState)
 	{
+	case GAME_PLAY:
 		if (GetBlobInputTriggered(BLOB_PAUSE))
 		{
-			pause = true;
+			SetPlayState(GAME_PAUSE);
 		}
 		PlayerUpdate(&newPlayer);
 		Boss1Battle();
@@ -47,13 +45,13 @@ void Level1Update(Player* player)
 		{
 			ArmorSlime.Health = 0;
 		}
-	}
-	else
-	{
+		break;
+	case GAME_PAUSE:
 		if (GetBlobInputTriggered(BLOB_PAUSE))
 		{
-			pause = false;
+			SetPlayState(GAME_PLAY);
 		}
+		break;
 	}
 	CameraUpdate(&newPlayer.pBody.hitbox.position, GetFader());
 	LevelDraw(player);
