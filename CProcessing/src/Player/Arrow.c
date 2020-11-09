@@ -99,7 +99,9 @@ bool ArrowStateChange(Body* pBody, Body* bBody, Arrow* arrow) // arrow release
 		break;
 	case MOTIONLESS:
 		ArrowPlayerCollision(arrow, pBody); //pickup player
-		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT) && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox))
+		IdleArrowBossCollision(&arrow->aBody, bBody);
+		//PlayerEntityCollision(&arrow->aBody, bBody);
+		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) // && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox)
 		{
 			CalculateNewPosition(arrow, pBody);
 			arrow->arrowState = RECALL;
@@ -134,12 +136,14 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 		travelDistance = 0.0f;
 		arrow->arrowState = MOTIONLESS;
 		travelTimer = 0.0f;
+		arrow->aBody.velocity = CP_Vector_Set(0.0f, 0.0f);
 	}
 	else
 	{
 		if (!ArrowCollision(&(arrow->aBody), level[0]))
 		{
-			CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * ARROW_SPEED * CP_System_GetDt() * ((arrow->chargeTimer/ ARROW_SSCALE)+1), arrow->aBody.velocity.y * ARROW_SPEED * CP_System_GetDt() * ((arrow->chargeTimer / ARROW_SSCALE) + 1));
+			CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * ARROW_SPEED * CP_System_GetDt() * ((arrow->chargeTimer/ ARROW_SSCALE)+1),
+											 arrow->aBody.velocity.y * ARROW_SPEED * CP_System_GetDt() * ((arrow->chargeTimer / ARROW_SSCALE) + 1));
 			//arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
 			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, newVel);
 			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
@@ -197,3 +201,21 @@ bool ArrowBossCollision(Arrow* arrow, Body* bBody)
 	return dealdamage;
 }
 
+void IdleArrowBossCollision(Body* aBody, Body* bBody)
+{
+	//float dist = aBody->hitbox.radius + bBody->hitbox.radius;
+	//float currdist = CP_Vector_Distance(arrow->aBody.hitbox.position, bBody->hitbox.position);
+	if (COL_IsColliding(aBody->hitbox,bBody->hitbox))
+	{
+		CP_Vector differences = CP_Vector_Subtract(aBody->hitbox.position, bBody->hitbox.position);
+		float mag = CP_Vector_Length(differences); //magnitude of diffvector
+		float resMag = aBody->hitbox.radius + bBody->hitbox.radius; //magnitude of resultant vector
+		CP_Vector resultantVector = CP_Vector_Scale(differences, (resMag - mag) / mag);
+		//CP_Vector newPos = CP_Vector_Add(aBody->hitbox.position, resultantVector);
+		aBody->velocity = CP_Vector_Add(aBody->velocity, resultantVector);
+		CollisionCheck(aBody, level[0]);
+		aBody->hitbox.position = CP_Vector_Add(aBody->hitbox.position, resultantVector);
+	}
+
+	
+}

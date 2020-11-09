@@ -45,3 +45,4 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody);
 void MouseTracking(Body* aBody);
 void ArrowPlayerCollision(Arrow* arrow, Body* pBody);
 bool ArrowBossCollision(Arrow* arrow, Body* bBody);
+void IdleArrowBossCollision(Body* aBody, Body* bBody);

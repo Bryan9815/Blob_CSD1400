@@ -123,8 +123,6 @@ bool ArrowCollision(Body* entity, GridUnit* _level)
 				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 10));
 				Colliding = true;
 			}
-			
-			
 		}
 	}
 	return Colliding;
