@@ -22,6 +22,9 @@
     <Filter Include="src\Screens">
       <UniqueIdentifier>{cc811d85-f920-419d-854f-b447ddcf0a29}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Audio">
+      <UniqueIdentifier>{975c2052-1ecc-4f1b-a91e-6dacb59f25c6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.c">
@@ -84,6 +87,9 @@
     <ClCompile Include="src\Screen\scr_gameover.c">
       <Filter>src\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="src\Audio\AudioManager.c">
+      <Filter>src\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -142,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="src\Screen\scr_gameover.h">
       <Filter>src\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Audio\AudioManager.h">
+      <Filter>src\Audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

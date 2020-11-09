@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Audio\AudioManager.c" />
     <ClCompile Include="src\Bosses\Boss.c" />
     <ClCompile Include="src\Bosses\Boss1.c" />
     <ClCompile Include="src\Camera\Camera.c" />
@@ -41,6 +42,7 @@
     <ClCompile Include="src\Screen\scr_options.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Audio\AudioManager.h" />
     <ClInclude Include="src\Bosses\Boss.h" />
     <ClInclude Include="src\Bosses\Boss1.h" />
     <ClInclude Include="src\Camera\Camera.h" />
