@@ -10,7 +10,8 @@ void Level1Init(void)
 	PlayerInit(&newPlayer);
 	CameraInit(&newPlayer.pBody.hitbox.position);
 	Boss1Init();
-	//AudioInit();
+	AudioL1Init();
+	
 	//shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
 }
 
@@ -42,14 +43,16 @@ void Level1Update(Player* player)
 		}
 		PlayerUpdate(&newPlayer);
 		Boss1Battle();
+		AudioL1Play();
 		bool dealdamage = ArrowStateChange(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
 		if (dealdamage == true)
 		{
 			ArmorSlime.Health = 0;
 		}
-		//AudioLvl1();
+		
 		break;
 	case GAME_PAUSE:
+		AudioL1Pause();
 		if (GetBlobInputTriggered(BLOB_PAUSE))
 		{
 			SetPlayState(GAME_PLAY);
@@ -64,5 +67,5 @@ void Level1Exit(void)
 {
 	ResetFader(GetFader());
 	Boss1Exit();
-	//AudioExit();
+	AudioL1Exit();
 }
