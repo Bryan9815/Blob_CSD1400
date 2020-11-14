@@ -8,7 +8,7 @@ void TutorialInit(void)
 
 	//Player
 	PlayerInit(&newPlayer);
-	newPlayer.pBody.hitbox.position = CP_Vector_Set(200, 200);
+	newPlayer.pBody.hitbox.position = CP_Vector_Set(200, 500);
 	CameraInit(&newPlayer.pBody.hitbox.position);
 }
 
