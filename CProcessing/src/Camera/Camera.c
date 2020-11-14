@@ -10,17 +10,18 @@ float cameraOffsetDist;
 
 static CP_Matrix scaleMatrix, rotationMatrix, translationMatrix;
 float shakeTimer, shakeValue;
+CameraMode camMode;
 
-void CameraInit(CP_Vector *charPos)
+void CameraInit(CP_Vector *charPos, CameraMode cameraMode)
 {
 	centerX = CP_System_GetWindowWidth() / 2.0f;
 	centerY = CP_System_GetWindowHeight() / 2.0f;
-	currentPosition = CP_Vector_Set(charPos->x - centerX, charPos->y - centerY);
-	cameraPos = CP_Vector_Set(charPos->x - centerX, charPos->y - centerY);
-	translationMatrix = CP_Matrix_Translate(currentPosition);
+	currentPosition = CP_Vector_Set(-(charPos->x - centerX), -(charPos->y - centerY));
+	currentPosition = CP_Vector_Set(-(charPos->x - centerX), -(charPos->y - centerY));
 	cameraVelocity = CP_Vector_Set(1, 1);
 	shakeTimer = 0;
 	shakeValue = 15;
+	camMode = cameraMode;
 }
 
 void ScreenShake(float timer, float shakeVal)
@@ -35,25 +36,31 @@ void CameraUpdate(CP_Vector* charPos, Fader* fader)
 	if (shakeTimer <= 0)
 	{
 		currentPosition = CP_Vector_Set(-(charPos->x - centerX), -(charPos->y - centerY));
-		cameraOffset = CP_Vector_Subtract(currentPosition, cameraPos);
-		cameraOffsetDist = CP_Vector_Distance(currentPosition, cameraPos);
-		
-		cameraPos.x += cameraOffset.x * dt * 2;
-		cameraPos.y += cameraOffset.y * dt * 2.5f;
-		translationMatrix = CP_Matrix_Translate(cameraPos);
 		//if (CP_Input_KeyTriggered(KEY_R)) // Screen Shake test
 		//	ScreenShake(0.5f, 150.0f);
 	}
 	else
 	{
 		currentPosition = CP_Vector_Set(-(charPos->x - centerX + (CP_Random_RangeFloat(-shakeValue, shakeValue))), -(charPos->y - centerY + (CP_Random_RangeFloat(-shakeValue, shakeValue))));
+		shakeTimer -= dt;
+	}
+
+	switch (camMode)
+	{
+	case LOCK_PLAYER:
+		translationMatrix = CP_Matrix_Translate(currentPosition);
+		cameraPos = currentPosition;
+		break;
+	case PAN_PLAYER:
 		cameraOffset = CP_Vector_Subtract(currentPosition, cameraPos);
 		cameraOffsetDist = CP_Vector_Distance(currentPosition, cameraPos);
 
 		cameraPos.x += cameraOffset.x * dt * 2;
 		cameraPos.y += cameraOffset.y * dt * 2.5f;
 		translationMatrix = CP_Matrix_Translate(cameraPos);
-		shakeTimer -= dt;
+		break;
+	default:
+		break;		
 	}
 
 	fader->fadePosX = -cameraPos.x;
@@ -65,6 +72,16 @@ CP_Vector GetCameraPos()
 {
 	CP_Vector returnVec = CP_Vector_Set(-cameraPos.x, -cameraPos.y);
 	return returnVec;
+}
+
+void SetCameraMode(CameraMode cameraMode)
+{
+	camMode = cameraMode;
+}
+
+CameraMode GetCameraMode(void)
+{
+	return camMode;
 }
 
 void CameraExit(void)

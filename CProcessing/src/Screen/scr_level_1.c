@@ -8,7 +8,7 @@ void Level1Init(void)
 	LoadMapFile(Level1);
 	GridInit();
 	PlayerInit(&newPlayer);
-	CameraInit(&newPlayer.pBody.hitbox.position);
+	CameraInit(&newPlayer.pBody.hitbox.position, PAN_PLAYER);
 	Boss1Init();
 	AudioL1Init();
 	

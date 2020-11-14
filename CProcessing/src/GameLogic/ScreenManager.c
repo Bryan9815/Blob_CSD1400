@@ -138,11 +138,6 @@ void GameExit(void)
 #if 0
 		Level1Exit();
 #endif
-	/*case SCR_GAME_OVER_WIN:
-		GameOverExit();
-		break;
-	case SCR_GAME_OVER_LOSE:
-		GameOverExit();*/
 		break;
 	default:
 		break;
