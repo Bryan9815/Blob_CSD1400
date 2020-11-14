@@ -10,7 +10,7 @@ void TutorialInit(void)
 	//Player
 	PlayerInit(&newPlayer);
 	newPlayer.pBody.hitbox.position = CP_Vector_Set(200, 200);
-	CameraInit(&newPlayer.pBody.hitbox.position, LOCK_PLAYER);
+	CameraInit(&newPlayer.pBody.hitbox.position, PAN_PLAYER);
 	timer = 0;
 }
 
@@ -32,7 +32,6 @@ void TutorialDraw(Player* player)
 
 void TutorialUpdate(Player* player)
 {
-	float dt = CP_System_GetDt();
 	switch (currPlayState)
 	{
 	case GAME_PLAY:
@@ -42,15 +41,6 @@ void TutorialUpdate(Player* player)
 		}
 		PlayerUpdate(&newPlayer);
 		ArrowStateChange(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
-		if (GetCameraMode() == LOCK_PLAYER)
-		{
-			timer += dt;
-			if (timer > 0.1f)
-			{
-				SetCameraMode(PAN_PLAYER);
-				timer = 0.0f;
-			}
-		}
 		break;
 	case GAME_PAUSE:
 		if (GetBlobInputTriggered(BLOB_PAUSE))
