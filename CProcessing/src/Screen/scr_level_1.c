@@ -6,7 +6,7 @@
 void Level1Init(void) 
 {
 	LoadMapFile(Level0);
-	GridInit(level[0]);
+	GridInit();
 	PlayerInit(&newPlayer);
 	CameraInit(&newPlayer.pBody.hitbox.position);
 	Boss1Init();
@@ -18,7 +18,7 @@ void Level1Init(void)
 void LevelDraw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
-	GridUpdate(level[0], player->pBody.hitbox);
+	GridUpdate(player->pBody.hitbox);
 	PlayerDraw(&newPlayer);
 	Boss1Draw(ArmorSlime);
 	DrawArrow(&newPlayer.arrow);
@@ -68,4 +68,5 @@ void Level1Exit(void)
 	ResetFader(GetFader());
 	Boss1Exit();
 	AudioL1Exit();
+	GridExit();
 }

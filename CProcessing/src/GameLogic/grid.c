@@ -65,11 +65,18 @@ void LoadMapFile (MAP _level)	//Call Load before Rendering Map
 
 
 /*Initialize Grid*/
-void GridInit(GridUnit* grid)//Add starting point
+void GridInit()//Add starting point
 {
 
 	envSpriteSheet = CP_Image_Load("././Assets/EnvSpriteSheet.png");
 	
+	level = (GridUnit**)malloc(levelWidth * sizeof(GridUnit));
+
+	for (int i = 0; i < levelWidth; i++)
+	{
+		*(level + i) = (GridUnit*)malloc(levelHeight * sizeof(GridUnit));
+	}
+
 #if 0
 	//Boundary 1D
 	for (int i = 0; i < GRID_SIZE; i++) {
@@ -108,71 +115,62 @@ void GridInit(GridUnit* grid)//Add starting point
 		}
 	}
 #endif
-	
-	for (int i = 0, j = 0 ,k = 0; i < levelWidth * levelHeight + levelHeight; i++)
-	{
-		if (levelData[i] == '\n')
+		for (int i = 0, j = 0, k = 0; i < levelWidth * levelHeight + levelHeight; i++)
 		{
-			j = 0;
-			k++;
-			continue;
-		}
+			if (levelData[i] == '\n')
+			{
+				j = 0;
+				k++;
+				continue;
+			}
 
-		if (levelData[i] == (char)32) //Floor
-		{
-			
-			grid[j * levelHeight + k].gridType = GE_FLOOR;
-			grid[j * levelHeight + k].gridAsset = GA_FLOOR;
-			grid[j * levelHeight + k].collider.shapeType = COL_RECT;								//RECT COLLIDER
-			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-			grid[j * levelHeight + k].collider.width = (float)(GRID_UNIT_WIDTH );
-			grid[j * levelHeight + k].collider.height = (float)(GRID_UNIT_HEIGHT );
-			
-		}
-		else if (levelData[i] == '-' || levelData[i] == '=' || levelData[i] == '|') //WALL
-		{
-			/*@todo*/
-#if 0
-			grid[j * levelHeight + k].collider.shapeType = COL_CIRCLE;								//CIRCLE COLLIDER
-			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-			grid[j * levelHeight + k].collider.radius = (float)(GRID_UNIT_WIDTH) / 2;
-#endif
-#if 1
-			grid[j * levelHeight + k].collider.shapeType = COL_RECT;								//RECT COLLIDER
+			if (levelData[i] == (char)32) //Floor
+			{
 
-			grid[j * levelHeight + k].collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-			grid[j * levelHeight + k].collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_WIDTH / 2);
-			grid[j * levelHeight + k].collider.width = (float)(GRID_UNIT_WIDTH);
-			grid[j * levelHeight + k].collider.height = (float)(GRID_UNIT_HEIGHT);
-#endif
+				(*(level + j) + k)->gridType = GE_FLOOR;
+				(*(level + j) + k)->gridAsset = GA_FLOOR;
+				(*(level + j) + k)->collider.shapeType = COL_RECT;								//RECT COLLIDER
+				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
 
-			grid[j * levelHeight + k].gridType = GE_WALL;
+			}
+			else if (levelData[i] == '-' || levelData[i] == '=' || levelData[i] == '|') //WALL
+			{
 
-			if (levelData[i] == '-')
-				grid[j * levelHeight + k].gridAsset = GA_WALL1;
-			else if(levelData[i] == '=')
-				grid[j * levelHeight + k].gridAsset = GA_WALL2;
-			else if(levelData[i] == '|')
-				grid[j * levelHeight + k].gridAsset = GA_WALL3;
+				(*(level + j) + k)->gridType = GE_WALL;
+				(*(level + j) + k)->collider.shapeType = COL_RECT;								//RECT COLLIDER
+
+				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_WIDTH / 2);
+				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+				
+
+				if (levelData[i] == '-')
+					(*(level + j) + k)->gridAsset = GA_WALL1;
+				else if (levelData[i] == '=')
+					(*(level + j) + k)->gridAsset = GA_WALL2;
+				else if (levelData[i] == '|')
+					(*(level + j) + k)->gridAsset = GA_WALL3;
+
+			}
+
+			j++;
 
 		}
-		
-		j++;
-		
-	}
 	printf("%s\n", levelData);
 }
 
 
 
-void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
+void GridDraw(int i , int j, Collider playerHitBox)
 {
 	//Checks thru all the elements
 	
 #if !debug
-	switch (grid[i * levelHeight + j].gridAsset)
+	switch (level[i][j].gridAsset)
 	{
 	case GA_FLOOR:
 		CP_Settings_ImageMode(CP_POSITION_CENTER);
@@ -247,19 +245,25 @@ void GridDraw(GridUnit* grid, int i , int j, Collider playerHitBox)
 
 
 /*Draw Call/Update Function for Grid*/
-void GridUpdate(GridUnit* grid, Collider playerHitBox)
+void GridUpdate(Collider playerHitBox)
 {	
 	for (int i = 0; i < levelWidth; i++)
 	{
 		for (int j = 0; j < levelHeight; j++)
 		{
-			GridDraw(grid, i, j, playerHitBox);
+			GridDraw(i, j, playerHitBox);
 		}
 	}
 }
 
 void GridExit() 
 {
+
+	for (int i = 0; i < levelWidth; i++)
+	{
+		free(*(level + i));
+	}
+	free(level);
 
 	CP_Image_Free(&envSpriteSheet);
 }

@@ -5,8 +5,8 @@ This is for casting a grid
 --------------------------*/
 //DEFAULT VARIABLES
 
-#define GRID_WIDTH 200							//Set the horizontal length
-#define GRID_HEIGHT 200							//Set the vertical length
+//#define GRID_MAXWIDTH 200							//Set the horizontal length
+//#define GRID_MAXHEIGHT 200							//Set the vertical length
 
 #define GRID_UNIT_WIDTH 50	
 #define GRID_UNIT_HEIGHT 50	
@@ -50,11 +50,11 @@ typedef struct
 
 }GridUnit;
 
-GridUnit level[GRID_WIDTH][GRID_HEIGHT];
+GridUnit** level;//[GRID_MAXWIDTH][GRID_MAXHEIGHT];
 
 int GetLevelWidth();
 int GetLevelHeight();
 void LoadMapFile(MAP level);
-void GridInit(GridUnit* grid);
-void GridUpdate(GridUnit* grid, Collider playerHitBox);
+void GridInit();
+void GridUpdate(Collider playerHitBox);
 void GridExit();

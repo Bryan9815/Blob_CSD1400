@@ -101,7 +101,7 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 		{
 			player->health = 0;
 		}
-		if (CollisionCheck(&(armorboss->BossBody), grid))
+		if (CollisionCheck(&(armorboss->BossBody)))
 		{
 			ScreenShake(0.5f, 500);
 			armorboss->State = STUNNED;
