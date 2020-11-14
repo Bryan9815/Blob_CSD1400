@@ -1,4 +1,5 @@
 #include "Collision.h"
+#include "../Audio/AudioManager.h"
 #include <math.h>
 bool Col_PointRect(float x, float y, Collider rect) 
 {
@@ -122,6 +123,8 @@ bool ArrowCollision(Body* entity, GridUnit* _level)
 				entity->velocity = CP_Vector_MatrixMultiply(rotation, entity->velocity);
 				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 10));
 				Colliding = true;
+
+				CP_Sound_Play(ReflectSFX);
 			}
 		}
 	}
