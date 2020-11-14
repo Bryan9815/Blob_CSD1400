@@ -11,13 +11,12 @@ float cameraOffsetDist;
 static CP_Matrix scaleMatrix, rotationMatrix, translationMatrix;
 float shakeTimer, shakeValue;
 
-void CameraInit(CP_Vector *charPos)
+void CameraInit(CP_Vector *targetPos, CameraMode cameraMode)
 {
 	centerX = CP_System_GetWindowWidth() / 2.0f;
 	centerY = CP_System_GetWindowHeight() / 2.0f;
-	currentPosition = CP_Vector_Set(charPos->x - centerX, charPos->y - centerY);
-	cameraPos = CP_Vector_Set(charPos->x - centerX, charPos->y - centerY);
-	translationMatrix = CP_Matrix_Translate(currentPosition);
+	currentPosition = CP_Vector_Set(-(targetPos->x - centerX), -(targetPos->y - centerY));
+	cameraPos = currentPosition;
 	cameraVelocity = CP_Vector_Set(1, 1);
 	shakeTimer = 0;
 	shakeValue = 15;
@@ -29,12 +28,12 @@ void ScreenShake(float timer, float shakeVal)
 	shakeValue = shakeVal;
 }
 
-void CameraUpdate(CP_Vector* charPos, Fader* fader)
+void CameraUpdate(CP_Vector* targetPos, Fader* fader)
 {
 	float dt = CP_System_GetDt();
 	if (shakeTimer <= 0)
 	{
-		currentPosition = CP_Vector_Set(-(charPos->x - centerX), -(charPos->y - centerY));
+		currentPosition = CP_Vector_Set(-(targetPos->x - centerX), -(targetPos->y - centerY));
 		cameraOffset = CP_Vector_Subtract(currentPosition, cameraPos);
 		cameraOffsetDist = CP_Vector_Distance(currentPosition, cameraPos);
 		
@@ -46,7 +45,7 @@ void CameraUpdate(CP_Vector* charPos, Fader* fader)
 	}
 	else
 	{
-		currentPosition = CP_Vector_Set(-(charPos->x - centerX + (CP_Random_RangeFloat(-shakeValue, shakeValue))), -(charPos->y - centerY + (CP_Random_RangeFloat(-shakeValue, shakeValue))));
+		currentPosition = CP_Vector_Set(-(targetPos->x - centerX + (CP_Random_RangeFloat(-shakeValue, shakeValue))), -(targetPos->y - centerY + (CP_Random_RangeFloat(-shakeValue, shakeValue))));
 		cameraOffset = CP_Vector_Subtract(currentPosition, cameraPos);
 		cameraOffsetDist = CP_Vector_Distance(currentPosition, cameraPos);
 
