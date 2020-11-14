@@ -141,7 +141,7 @@ bool ArrowInMotion(Arrow* arrow, Body* bBody)
 	}
 	else
 	{
-		if (!ArrowCollision(&(arrow->aBody), level[0]))
+		if (!ArrowCollision(&(arrow->aBody)))
 		{
 			if (arrow->arrowState == RECALL)
 			{
@@ -224,7 +224,7 @@ void IdleArrowBossCollision(Body* aBody, Body* bBody)
 		CP_Vector resultantVector = CP_Vector_Scale(differences, (resMag - mag) / mag);
 		//CP_Vector newPos = CP_Vector_Add(aBody->hitbox.position, resultantVector);
 		aBody->velocity = resultantVector;
-		CollisionCheck(aBody, level[0]);
+		CollisionCheck(aBody);
 		aBody->hitbox.position = CP_Vector_Add(aBody->hitbox.position, aBody->velocity);
 	}
 

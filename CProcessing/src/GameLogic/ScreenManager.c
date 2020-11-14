@@ -7,6 +7,7 @@
 #include "../Screen/scr_level_1.h"
 #include "../Screen/scr_gameover.h"
 #include "../Screen/pause_overlay.h"
+#include "../Screen/scr_tutorial.h"
 
 GameState preGameState = SCR_INTRO; //For Unloading
 GameState currGameState = SCR_INTRO;
@@ -43,13 +44,16 @@ void GameInit(void)
 		CreditsInit();
 		break;
 	case SCR_GAMEPLAY:
+
+		TutorialInit();
+#if 0
 		Level1Init();
+#endif
 		break;
 	default:
 		break;
 	}
 	ScreenStartFade(FADE_OUT);
-	//Level1Init();
 }
 
 void SetGameState(GameState nextGameState)
@@ -92,7 +96,10 @@ void GameUpdate(void)
 		CreditsUpdate();
 		break;
 	case SCR_GAMEPLAY:
+		TutorialUpdate(&newPlayer);
+#if 0
 		Level1Update(&newPlayer);
+#endif
 		break;
 	default:
 		break;
@@ -127,12 +134,10 @@ void GameExit(void)
 	case SCR_CREDITS:
 		break;
 	case SCR_GAMEPLAY:
+		TutorialExit();
+#if 0
 		Level1Exit();
-	/*case SCR_GAME_OVER_WIN:
-		GameOverExit();
-		break;
-	case SCR_GAME_OVER_LOSE:
-		GameOverExit();*/
+#endif
 		break;
 	default:
 		break;

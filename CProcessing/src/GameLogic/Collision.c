@@ -21,7 +21,7 @@ float Max(float f1, float f2)
 	return (f1 > f2) ? f1 : f2;
 }
 
-bool CollisionCheck(Body* entity, GridUnit* _level)
+bool CollisionCheck(Body* entity)
 {
 	
 	bool Colliding = false;
@@ -29,7 +29,7 @@ bool CollisionCheck(Body* entity, GridUnit* _level)
 	{
 		for (int j = 0; j < GetLevelHeight(); j++)
 		{
-			Collider wallCol = _level[i * GetLevelHeight() + j].collider;
+			Collider wallCol = level[i][j].collider;
 			Collider entityCol = entity->hitbox;
 
 			entityCol.shapeType = COL_RECT;					//Im not gonna do math now so just casting entity hitbox to rects for collision
@@ -42,7 +42,7 @@ bool CollisionCheck(Body* entity, GridUnit* _level)
 
 			//@REDO
 			//TOUCH FLOOR
-			if (	_level[i * GetLevelHeight() + j].gridType == GE_WALL &&
+			if (    level[i][j].gridType == GE_WALL &&
 					(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol)								||
 					Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1 , entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol)	||		//Point Collision
 					Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1 , entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol))	&&
@@ -55,7 +55,7 @@ bool CollisionCheck(Body* entity, GridUnit* _level)
 			}
 
 			//TOUCH WALL			 @TODO ADD MORE MATHS SO BAD RIGHT NOW
-			if (	_level[i * GetLevelHeight() + j].gridType == GE_WALL											&&
+			if (	level[i][j].gridType == GE_WALL											&&
 					COL_IsColliding(entityCol, wallCol)																&&		//Shape Collision
 					wallCol.position.x + wallCol.width / 2 >= entity->hitbox.position.x + entity->hitbox.radius		&&		//Constrain
 					entity->velocity.x > 0)																						//Player is moving left
@@ -64,7 +64,7 @@ bool CollisionCheck(Body* entity, GridUnit* _level)
 				Colliding = true;
 			}
 
-			if (	_level[i * GetLevelHeight() + j].gridType == GE_WALL											&&
+			if (level[i][j].gridType == GE_WALL											&&
 					COL_IsColliding(entityCol, wallCol)																&&		//Shape Collision
 					wallCol.position.x - wallCol.width / 2 <= entity->hitbox.position.x - entity->hitbox.radius &&		//Constrain
 					entity->velocity.x < 0)																						//Player is moving right
@@ -74,7 +74,7 @@ bool CollisionCheck(Body* entity, GridUnit* _level)
 			}
 
 			//TOUCH CEILING
-			if (	_level[i * GetLevelHeight() + j].gridType == GE_WALL																								&&
+			if (level[i][j].gridType == GE_WALL																								&&
 					(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol)								||
 					Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol)	||		//Point Collision
 					Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol))	&&
@@ -92,21 +92,21 @@ bool CollisionCheck(Body* entity, GridUnit* _level)
 }
 
 //Shamelessly stolen from Jia Rong, thanks btw
-bool ArrowCollision(Body* entity, GridUnit* _level)
+bool ArrowCollision(Body* entity)
 {
 	bool Colliding = false;
 	for (int i = 0; i < GetLevelWidth(); i++)
 	{
 		for (int j = 0; j < GetLevelHeight(); j++)
 		{
-			Collider wallCol = _level[i * GetLevelHeight() + j].collider;
+			Collider wallCol = level[i][j].collider;
 			Collider entityCol = entity->hitbox;
 
 			//entityCol.position.x += entity->velocity.x * 10;
 			//entityCol.position.y += entity->velocity.y * 10;
 
 			//Fuck my life
-			if (COL_IsColliding(entityCol, wallCol) && _level[i * GetLevelHeight() + j].gridType == GE_WALL)
+			if (COL_IsColliding(entityCol, wallCol) && level[i][j].gridType == GE_WALL)
 			{
 				float nearestX = Max(wallCol.position.x - wallCol.width / 2, Min(entityCol.position.x , wallCol.position.x + wallCol.width / 2));	//Get Nearest Point X
 				float nearestY = Max(wallCol.position.y - wallCol.height / 2, Min(entityCol.position.y , wallCol.position.y + wallCol.height / 2)); //Get Nearest Point Y

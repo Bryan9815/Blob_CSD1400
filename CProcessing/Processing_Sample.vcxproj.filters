@@ -93,6 +93,9 @@
     <ClCompile Include="src\Screen\pause_overlay.c">
       <Filter>src\Screens</Filter>
     </ClCompile>
+    <ClCompile Include="src\Screen\scr_tutorial.c">
+      <Filter>src\Screens</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player\player.h">
@@ -156,6 +159,9 @@
       <Filter>src\Audio</Filter>
     </ClInclude>
     <ClInclude Include="src\Screen\pause_overlay.h">
+      <Filter>src\Screens</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Screen\scr_tutorial.h">
       <Filter>src\Screens</Filter>
     </ClInclude>
   </ItemGroup>

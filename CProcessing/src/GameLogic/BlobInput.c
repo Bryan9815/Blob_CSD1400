@@ -46,6 +46,17 @@ int GetBlobInputDown(BlobInput input)
 		if (CP_Input_KeyDown(keys[input].key[i]))
 			return 1;
 	}
+	if (input == ANY)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < BLOB_PAUSE; j++)
+			{
+				if (CP_Input_KeyDown(keys[j].key[i]))
+					return 1;
+			}
+		}
+	}
 	return 0;
 }
 

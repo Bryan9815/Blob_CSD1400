@@ -1,3 +1,4 @@
+#pragma once
 #include "../Camera/Camera.h"
 #include <stdio.h>
 #include <stdbool.h>

@@ -10,6 +10,6 @@ typedef struct
 	float rotation;
 } Body;
 
-bool CollisionCheck(Body* entity, GridUnit* level);
-bool ArrowCollision(Body* entity, GridUnit* _level);
+bool CollisionCheck(Body* entity);
+bool ArrowCollision(Body* entity);
 bool PlayerEntityCollision(Body* player, Body* entity);
