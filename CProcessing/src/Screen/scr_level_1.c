@@ -5,7 +5,7 @@
 
 void Level1Init(void) 
 {
-	LoadMapFile(Level0);
+	LoadMapFile(Level1);
 	GridInit();
 	PlayerInit(&newPlayer);
 	CameraInit(&newPlayer.pBody.hitbox.position);

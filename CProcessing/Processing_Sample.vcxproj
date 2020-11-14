@@ -41,6 +41,7 @@
     <ClCompile Include="src\Screen\scr_intro.c" />
     <ClCompile Include="src\Screen\scr_mainmenu.c" />
     <ClCompile Include="src\Screen\scr_options.c" />
+    <ClCompile Include="src\Screen\scr_tutorial.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Audio\AudioManager.h" />
@@ -64,6 +65,7 @@
     <ClInclude Include="src\Screen\scr_intro.h" />
     <ClInclude Include="src\Screen\scr_mainmenu.h" />
     <ClInclude Include="src\Screen\scr_options.h" />
+    <ClInclude Include="src\Screen\scr_tutorial.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
