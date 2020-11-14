@@ -51,7 +51,7 @@ void CreditsInit()
 {
 
 	currentPosition = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2);
-	CameraInit(&currentPosition);
+	CameraInit(&currentPosition, PAN_PLAYER);
 
 }
 

@@ -1,5 +1,6 @@
 #include "scr_tutorial.h"
 
+float timer;
 
 void TutorialInit(void) 
 {
@@ -9,7 +10,8 @@ void TutorialInit(void)
 	//Player
 	PlayerInit(&newPlayer);
 	newPlayer.pBody.hitbox.position = CP_Vector_Set(200, 500);
-	CameraInit(&newPlayer.pBody.hitbox.position);
+	CameraInit(&newPlayer.pBody.hitbox.position, LOCK_PLAYER);
+	timer = 0;
 }
 
 void TutorialDraw(Player* player)
@@ -18,12 +20,45 @@ void TutorialDraw(Player* player)
 	GridUpdate(player->pBody.hitbox);
 	PlayerDraw(&newPlayer);
 	DrawArrow(&newPlayer.arrow);
+	switch (currPlayState)
+	{
+	case GAME_PLAY:
+		break;
+	default:
+		DrawOverlay();
+		break;
+	}
 }
 
 void TutorialUpdate(Player* player)
 {
-	PlayerUpdate(&newPlayer);
-	ArrowStateChange(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
+	float dt = CP_System_GetDt();
+	switch (currPlayState)
+	{
+	case GAME_PLAY:
+		if (GetBlobInputTriggered(BLOB_PAUSE))
+		{
+			SetPlayState(GAME_PAUSE);
+		}
+		PlayerUpdate(&newPlayer);
+		ArrowStateChange(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
+		if (GetCameraMode() == LOCK_PLAYER)
+		{
+			timer += dt;
+			if (timer > 0.1f)
+			{
+				SetCameraMode(PAN_PLAYER);
+				timer = 0.0f;
+			}
+		}
+		break;
+	case GAME_PAUSE:
+		if (GetBlobInputTriggered(BLOB_PAUSE))
+		{
+			SetPlayState(GAME_PLAY);
+		}
+		break;
+	}
 	CameraUpdate(&newPlayer.pBody.hitbox.position, GetFader());
 	TutorialDraw(player);
 }
