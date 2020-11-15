@@ -52,5 +52,4 @@ void MouseTracking(Body* aBody);
 void IdleArrowCollision_Circle(Body* aBody, Body* entity);
 void ArrowInMotion(Arrow* arrow);
 
-void ArrowPlayerCollision(Arrow* arrow, Body* pBody);
-bool ArrowBoss1Collision(Arrow* arrow, Body* bBody);
+void ArrowPickup(Arrow* arrow, Body* entity);

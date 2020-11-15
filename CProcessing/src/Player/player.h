@@ -52,4 +52,3 @@ void DodgeRecharge(Player* player);
 bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow);
 bool ArrowTrigger(Player* player);
 bool ArrowBoss1Collision(Arrow* arrow, Body* bBody);
-void ArrowPlayerCollision(Arrow* arrow, Body* pBody);

@@ -337,7 +337,7 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		arrow->arrowState = MOTION;
 		break;
 	case MOTIONLESS:
-		ArrowPlayerCollision(arrow, pBody); //pickup player
+		ArrowPickup(arrow, pBody); //pickup player
 		IdleArrowCollision_Circle(&arrow->aBody, bBody);
 		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) // && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox)
 		{
@@ -359,46 +359,6 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		arrowBossCol = ArrowBoss1Collision(arrow, bBody);
 	}
 	return arrowBossCol;
-}
-
-//void ArrowStateCheck(Body* pBody, Arrow* arrow)
-//{
-//	switch (arrow->arrowState)
-//	{
-//	case RELEASE:
-//		arrow->arrowState = MOTION;
-//		break;
-//	case MOTIONLESS:
-//		ArrowPlayerCollision(arrow, pBody); //pickup player
-//		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) // && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox)
-//		{
-//			CalculateRecall(arrow, pBody);
-//			arrow->arrowState = RECALL;
-//		}
-//		break;
-//	case WITHENTITY:
-//		arrow->aBody.hitbox.position = pBody->hitbox.position;
-//		MouseTracking(&arrow->aBody);
-//		break;
-//	default:
-//		break;
-//	}
-//
-//	if (arrow->arrowState == MOTION || arrow->arrowState == RECALL)
-//	{
-//		ArrowInMotion(arrow);
-//	}
-//}
-
-void ArrowPlayerCollision(Arrow* arrow, Body* pBody)
-{
-	if (COL_IsColliding(arrow->aBody.hitbox, pBody->hitbox) == true)
-	{
-		arrow->aBody.hitbox.position = pBody->hitbox.position;
-		arrow->oldPosition = pBody->hitbox.position;
-		arrow->newPosition = pBody->hitbox.position;
-		arrow->arrowState = WITHENTITY;
-	}
 }
 
 /*Update Player*/
