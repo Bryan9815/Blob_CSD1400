@@ -1,6 +1,7 @@
 #include "Collision.h"
 #include "../Audio/AudioManager.h"
 #include <math.h>
+#include <stdio.h>
 bool Col_PointRect(float x, float y, Collider rect) 
 {
 	return 
@@ -91,6 +92,14 @@ bool GridCollisionCheck(Body* entity)
 	return Colliding;
 }
 
+CP_Vector ArrowReflection(Body* entity, CP_Vector n)
+{
+	float dotproduct = CP_Vector_DotProduct(entity->velocity, n);
+	CP_Vector r = CP_Vector_Subtract(entity->velocity, CP_Vector_Scale(n, 2 * dotproduct));
+	return r;
+}
+
+
 //Shamelessly stolen from Jia Rong, thanks btw
 bool ArrowCollision(Body* entity)
 {
@@ -108,20 +117,61 @@ bool ArrowCollision(Body* entity)
 			//Fuck my life
 			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH))
 			{
-				float nearestX = Max(wallCol.position.x - wallCol.width / 2, Min(entityCol.position.x , wallCol.position.x + wallCol.width / 2));	//Get Nearest Point X
-				float nearestY = Max(wallCol.position.y - wallCol.height / 2, Min(entityCol.position.y , wallCol.position.y + wallCol.height / 2)); //Get Nearest Point Y
-
-				CP_Vector dist = CP_Vector_Set(entityCol.position.x - nearestX, entityCol.position.y - nearestY);
-				CP_Vector dnormal = CP_Vector_Set(-dist.y, dist.x);
+				CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
+				CP_Vector r = entity->velocity;
+				if ((level[i + 1][j].gridType == GE_WALL) && (level[i - 1][j].gridType == GE_WALL)) //Top and Bottom
+				{
+					if (entity->velocity.y > 0) //if arrow is travelling downwards
+					{
+						n = CP_Vector_Set(0.0f, -1.0f);
+						//printf("reflect from bottom\n");
+					}
+					else if (entity->velocity.y < 0) //If arrow is travelling upwards
+					{
+						n = CP_Vector_Set(0.0f, 1.0f);
+						//printf("reflect from top\n");
+					}
+					r = ArrowReflection(entity, n);
+				}
+				else if ((level[i][j + 1].gridType == GE_WALL) && (level[i][j - 1].gridType == GE_WALL)) //Left and Right
+				{
+					if (entity->velocity.x > 0) //If arrow is travelling to the right
+					{
+						n = CP_Vector_Set(-1.0f, 0.0f);
+						//printf("reflect from right\n");
+					}
+					else if (entity->velocity.x < 0) //If arrow is travelling to the left
+					{
+						n = CP_Vector_Set(1.0f, 0.0f);
+						//printf("reflect from left\n");
+					}
+					r = ArrowReflection(entity, n);
+				}
+				else if ((level[i + 1][j].gridType == GE_WALL) && (level[i - 1][j].gridType == GE_WALL) &&
+					(level[i][j + 1].gridType == GE_WALL) && (level[i][j - 1].gridType == GE_WALL)) // check for corners
+				{
+					r = CP_Vector_Negate(entity->velocity);
+					//printf("hit corners\n");
+				}
+				//printf("%f, %f\n", n.x, n.y);
+				//printf("%f, %f\n", r.x, r.y);
+				entity->velocity = r;
+				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 20));
 				
-				double nAngle = atan2(dnormal.y, dnormal.x);
-				double incAngle = atan2(entity->velocity.y, entity->velocity.x);
-				double theta = 2 * (nAngle - incAngle);
+				//float nearestX = Max(wallCol.position.x - wallCol.width / 2, Min(entityCol.position.x , wallCol.position.x + wallCol.width / 2));	//Get Nearest Point X
+				//float nearestY = Max(wallCol.position.y - wallCol.height / 2, Min(entityCol.position.y , wallCol.position.y + wallCol.height / 2)); //Get Nearest Point Y
 
-				
-				CP_Matrix rotation = CP_Matrix_Rotate(CP_Math_Degrees((float)theta));
-				entity->velocity = CP_Vector_MatrixMultiply(rotation, entity->velocity);
-				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 10));
+				//CP_Vector dist = CP_Vector_Set(entityCol.position.x - nearestX, entityCol.position.y - nearestY);
+				//CP_Vector dnormal = CP_Vector_Set(-dist.y, dist.x);
+				//
+				//double nAngle = atan2(dnormal.y, dnormal.x);
+				//double incAngle = atan2(entity->velocity.y, entity->velocity.x);
+				//double theta = 2 * (nAngle - incAngle);
+
+				//
+				//CP_Matrix rotation = CP_Matrix_Rotate(CP_Math_Degrees((float)theta));
+				//entity->velocity = CP_Vector_MatrixMultiply(rotation, entity->velocity);
+				//entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 10));
 				Colliding = true;
 
 			}

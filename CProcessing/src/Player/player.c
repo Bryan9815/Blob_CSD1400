@@ -316,12 +316,12 @@ bool ArrowBoss1Collision(Arrow* arrow, Body* bBody)
 			//r = d-2(d.n)n
 			CP_Sound_Play(ReflectSFX);
 			CP_Vector normal = CP_Vector_Normalize(differences);
-			float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
-			CP_Vector resultantVector = CP_Vector_Subtract(arrow->aBody.velocity, CP_Vector_Scale(normal, 2 * dotproduct));
+			CP_Vector resultantVector = ArrowReflection(&arrow->aBody, normal);
+			//float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
+			//CP_Vector resultantVector = CP_Vector_Subtract(arrow->aBody.velocity, CP_Vector_Scale(normal, 2 * dotproduct));
 			//Adjust arrow rotation Here
-			arrow->aBody.velocity = resultantVector;
 			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
-			arrow->aBody.hitbox.position = CP_Vector_Add(CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(resultantVector, 10)), bBody->velocity);
+			arrow->aBody.hitbox.position = CP_Vector_Add(CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(resultantVector, 20)), bBody->velocity);
 		}
 
 	}
