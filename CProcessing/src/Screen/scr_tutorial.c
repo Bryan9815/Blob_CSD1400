@@ -4,12 +4,12 @@ float timer;
 
 void TutorialInit(void) 
 {
-	LoadMapFile(Level0);
+	LoadMapFile(Level1);
 	GridInit();
 
 	//Player
 	PlayerInit(&newPlayer);
-	newPlayer.pBody.hitbox.position = CP_Vector_Set(200, 200);
+	newPlayer.pBody.hitbox.position = CP_Vector_Set(200, 500);
 	newPlayer.arrow.aBody.hitbox.position = newPlayer.pBody.hitbox.position;
 	CameraInit(&newPlayer.pBody.hitbox.position, PAN_PLAYER);
 	timer = 0;
@@ -18,7 +18,10 @@ void TutorialInit(void)
 void TutorialDraw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
-	GridUpdate(player->pBody.hitbox);
+
+	//Tutorial Instructions
+
+	GridDraw(player->pBody.hitbox);
 	PlayerDraw(&newPlayer);
 	DrawArrow(&newPlayer.arrow);
 	switch (currPlayState)

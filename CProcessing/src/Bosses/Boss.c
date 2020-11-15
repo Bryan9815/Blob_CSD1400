@@ -38,13 +38,13 @@ void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //boss slowl
 	if (COL_Dist(currentboss->BossBody.hitbox, player.pBody.hitbox) >= (currentboss->BossBody.hitbox.radius + player.pBody.hitbox.radius + distance)) //boss destination does not overlap with player
 	{
 		currentboss->BossBody.velocity = CP_Vector_Scale(DirVector, distance); //scale direction vector with speed over dt
-		CollisionCheck(&(currentboss->BossBody));
+		GridCollisionCheck(&(currentboss->BossBody));
 	}
 	else
 	{
 		distance = COL_Dist(currentboss->BossBody.hitbox, player.pBody.hitbox) - (currentboss->BossBody.hitbox.radius + player.pBody.hitbox.radius); //find distance from player
 		currentboss->BossBody.velocity = CP_Vector_Scale(DirVector, distance); //scale direction vector with remaining distance
-		CollisionCheck(&(currentboss->BossBody));
+		GridCollisionCheck(&(currentboss->BossBody));
 	}
 	
 	currentboss->BossBody.hitbox.position =  CP_Vector_Add(currentboss->BossBody.velocity, currentboss->BossBody.hitbox.position); //update position	

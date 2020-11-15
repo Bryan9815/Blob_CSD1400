@@ -21,7 +21,7 @@ float Max(float f1, float f2)
 	return (f1 > f2) ? f1 : f2;
 }
 
-bool CollisionCheck(Body* entity)
+bool GridCollisionCheck(Body* entity)
 {
 	
 	bool Colliding = false;
@@ -42,7 +42,7 @@ bool CollisionCheck(Body* entity)
 
 			//@REDO
 			//TOUCH FLOOR
-			if (    level[i][j].gridType == GE_WALL &&
+			if (    (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_PIT)																						&&
 					(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol)								||
 					Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1 , entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol)	||		//Point Collision
 					Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1 , entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol))	&&
@@ -55,26 +55,26 @@ bool CollisionCheck(Body* entity)
 			}
 
 			//TOUCH WALL			 @TODO ADD MORE MATHS SO BAD RIGHT NOW
-			if (	level[i][j].gridType == GE_WALL											&&
+			if ((level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_PIT)									&&
 					COL_IsColliding(entityCol, wallCol)																&&		//Shape Collision
 					wallCol.position.x + wallCol.width / 2 >= entity->hitbox.position.x + entity->hitbox.radius		&&		//Constrain
-					entity->velocity.x > 0)																						//Player is moving left
+					entity->velocity.x > 0)																					//Player is moving left
 			{
 				entity->velocity.x = (wallCol.position.x - wallCol.width / 2) - (entity->hitbox.position.x + entity->hitbox.radius);
 				Colliding = true;
 			}
 
-			if (level[i][j].gridType == GE_WALL											&&
+			if (	(level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_PIT)								&&
 					COL_IsColliding(entityCol, wallCol)																&&		//Shape Collision
-					wallCol.position.x - wallCol.width / 2 <= entity->hitbox.position.x - entity->hitbox.radius &&		//Constrain
-					entity->velocity.x < 0)																						//Player is moving right
+					wallCol.position.x - wallCol.width / 2 <= entity->hitbox.position.x - entity->hitbox.radius		&&		//Constrain
+					entity->velocity.x < 0)																					//Player is moving right
 			{
 				entity->velocity.x = (wallCol.position.x + wallCol.width / 2) - (entity->hitbox.position.x - entity->hitbox.radius);
 				Colliding = true;
 			}
 
 			//TOUCH CEILING
-			if (level[i][j].gridType == GE_WALL																								&&
+			if		((level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_PIT)																					&&
 					(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol)								||
 					Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol)	||		//Point Collision
 					Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol))	&&

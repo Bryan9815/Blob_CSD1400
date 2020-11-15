@@ -46,9 +46,10 @@ void GameInit(void)
 		CreditsInit();
 		break;
 	case SCR_GAMEPLAY:
-		
-		TutorialInit();
 #if 0
+		TutorialInit();
+#endif
+#if 1
 		Level1Init();
 #endif
 		break;
@@ -98,7 +99,9 @@ void GameUpdate(void)
 		CreditsUpdate();
 		break;
 	case SCR_GAMEPLAY:
+#if 1
 		TutorialUpdate(&newPlayer);
+#endif
 #if 0
 		Level1Update(&newPlayer);
 #endif
@@ -136,7 +139,9 @@ void GameExit(void)
 	case SCR_CREDITS:
 		break;
 	case SCR_GAMEPLAY:
+#if 1
 		TutorialExit();
+#endif
 #if 0
 		Level1Exit();
 #endif

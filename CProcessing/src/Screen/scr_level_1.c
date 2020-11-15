@@ -8,8 +8,10 @@ void Level1Init(void)
 	LoadMapFile(Level1);
 	GridInit();
 	PlayerInit(&newPlayer);
+	newPlayer.pBody.hitbox.position = CP_Vector_Set(800, 800);
 	CameraInit(&newPlayer.pBody.hitbox.position, PAN_PLAYER);
 	Boss1Init();
+	ArmorSlime.BossBody.hitbox.position = CP_Vector_Set(2000, 800);
 	AudioL1Init();
 	
 	//shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
@@ -18,7 +20,8 @@ void Level1Init(void)
 void LevelDraw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
-	GridUpdate(player->pBody.hitbox);
+
+	GridDraw(player->pBody.hitbox);
 	PlayerDraw(&newPlayer);
 	Boss1Draw(ArmorSlime);
 	DrawArrow(&newPlayer.arrow);
