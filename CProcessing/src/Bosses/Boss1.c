@@ -20,7 +20,7 @@ float Stuntime = 0;
 
 void Boss1Init(void)
 {
-	BossInit(&ArmorSlime, 1, 80.f, CP_Vector_Set(200.f,200.f));
+	BossInit(&ArmorSlime, 3, 80.f, CP_Vector_Set(200.f,200.f));
 	ArmorSlime.bosssprite = CP_Image_Load("././Assets/Boss1.png");
 	NearAttack = FarAttack = NOT_ATTACK; //reset attack states
 	FarAttackTimer = NearAttackTimer = NearTimer = FarTimer = ChargeTimer = AttackCount = Stuntime = 0.f; //reset timers
