@@ -2,6 +2,7 @@
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
 #include "scr_options.h"
+#include "../Audio/AudioManager.h"
 #define OPTIONS_BUTTONS 3
 
 typedef enum {
@@ -14,9 +15,11 @@ CP_Color bgColor, GREEN, WHITE;
 Button optionList[OPTIONS_BUTTONS];
 int selectButton, overlayNum;
 int customInputX, customInputY;
+int soundInputX, soundInputY;
 int changingInput;
 bool mouseCheck;
 Button customInputMenu[BLOB_PAUSE+2][4];
+Button soundMenu[SFX + 2][3];
 CP_Vector mousePos;
 
 void CustomInputButtonsInit(void)
@@ -35,12 +38,31 @@ void CustomInputButtonsInit(void)
 	}
 }
 
+void SoundMenuInit(void)
+{
+	mouseCheck = false;
+	for (int i = 0; i <= SFX; i++)
+	{
+		soundMenu[i][0] = CreateButton((float)CP_System_GetWindowWidth() / 5, (float)CP_System_GetWindowHeight() / 4 + 150.f * i, 250.f, 50.f, GetSoundText(i));
+		soundMenu[i][1] = CreateButton((float)CP_System_GetWindowWidth() / 5 + 600.f, (float)CP_System_GetWindowHeight() / 4 + 150.f * i, 50.f, 50.f, "-");
+		soundMenu[i][2] = CreateButton((float)CP_System_GetWindowWidth() / 5 + 900.f, (float)CP_System_GetWindowHeight() / 4 + 150.f * i, 50.f, 50.f, "+");
+		for (int j = 0; j <= 2; j++)
+		{
+			soundMenu[i][j].objColor = WHITE;
+		}
+	}
+	soundMenu[2][0] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 8 + 75 * 8, 250.f, 100.f, "Exit");
+	soundMenu[2][0].objColor = WHITE;
+}
+
 void OptionsInit(void)
 {
 	selectButton = 0;
 	overlayNum = OPTIONS_BUTTONS;
 	customInputX = 1;
 	customInputY = 0;
+	soundInputX = 1;
+	soundInputY = 0;
 	changingInput = 0;
 
 	bgColor = CP_Color_Create(0, 0, 0, 255);
@@ -55,6 +77,8 @@ void OptionsInit(void)
 	CustomInputButtonsInit();
 	customInputMenu[6][0] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 8 + 75 * 8, 250.f, 100.f, "Exit");
 	customInputMenu[6][0].objColor = WHITE;
+
+	SoundMenuInit();
 }
 
 void OptionsDraw(void)
@@ -73,7 +97,32 @@ void OptionsDraw(void)
 	switch (overlayNum)
 	{
 	case SOUND:
-		// SFX and Music slider options
+		// SFX and Music slider options (currently buttons)
+		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 155));
+		CP_Graphics_DrawRect((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_System_GetWindowWidth() / 8 * 7, (float)CP_System_GetWindowHeight() / 8 * 7);
+		for (int i = 0; i < (SFX + 2); i++)
+		{
+			if (i == (SFX + 1)) //for exit button
+			{
+				if (soundInputY == i)
+					DrawButton(soundMenu[i][0], 48.f, 1.f, GREEN);
+				else 
+					DrawButton(soundMenu[i][0], 48.f, 1.f, soundMenu[i][0].objColor);
+			}
+			else
+			{
+				CP_Settings_Fill(WHITE);
+				CP_Font_DrawText(soundMenu[i][0].text, soundMenu[i][0].posX, soundMenu[i][0].posY); //text for "Music" and "Sound"
+				CP_Font_DrawText(GetVolumeText(i), ((soundMenu[i][1].posX + soundMenu[i][2].posX) / 2.f), soundMenu[i][0].posY); //text for vol lvl
+				for (int j = 1; j <= 2; j++)
+				{
+						if (soundInputY == i && soundInputX == j && soundMenu[i][j].isSelected == 0)
+							DrawButton(soundMenu[i][j], 48.f, 1.f, GREEN);
+						else
+							DrawButton(soundMenu[i][j], 48.f, 1.f, soundMenu[i][j].objColor);
+				}
+			}
+		}
 		break;
 	case CONTROLS:
 		// Draw Overlay
@@ -82,8 +131,10 @@ void OptionsDraw(void)
 		// Draw custom inputs
 		for (int i = 0; i < BLOB_PAUSE + 2; i++)
 		{
-			if(i == BLOB_PAUSE + 1)
+			if (i == BLOB_PAUSE + 1)
+			{
 				DrawButton(customInputMenu[i][0], 48.f, 1.f, WHITE);
+			}
 			else
 			{
 				CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
@@ -364,6 +415,7 @@ void OptionsMenuActivate(void)
 	switch (selectButton)
 	{
 	case SOUND:
+		overlayNum = SOUND;
 		break;
 	case CONTROLS:
 		overlayNum = CONTROLS;
@@ -386,6 +438,27 @@ void ControlMenuActivate(void)
 		customInputMenu[customInputY][customInputX].objColor = CP_Color_Create(255, 255, 0, 255);
 		changingInput = 1;
 	}
+}
+
+void SoundMenuActiviate(void)
+{
+	if (soundInputY == 2)
+		overlayNum = OPTIONS_BUTTONS;
+	else
+	{
+		soundMenu[soundInputY][soundInputX].isSelected = 1;
+	}
+
+	if (soundMenu[SFX][1].isSelected == 1 && SFX_Vol > SOUND_MIN)
+		SFX_Vol--;
+	else if (soundMenu[SFX][2].isSelected == 1 && SFX_Vol < SOUND_MAX)
+		SFX_Vol++;
+	else if (soundMenu[MUSIC][1].isSelected == 1 && BGM_Vol > SOUND_MIN)
+		BGM_Vol--;
+	else if (soundMenu[MUSIC][2].isSelected == 1 && BGM_Vol < SOUND_MAX)
+		BGM_Vol++;
+
+	soundMenu[soundInputY][soundInputX].isSelected = 0;
 }
 
 void OptionsInput(void)
@@ -456,6 +529,77 @@ void OptionsInput(void)
 			{
 			case SOUND:
 				// SFX and Music slider options
+				if (GetBlobInputTriggered(BLOB_UP))
+				{
+					if (soundInputY == 0)
+						soundInputY = SFX + 1;
+					else
+						soundInputY--;
+				}
+				else if (GetBlobInputTriggered(BLOB_DOWN))
+				{
+					if (soundInputY == SFX + 1)
+						soundInputY = 0;
+					else
+						soundInputY++;
+				}
+				if (GetBlobInputTriggered(BLOB_LEFT))
+				{
+					if (soundInputX == 1)
+						soundInputX = 2;
+					else
+						soundInputX--;
+				}
+				else if (GetBlobInputTriggered(BLOB_RIGHT))
+				{
+					if (soundInputX == 2)
+						soundInputX = 1;
+					else
+						soundInputX++;
+				}
+
+				if (!mouseCheck)
+				{
+					for (int i = 0; i < 3; i++)
+					{
+						for (int j = 0; j < 3; j++)
+						{
+							// Mouse x-pos collision check
+							if (mousePos.x >= (soundMenu[i][j].posX - soundMenu[i][j].width / 2) && mousePos.x <= (soundMenu[i][j].posX + soundMenu[i][j].width / 2))
+							{
+								// Mouse y-pos collision check	
+								if (mousePos.y >= (soundMenu[i][j].posY - soundMenu[i][j].height / 2) && mousePos.y <= (soundMenu[i][j].posY + soundMenu[i][j].height / 2))
+								{
+									soundInputX = j;
+									soundInputY = i;
+									mouseCheck = true;
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					if (CP_Input_MouseDown(MOUSE_BUTTON_1))
+						soundMenu[soundInputY][soundInputX].isSelected = 1;
+					else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
+					{
+						SoundMenuActiviate();
+						soundMenu[soundInputY][soundInputX].isSelected = 0;
+						mouseCheck = true;
+					}
+					if ((int)mousePos.x != (int)oldMousePos.x || (int)mousePos.y != (int)oldMousePos.y)
+					{
+						if (mousePos.x < (soundMenu[soundInputY][soundInputX].posX - soundMenu[soundInputY][soundInputX].width / 2) || mousePos.x >(soundMenu[soundInputY][soundInputX].posX + soundMenu[soundInputY][soundInputX].width / 2))
+							mouseCheck = false;
+						if (mousePos.y < (soundMenu[soundInputY][soundInputX].posY - soundMenu[soundInputY][soundInputX].height / 2) || mousePos.y >(soundMenu[soundInputY][soundInputX].posY + soundMenu[soundInputY][soundInputX].height / 2))
+							mouseCheck = false;
+					}
+				}
+				if (GetBlobInputTriggered(BLOB_INTERACT))
+				{
+					ControlMenuActivate();
+				}
 				break;
 			case CONTROLS:
 				if (GetBlobInputTriggered(BLOB_UP))

@@ -1,7 +1,7 @@
 #include <cprocessing.h>
 #include <stdio.h>
 #include "Boss.h"
-//#include "../Player/player.h"
+#include "../Audio/AudioManager.h"
 #include "Boss1.h"
 //#include "../GameLogic/grid.h"
 //#include "../Screen/scr_level_1.h"
@@ -104,6 +104,7 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 		if (GridCollisionCheck(&(armorboss->BossBody)))
 		{
 			ScreenShake(0.5f, 500);
+			CP_Sound_Play(SlamSFX);
 			armorboss->State = STUNNED;
 			FarAttackTimer = 0;
 		}
