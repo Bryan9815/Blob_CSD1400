@@ -118,7 +118,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
 			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
 			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH) / 5;
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
 			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
 
 			(*(level + j) + k)->isCollidable = false;
@@ -136,7 +136,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
 			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
 			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH) / 5;
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
 			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
 
 			(*(level + j) + k)->isCollidable = true;
@@ -200,7 +200,6 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->isActive = false;
 
 			(*(level + j) + k)->gridAsset = GA_SWITCH;
-
 			
 		}
 		else if (levelData[i] == 'D')
