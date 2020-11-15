@@ -115,7 +115,7 @@ bool ArrowCollision(Body* entity)
 			//entityCol.position.y += entity->velocity.y * 10;
 
 			//Fuck my life
-			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH))
+			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH || level[i][j].gridType == GE_DOOR))
 			{
 				CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
 				CP_Vector r = entity->velocity;
