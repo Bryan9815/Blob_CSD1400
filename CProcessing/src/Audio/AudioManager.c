@@ -2,6 +2,10 @@
 #include "AudioManager.h"
 #include "../GameLogic/ScreenManager.h"
 
+
+bool MenuPlaying = false;
+
+//for sound options
 const char* GetSoundText(soundSelect input)
 {
 	switch (input)
@@ -18,6 +22,7 @@ const char* GetSoundText(soundSelect input)
 	}
 }
 
+//for sound options
 char* GetVolumeText(soundSelect input)
 {
 	switch (input)
@@ -40,6 +45,27 @@ void VolumeInit(void)
 	SFX_Vol = 10;
 	BGM_Vol = 10;
 }
+
+void AudioMenuInit(void)
+{
+	if (MenuPlaying == false)
+	{
+		BGM_Menu = CP_Sound_LoadMusic("././Assets/Audio/BlobMenu.wav");
+		CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * (float)BGM_Vol));
+		CP_Sound_PlayMusic(BGM_Menu);
+		CP_Sound_ResumeAll(); //Resume from pause menu
+		//test if track is loaded
+		MenuPlaying = true;
+	}
+}
+
+void AudioMenuExit(void)
+{
+	CP_Sound_StopAll();
+	CP_Sound_Free(BGM_Menu);
+	MenuPlaying = false;
+}
+
 
 void AudioL1Init(void)
 {

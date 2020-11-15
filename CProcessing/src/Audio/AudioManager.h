@@ -13,11 +13,15 @@ typedef enum
 int SFX_Vol, BGM_Vol;
 char volumeLevel[3];
 bool MusicPlaying, SFXPlaying; //to make sure function is only called once
+CP_Sound BGM_Menu;
 CP_Sound BGM_Boss1;
 CP_Sound ReflectSFX, SlamSFX, attackSFX, warningSFX, damageSFX;
 
 const char* GetSoundText(soundSelect input);
 char* GetVolumeText(soundSelect input);
+
+void AudioMenuInit(void);
+void AudioMenuExit(void);
 
 void VolumeInit(void);
 void AudioL1Init(void);

@@ -2,6 +2,7 @@
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
 #include "scr_mainmenu.h"
+#include "../Audio/AudioManager.h"
 #define MAIN_MENU_BUTTONS 4
 
 typedef enum {
@@ -28,6 +29,7 @@ void MainMenuInit(void)
 	menuList[OPTION] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Options");
 	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Credits");
 	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 250.f, 100.f, "Quit");
+	AudioMenuInit();
 }
 
 
@@ -58,6 +60,7 @@ void MenuButtonActivate()
 	switch (selectButton)
 	{
 	case START:
+		AudioMenuExit();
 		SetGameState(SCR_GAMEPLAY);
 		break;
 	case OPTION:
@@ -139,5 +142,4 @@ void MainMenuUpdate(void)
 
 void MainMenuExit(void)
 {	
-	
 }
