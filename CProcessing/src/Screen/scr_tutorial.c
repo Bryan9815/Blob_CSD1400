@@ -4,7 +4,7 @@ float timer;
 
 void TutorialInit(void) 
 {
-	LoadMapFile(Level0);
+	LoadMapFile(Level1);
 	GridInit();
 
 	//Player
@@ -17,7 +17,10 @@ void TutorialInit(void)
 void TutorialDraw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
-	GridUpdate(player->pBody.hitbox);
+
+	//Tutorial Instructions
+
+	GridDraw(player->pBody.hitbox);
 	PlayerDraw(&newPlayer);
 	DrawArrow(&newPlayer.arrow);
 	switch (currPlayState)

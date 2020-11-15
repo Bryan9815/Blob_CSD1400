@@ -18,7 +18,10 @@ typedef enum
 {
 	GE_VOID,
 	GE_FLOOR,
-	GE_WALL,	
+	GE_WALL,
+	GE_DAMAGE,
+	GE_PIT,
+	GE_PORTAL
 
 }GRID_ELEMENTS;
 
@@ -29,6 +32,9 @@ typedef enum
 	GA_WALL1,
 	GA_WALL2,
 	GA_WALL3,
+	GA_PIT,
+	GA_DAMAGE1,
+
 
 }GRID_ASSET;
 
@@ -56,5 +62,6 @@ int GetLevelWidth();
 int GetLevelHeight();
 void LoadMapFile(MAP level);
 void GridInit();
+void GridDraw(Collider playerHitBox);
 void GridUpdate(Collider playerHitBox);
 void GridExit();

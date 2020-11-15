@@ -224,7 +224,7 @@ void IdleArrowBossCollision(Body* aBody, Body* bBody)
 		CP_Vector resultantVector = CP_Vector_Scale(differences, (resMag - mag) / mag);
 		//CP_Vector newPos = CP_Vector_Add(aBody->hitbox.position, resultantVector);
 		aBody->velocity = resultantVector;
-		CollisionCheck(aBody);
+		GridCollisionCheck(aBody);
 		aBody->hitbox.position = CP_Vector_Add(aBody->hitbox.position, aBody->velocity);
 	}
 

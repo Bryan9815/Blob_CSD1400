@@ -204,7 +204,7 @@ void PlayerMovement(Player* player)
 	}
 
 	bool playerBossCol = PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
-	CollisionCheck(&(player->pBody));
+	GridCollisionCheck(&(player->pBody));
 	if (playerBossCol == true && playerState == DODGING)
 	{
 		player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
