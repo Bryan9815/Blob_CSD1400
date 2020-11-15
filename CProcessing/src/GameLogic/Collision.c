@@ -124,7 +124,6 @@ bool ArrowCollision(Body* entity)
 				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 10));
 				Colliding = true;
 
-				CP_Sound_Play(ReflectSFX);
 			}
 		}
 	}
