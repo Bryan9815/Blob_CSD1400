@@ -119,17 +119,23 @@ bool ArrowCollision(Body* entity)
 			{
 				CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
 				CP_Vector r = entity->velocity;
-				if ((level[i + 1][j].gridType == GE_WALL) && (level[i - 1][j].gridType == GE_WALL)) //Top and Bottom
+				if (((level[i + 1][j].gridType == GE_WALL) || (level[i - 1][j].gridType == GE_WALL)) &&
+					((level[i][j + 1].gridType == GE_WALL) || (level[i][j - 1].gridType == GE_WALL))) // check for corners
+				{
+					r = CP_Vector_Negate(entity->velocity);
+					printf("hit corners\n");
+				}
+				else if ((level[i + 1][j].gridType == GE_WALL) && (level[i - 1][j].gridType == GE_WALL)) //Top and Bottom
 				{
 					if (entity->velocity.y > 0) //if arrow is travelling downwards
 					{
 						n = CP_Vector_Set(0.0f, -1.0f);
-						//printf("reflect from bottom\n");
+						printf("reflect from bottom\n");
 					}
 					else if (entity->velocity.y < 0) //If arrow is travelling upwards
 					{
 						n = CP_Vector_Set(0.0f, 1.0f);
-						//printf("reflect from top\n");
+						printf("reflect from top\n");
 					}
 					r = ArrowReflection(entity, n);
 				}
@@ -138,23 +144,18 @@ bool ArrowCollision(Body* entity)
 					if (entity->velocity.x > 0) //If arrow is travelling to the right
 					{
 						n = CP_Vector_Set(-1.0f, 0.0f);
-						//printf("reflect from right\n");
+						printf("reflect from right\n");
 					}
 					else if (entity->velocity.x < 0) //If arrow is travelling to the left
 					{
 						n = CP_Vector_Set(1.0f, 0.0f);
-						//printf("reflect from left\n");
+						printf("reflect from left\n");
 					}
 					r = ArrowReflection(entity, n);
 				}
-				else if ((level[i + 1][j].gridType == GE_WALL) && (level[i - 1][j].gridType == GE_WALL) &&
-					(level[i][j + 1].gridType == GE_WALL) && (level[i][j - 1].gridType == GE_WALL)) // check for corners
-				{
-					r = CP_Vector_Negate(entity->velocity);
-					//printf("hit corners\n");
-				}
+
 				//printf("%f, %f\n", n.x, n.y);
-				//printf("%f, %f\n", r.x, r.y);
+				printf("%f, %f\n", r.x, r.y);
 				entity->velocity = r;
 				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 20));
 				
