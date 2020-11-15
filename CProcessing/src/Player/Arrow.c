@@ -1,5 +1,6 @@
 #include <cprocessing.h>
 #include "Arrow.h"
+#include "../Audio/AudioManager.h"
 
 //#include "../GameLogic/grid.h"
 
@@ -198,7 +199,7 @@ bool ArrowBossCollision(Arrow* arrow, Body* bBody)
 		else
 		{
 			//r = d-2(d.n)n
-
+			CP_Sound_Play(ReflectSFX);
 			CP_Vector normal = CP_Vector_Normalize(differences);
 			float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
 			CP_Vector resultantVector = CP_Vector_Subtract(arrow->aBody.velocity, CP_Vector_Scale(normal, 2 * dotproduct));

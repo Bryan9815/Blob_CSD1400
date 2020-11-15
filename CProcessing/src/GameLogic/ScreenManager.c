@@ -8,6 +8,7 @@
 #include "../Screen/scr_gameover.h"
 #include "../Screen/pause_overlay.h"
 #include "../Screen/scr_tutorial.h"
+#include "../Audio/AudioManager.h"
 
 GameState preGameState = SCR_INTRO; //For Unloading
 GameState currGameState = SCR_INTRO;
@@ -33,6 +34,7 @@ void GameInit(void)
 		BlobInputInit();
 		PauseInit();
 		IntroInit();
+		VolumeInit();
 		break;
 	case SCR_MAIN_MENU:
 		MainMenuInit();
@@ -97,10 +99,10 @@ void GameUpdate(void)
 		CreditsUpdate();
 		break;
 	case SCR_GAMEPLAY:
-#if 0
+#if 1
 		TutorialUpdate(&newPlayer);
 #endif
-#if 1
+#if 0
 		Level1Update(&newPlayer);
 #endif
 		break;
@@ -137,16 +139,16 @@ void GameExit(void)
 	case SCR_CREDITS:
 		break;
 	case SCR_GAMEPLAY:
-#if 0
+#if 1
 		TutorialExit();
 #endif
-#if 1
+#if 0
 		Level1Exit();
 #endif
 		break;
 	default:
 		break;
 	}
-	CP_Image_Free(&shield);
+	//CP_Image_Free(&shield);
 	preGameState = currGameState;
 }
