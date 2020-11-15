@@ -2,9 +2,6 @@
 #include "AudioManager.h"
 #include "../GameLogic/ScreenManager.h"
 
-bool Playing; //to make sure function is only called once
-
-
 const char* GetSoundText(soundSelect input)
 {
 	switch (input)
@@ -50,14 +47,17 @@ void AudioL1Init(void)
 	BGM_Boss1 = CP_Sound_LoadMusic("././Assets/Audio/boss1.wav");
 	SlamSFX = CP_Sound_Load("././Assets/Audio/bossSlamSFX1.wav");
 	ReflectSFX = CP_Sound_Load("././Assets/Audio/reflectSFX1.wav");
+	attackSFX = CP_Sound_Load("././Assets/Audio/attackSFX.wav");
+	damageSFX = CP_Sound_Load("././Assets/Audio/bossDamaged.wav");
+	warningSFX = CP_Sound_Load("././Assets/Audio/warningAttackSFX.wav");
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_SFX, (0.1f * (float)SFX_Vol));
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * (float)BGM_Vol));
-	printf("%f", CP_Sound_GetGroupVolume(CP_SOUND_GROUP_MUSIC));
 	CP_Sound_PlayMusic(BGM_Boss1);
 	CP_Sound_ResumeAll(); //resume if player paused and retry
-	Playing = true;
+	MusicPlaying = true;
+	SFXPlaying = false;
 	//test if track is loaded
-	/*if (ReflectSFX && SlamSFX)
+	/*if (attackSFX && damageSFX && warningSFX)
 		printf("work");
 	else
 		printf("no work");*/
@@ -66,20 +66,20 @@ void AudioL1Init(void)
 void AudioL1Play(void)
 {
 	//if not playing from pause, resume music
-	if (Playing == false)
+	if (MusicPlaying == false)
 	{
 		CP_Sound_ResumeAll();
-		Playing = true;
+		MusicPlaying = true;
 	}
 }
 
 void AudioL1Pause(void)
 {
 	//if playing, pause music
-	if (Playing == true)
+	if (MusicPlaying == true)
 	{
 		CP_Sound_PauseAll();
-		Playing = false;
+		MusicPlaying = false;
 	}
 }
 
@@ -90,4 +90,7 @@ void AudioL1Exit(void)
 	CP_Sound_Free(BGM_Boss1);
 	CP_Sound_Free(ReflectSFX);
 	CP_Sound_Free(SlamSFX);
+	CP_Sound_Free(attackSFX);
+	CP_Sound_Free(damageSFX);
+	CP_Sound_Free(warningSFX);
 }
