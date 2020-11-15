@@ -5,7 +5,8 @@
 #include "../GameLogic/grid.h"
 #include "../Screen/scr_level_1.h"
 
-CP_Image bosssprite;
+float NoDamageTimer = 0;
+
 void BossInit(Boss *currentboss, int health, float size, CP_Vector startPos) //function to set variables of boss(es)
 {
 	currentboss->BossBody.hitbox.shapeType = COL_CIRCLE;
@@ -64,4 +65,25 @@ void BossRotation(Boss* currentboss, CP_Vector position)
 		currentboss->BossBody.rotation = CP_Vector_Angle(UpDir, MoveDir); //clockwise rotation of boss from upward dir
 	else
 		currentboss->BossBody.rotation = 360.f - CP_Vector_Angle(UpDir, MoveDir); //find the larger angle if > 180 degrees
+}
+
+void BossDamage(bool* hit) // for boss invincibility between hits
+{
+	if (NoDamageTimer == 0.f)
+	{
+		if (*hit == true)
+		{
+			ArmorSlime.Health--;
+			*hit = false;
+			NoDamageTimer += CP_System_GetDt();
+		}
+	}
+	else if (NoDamageTimer >= 3.f)
+	{
+		NoDamageTimer = 0.f;
+	}
+	else if (NoDamageTimer > 0.f && NoDamageTimer < 3.f)
+	{
+		NoDamageTimer += CP_System_GetDt();
+	}
 }
