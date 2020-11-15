@@ -1,4 +1,5 @@
 #include "scr_tutorial.h"
+#include "../Audio/AudioManager.h"
 
 float timer;
 
@@ -43,6 +44,7 @@ void TutorialInit(void)
 	newPlayer.arrow.aBody.hitbox.position = newPlayer.pBody.hitbox.position;
 	CameraInit(&newPlayer.pBody.hitbox.position, PAN_PLAYER);
 	timer = 0;
+	AudioL0Init();
 }
 
 void TutorialDraw(Player* player)
@@ -160,5 +162,6 @@ void TutorialUpdate(Player* player)
 
 void TutorialExit(void)
 {
+	AudioL0Exit();
 	GridExit();
 }

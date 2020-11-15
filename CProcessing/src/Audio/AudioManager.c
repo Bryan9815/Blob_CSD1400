@@ -54,7 +54,6 @@ void AudioMenuInit(void)
 		CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * (float)BGM_Vol));
 		CP_Sound_PlayMusic(BGM_Menu);
 		CP_Sound_ResumeAll(); //Resume from pause menu
-		//test if track is loaded
 		MenuPlaying = true;
 	}
 }
@@ -64,6 +63,19 @@ void AudioMenuExit(void)
 	CP_Sound_StopAll();
 	CP_Sound_Free(BGM_Menu);
 	MenuPlaying = false;
+}
+
+void AudioL0Init(void)
+{
+	BGM_Tutorial = CP_Sound_LoadMusic("././Assets/Audio/BlobTutorial.wav");
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * (float)BGM_Vol));
+	CP_Sound_PlayMusic(BGM_Tutorial);
+}
+
+void AudioL0Exit(void)
+{
+	CP_Sound_StopAll();
+	CP_Sound_Free(BGM_Tutorial);
 }
 
 
