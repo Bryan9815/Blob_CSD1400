@@ -42,7 +42,7 @@ bool GridCollisionCheck(Body* entity)
 
 			//@REDO
 			//TOUCH FLOOR
-			if (    (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_PIT)																						&&
+			if (	(level[i][j].isCollidable)																																&&
 					(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol)								||
 					Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1 , entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol)	||		//Point Collision
 					Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1 , entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol))	&&
@@ -55,7 +55,7 @@ bool GridCollisionCheck(Body* entity)
 			}
 
 			//TOUCH WALL			 @TODO ADD MORE MATHS SO BAD RIGHT NOW
-			if ((level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_PIT)									&&
+			if (	(level[i][j].isCollidable)																		&&
 					COL_IsColliding(entityCol, wallCol)																&&		//Shape Collision
 					wallCol.position.x + wallCol.width / 2 >= entity->hitbox.position.x + entity->hitbox.radius		&&		//Constrain
 					entity->velocity.x > 0)																					//Player is moving left
@@ -64,7 +64,7 @@ bool GridCollisionCheck(Body* entity)
 				Colliding = true;
 			}
 
-			if (	(level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_PIT)								&&
+			if (	(level[i][j].isCollidable)																		&&
 					COL_IsColliding(entityCol, wallCol)																&&		//Shape Collision
 					wallCol.position.x - wallCol.width / 2 <= entity->hitbox.position.x - entity->hitbox.radius		&&		//Constrain
 					entity->velocity.x < 0)																					//Player is moving right
@@ -74,7 +74,7 @@ bool GridCollisionCheck(Body* entity)
 			}
 
 			//TOUCH CEILING
-			if		((level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_PIT)																					&&
+			if (	(level[i][j].isCollidable)																																&&
 					(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol)								||
 					Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol)	||		//Point Collision
 					Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol))	&&
@@ -106,7 +106,7 @@ bool ArrowCollision(Body* entity)
 			//entityCol.position.y += entity->velocity.y * 10;
 
 			//Fuck my life
-			if (COL_IsColliding(entityCol, wallCol) && level[i][j].gridType == GE_WALL)
+			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH))
 			{
 				float nearestX = Max(wallCol.position.x - wallCol.width / 2, Min(entityCol.position.x , wallCol.position.x + wallCol.width / 2));	//Get Nearest Point X
 				float nearestY = Max(wallCol.position.y - wallCol.height / 2, Min(entityCol.position.y , wallCol.position.y + wallCol.height / 2)); //Get Nearest Point Y

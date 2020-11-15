@@ -69,7 +69,7 @@ void GameOverButtonActivate()
 	switch (selectButton)
 	{
 	case RETRY:
-		SetGameState(SCR_GAMEPLAY);
+		SetGameState(SCR_LEVEL1);
 		break;
 	case MAIN_MENU:
 		SetGameState(SCR_MAIN_MENU);

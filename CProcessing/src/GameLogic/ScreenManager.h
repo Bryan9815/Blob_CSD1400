@@ -13,7 +13,8 @@ typedef enum GameState
 	SCR_INTRO,
 	SCR_MAIN_MENU,
 	SCR_OPTION,
-	SCR_GAMEPLAY,
+	SCR_TUTORIAL,
+	SCR_LEVEL1,
 	SCR_CREDITS,
 
 }GameState;
@@ -23,6 +24,8 @@ typedef enum PlayState
 	GAME_PLAY,
 	GAME_PAUSE,
 	GAME_OVER,
+	GAME_SWAP,
+
 }PlayState;
 
 PlayState currPlayState;

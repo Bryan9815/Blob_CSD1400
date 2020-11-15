@@ -45,13 +45,11 @@ void GameInit(void)
 	case SCR_CREDITS:
 		CreditsInit();
 		break;
-	case SCR_GAMEPLAY:
-#if 0
+	case SCR_TUTORIAL:
 		TutorialInit();
-#endif
-#if 1
+		break;
+	case SCR_LEVEL1:
 		Level1Init();
-#endif
 		break;
 	default:
 		break;
@@ -98,18 +96,16 @@ void GameUpdate(void)
 	case SCR_CREDITS:
 		CreditsUpdate();
 		break;
-	case SCR_GAMEPLAY:
-#if 0
+	case SCR_TUTORIAL:
 		TutorialUpdate(&newPlayer);
-#endif
-#if 1
+		break;
+	case SCR_LEVEL1:
 		Level1Update(&newPlayer);
-#endif
 		break;
 	default:
 		break;
 	}
-	UpdateFade(&fader);
+	UpdateFade(&fader); 
 }
 
 void SetPlayState(PlayState nextPlayState)
@@ -138,13 +134,11 @@ void GameExit(void)
 		break;
 	case SCR_CREDITS:
 		break;
-	case SCR_GAMEPLAY:
-#if 0
+	case SCR_TUTORIAL:
 		TutorialExit();
-#endif
-#if 1
+		break;
+	case SCR_LEVEL1:
 		Level1Exit();
-#endif
 		break;
 	default:
 		break;
