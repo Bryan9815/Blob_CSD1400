@@ -42,11 +42,21 @@ void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 	if (NearAttackTimer <= 0.5) //warning for 2 sec before attack
 	{
 		NearAttack = WARNING;
+		if (SFXPlaying == false)
+		{
+			CP_Sound_Play(warningSFX);
+			SFXPlaying = true;
+		}
 		NearAttackTimer += CP_System_GetDt();
 	}
 	else if (NearAttackTimer >= 0.5 && NearAttackTimer <= 1.5) // attack after 2 sec, animation 1 sec
 	{
 		NearAttack = ATTACK;
+		if (SFXPlaying == true)
+		{
+			CP_Sound_Play(attackSFX);
+			SFXPlaying = false;
+		}
 		if (COL_IsColliding(Attack, player->pBody.hitbox)) //check if player is hit by attack
 		{
 			player->health = 0;
@@ -55,6 +65,7 @@ void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 	}
 	else //attack finished
 	{
+		SFXPlaying = false;
 		NearAttack = NOT_ATTACK;
 		NearAttackTimer = 0; //reset timer after attack
 		armorboss->State = IDLE; //change back to idle state
@@ -87,6 +98,11 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 	if (FarAttackTimer <= 0.5) //warning for 2 sec
 	{
 		FarAttack = WARNING;
+		if (SFXPlaying == false)
+		{
+			CP_Sound_Play(warningSFX);
+			SFXPlaying = true;
+		}
 		FarAttackTimer += CP_System_GetDt();
 	}
 	else if (FarAttackTimer > 0.5 && FarAttackTimer <= 1.5) //charging for 2 sec
@@ -111,6 +127,7 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 	}
 	else
 	{
+		SFXPlaying = false;
 		FarAttack = NOT_ATTACK;
 		armorboss->State = IDLE;
 		FarAttackTimer = 0; //after 4 sec, not hit wall stop attack
@@ -242,6 +259,7 @@ void Boss1Draw(Boss armorboss)
 	AttackNearDraw(armorboss);
 	//Shield1Draw(armorboss);
 	BossDraw(armorboss);
+	BossHealthDraw(armorboss.Health, armorboss.BossBody.hitbox.position,armorboss.BossBody.hitbox.radius);
 }
 
 void Boss1Exit(void)

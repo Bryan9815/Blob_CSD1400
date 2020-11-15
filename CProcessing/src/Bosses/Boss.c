@@ -4,6 +4,7 @@
 #include "../GameLogic/Collision.h"
 #include "../GameLogic/grid.h"
 #include "../Screen/scr_level_1.h"
+#include "../Audio/AudioManager.h"
 
 float NoDamageTimer = 0;
 
@@ -24,6 +25,13 @@ void BossDraw(Boss currentboss) //function to draw boss(es)
 	//CP_Settings_Fill(BossColor);
 	CP_Image_DrawAdvanced(currentboss.bosssprite, currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius * 2), (currentboss.BossBody.hitbox.radius * 2), 255, currentboss.BossBody.rotation);
 	//CP_Graphics_DrawCircle(currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius*2)); //replace with image once finalised
+}
+
+void BossHealthDraw(int bossHealth, CP_Vector bossPos, float bossSize)
+{
+	CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
+	CP_Settings_RectMode(CP_POSITION_CORNER);
+	CP_Graphics_DrawRect((bossPos.x - bossSize),(bossPos.y - bossSize - 10.f), (float)(bossSize*2/3)*(float)(bossHealth), 10.f);
 }
 
 void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //boss slowly moves toward player
@@ -75,6 +83,7 @@ void BossDamage(bool* hit) // for boss invincibility between hits
 		{
 			ArmorSlime.Health--;
 			*hit = false;
+			CP_Sound_Play(damageSFX);
 			NoDamageTimer += CP_System_GetDt();
 		}
 	}
