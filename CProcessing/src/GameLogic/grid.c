@@ -15,7 +15,8 @@ CP_Image envSpriteSheet;
 #define BUFFERSIZE 2000 * 2000
 
 //DATA FOR MAP
-char *levelData;
+char * levelData;
+
 
 //HEIGHT AND WIDTH OF GRID
 int levelWidth = 0, levelHeight = 0;
@@ -49,7 +50,6 @@ void LoadMapFile (MAP _level)	//Call FUNC to load map from file
 	{
 		while (!feof(fp)) /*While not at EOF for the file pf*/
 		{
-			
 			*(levelData + i++) = (char)fgetc(fp);
 			if (*(levelData + i - 1) == '\n' || *(levelData + i - 1) == EOF)
 			{
@@ -328,6 +328,27 @@ void GridDraw(Collider playerHitBox)
 					GRID_UNIT_HEIGHT);
 				break;
 			case GA_DOOR:
+				CP_Settings_ImageMode(CP_POSITION_CENTER);
+				if (level[i][j].isActive)
+				CP_Image_DrawSubImage(
+					envSpriteSheet,
+					(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
+					(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
+					GRID_UNIT_WIDTH + 2,
+					GRID_UNIT_HEIGHT + 2,
+					0, 128.0f, 64.0f, 192.0f,
+					255);
+				else
+					CP_Image_DrawSubImage(
+						envSpriteSheet,
+						(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
+						(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
+						GRID_UNIT_WIDTH + 2,
+						GRID_UNIT_HEIGHT + 2,
+						//0, 64.0f, 64.0f, 128.0f,
+						1 * TEXTURESIZE, 1 * TEXTURESIZE, 2 * TEXTURESIZE, 2 * TEXTURESIZE,
+						255);
+#if 0
 				CP_Settings_RectMode(CP_POSITION_CENTER);
 				if (level[i][j].isActive)
 					CP_Settings_Fill(CP_Color_Create(210, 105, 30, 255));
@@ -338,8 +359,19 @@ void GridDraw(Collider playerHitBox)
 					(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
 					GRID_UNIT_WIDTH,
 					GRID_UNIT_HEIGHT);
+#endif
 				break;
 			case GA_PORTAL:
+				CP_Settings_ImageMode(CP_POSITION_CENTER);
+				CP_Image_DrawSubImage(
+					envSpriteSheet,
+					(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
+					(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
+					GRID_UNIT_WIDTH + 2,
+					GRID_UNIT_HEIGHT + 2,
+					64.0f, 128.0f, 128.0f, 192.0f,
+					255);
+#if 0
 				CP_Settings_RectMode(CP_POSITION_CENTER);
 				CP_Settings_Fill(CP_Color_Create(0, 255, 255, 255));
 				CP_Graphics_DrawRect(
@@ -347,6 +379,7 @@ void GridDraw(Collider playerHitBox)
 					(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
 					GRID_UNIT_WIDTH,
 					GRID_UNIT_HEIGHT);
+#endif
 				break;
 			case GA_VOID:
 				CP_Settings_RectMode(CP_POSITION_CENTER);

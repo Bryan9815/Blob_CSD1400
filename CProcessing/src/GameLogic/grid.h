@@ -68,6 +68,9 @@ typedef struct
 
 }GridUnit;
 
+//DATA FOR MAP
+char* levelData;
+
 //THE ARRAY FOR THE LEVEL, USE THIS TO REFERENCE THE LEVEL
 GridUnit** level;//[GRID_MAXWIDTH][GRID_MAXHEIGHT];
 
