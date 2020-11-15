@@ -13,7 +13,7 @@ typedef enum
 {
 	RELEASE,
 	RECALL,
-	WITHPLAYER,
+	WITHENTITY,
 	MOTION,
 	MOTIONLESS
 } ArrowState;
@@ -30,19 +30,26 @@ typedef struct
 	float		chargeTimer,
 				chargeScale;
 
+	float		charge;
 	int			charging;
+
+	float		travelDistance,
+				currentDistance;
+
 	Body		aBody;
 
 } Arrow;
 
-float 	travelTimer, travelDistance, currentDistance; 
-
 void CreateArrow(Arrow* arrow);
 void DrawArrow(Arrow* arrow);
-bool ArrowStateChange(Body* pBody, Body* bBody, Arrow* arrow);
-void CalculateNewPosition(Arrow* arrow, Body* pBody);
-bool ArrowInMotion(Arrow* arrow, Body* bBody);
+
+void CalculateRelease(Arrow* arrow, Body* entity, CP_Vector pos);
+void CalculateRecall(Arrow* arrow, Body* entity);
+void CalculateRotation(Body* aBody, CP_Vector vector);
+
 void MouseTracking(Body* aBody);
-void ArrowPlayerCollision(Arrow* arrow, Body* pBody);
-bool ArrowBossCollision(Arrow* arrow, Body* bBody);
-void IdleArrowBossCollision(Body* aBody, Body* bBody);
+
+void IdleArrowCollision_Circle(Body* aBody, Body* entity);
+void ArrowInMotion(Arrow* arrow);
+
+void ArrowPickup(Arrow* arrow, Body* entity);

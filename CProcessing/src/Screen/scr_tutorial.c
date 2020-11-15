@@ -10,6 +10,7 @@ void TutorialInit(void)
 	//Player
 	PlayerInit(&newPlayer);
 	newPlayer.pBody.hitbox.position = CP_Vector_Set(200, 500);
+	newPlayer.arrow.aBody.hitbox.position = newPlayer.pBody.hitbox.position;
 	CameraInit(&newPlayer.pBody.hitbox.position, PAN_PLAYER);
 	timer = 0;
 }
@@ -43,7 +44,7 @@ void TutorialUpdate(Player* player)
 			SetPlayState(GAME_PAUSE);
 		}
 		PlayerUpdate(&newPlayer);
-		ArrowStateChange(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
+		ArrowStateCheck(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
 		break;
 	case GAME_PAUSE:
 		if (GetBlobInputTriggered(BLOB_PAUSE))

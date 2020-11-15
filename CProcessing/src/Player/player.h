@@ -35,9 +35,10 @@ CP_Image	sprite;
 CP_Color	playerColor;
 CP_Color	backgroundColour;
 
-float dodgeTimer;		//Timer for dodging cooldown
-float dodgeDistance;	//distance travelled via dodge
-int dodgeBlur;			//Dodge blur effect
+float	dodgeTimer;		//Timer for dodging cooldown
+float	dodgeDistance;	//distance travelled via dodge
+int		dodgeBlur;			//Dodge blur effect
+float	arrowCharge;		//Arrow Charge
 
 void PlayerInit(Player* player);
 
@@ -48,5 +49,6 @@ void PlayerMovement(Player* player);
 void Dodge(Player* player);
 void DodgeRecharge(Player* player);
 
+bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow);
 bool ArrowTrigger(Player* player);
-
+bool ArrowBoss1Collision(Arrow* arrow, Body* bBody);

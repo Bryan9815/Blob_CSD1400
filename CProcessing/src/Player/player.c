@@ -5,6 +5,7 @@
 #include "../Bosses/Boss.h"
 #include "../Screen/scr_level_1.h"
 #include "../GameLogic//ScreenManager.h"
+#include "../Audio/AudioManager.h"
 
 
 CP_Color backgroundColour;
@@ -13,7 +14,8 @@ void PlayerInit(Player* player) //Default Variables
 {
 	//Set Player and Arrow state
 	playerState = STILL;
-	player->arrow.arrowState = WITHPLAYER;
+	player->arrow.arrowState = WITHENTITY;
+	player->arrow.arrowSprite = CP_Image_Load("././Assets/arrow.png");
 
 	playerColor = CP_Color_Create(255, 255, 255, 255);
 	sprite = CP_Image_Load("././Assets/slime.png"); // NO MORE KONO DIO DA!
@@ -33,6 +35,8 @@ void PlayerInit(Player* player) //Default Variables
 	player->pBody.hitbox.shapeType = COL_CIRCLE; //CIRCLE COLLIDER
 	player->pBody.hitbox.position = CP_Vector_Set(CP_System_GetWindowWidth() / 2.0f, CP_System_GetWindowHeight() / 2.0f);
 	player->pBody.hitbox.radius = 40.0f;
+	player->arrow.aBody.hitbox.position = player->pBody.hitbox.position;
+	player->arrow.aBody.hitbox.radius = 25.0f;
 #endif
 
 	//Player dodge
@@ -231,7 +235,7 @@ void Dodge(Player* player)
 			playerState = STILL;
 		}
 		
-		if (player->arrow.arrowState == WITHPLAYER)
+		if (player->arrow.arrowState == WITHENTITY)
 		{
 			player->arrow.aBody.hitbox.position = player->pBody.hitbox.position;
 		}
@@ -254,16 +258,16 @@ void DodgeRecharge(Player* player) //Recharge Dodge
 
 bool ArrowTrigger(Player* player)
 {
-	if (player->arrow.arrowState == WITHPLAYER)
+	if (player->arrow.arrowState == WITHENTITY)
 	{
 		if (CP_Input_MouseDown(MOUSE_BUTTON_LEFT))
 		{
 			player->pBody.velocity.x = 0.0f;
 			player->pBody.velocity.y = 0.0f;
 			player->arrow.charging = 1;
-			if (player->arrow.chargeTimer <= (MAX_FORCE - DEFAULT_FORCE))
+			if (player->arrow.charge <= (MAX_FORCE - DEFAULT_FORCE))
 			{
-				player->arrow.chargeTimer += CP_System_GetDt() * 10;
+				player->arrow.charge += CP_System_GetDt() * 10;
 				return true;
 			}
 
@@ -273,6 +277,8 @@ bool ArrowTrigger(Player* player)
 			if (player->arrow.charging == 1)
 			{
 				player->arrow.arrowState = RELEASE;
+				CP_Vector target = CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY());
+				CalculateRelease(&player->arrow, &player->pBody, target);
 				player->arrow.charging = 0;
 				return false;
 			}
@@ -281,10 +287,78 @@ bool ArrowTrigger(Player* player)
 
 	else if (playerState == MOVING || playerState == DODGING)
 	{
-		player->arrow.chargeTimer = 0.0f;
+		player->arrow.charge = 0.0f;
 		player->arrow.charging = 0;
 	}
 	return false;
+}
+
+//end me now
+bool ArrowBoss1Collision(Arrow* arrow, Body* bBody)
+{
+	bool dealdamage = false;
+	CP_Vector differences = CP_Vector_Subtract(arrow->aBody.hitbox.position, bBody->hitbox.position); //Vector from boss position to arrow position
+	if (COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox))
+	{
+
+		CP_Matrix rotatedir = CP_Matrix_Rotate(bBody->rotation); //rotation matrix
+		CP_Vector dir = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f)); //rotate based off (0,1) to get direction vector 
+		float theta = CP_Vector_Angle(differences, dir); //angle between dir vector and arrow vector
+		if (theta >= 150.0f) //Assumes gap is 60 degress wide, May need adjusting
+		{
+			dealdamage = true;
+			arrow->currentDistance = 0.0f;
+			arrow->travelDistance = 0.0f;
+			return dealdamage;
+		}
+		else
+		{
+			//r = d-2(d.n)n
+			CP_Sound_Play(ReflectSFX);
+			CP_Vector normal = CP_Vector_Normalize(differences);
+			float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
+			CP_Vector resultantVector = CP_Vector_Subtract(arrow->aBody.velocity, CP_Vector_Scale(normal, 2 * dotproduct));
+			//Adjust arrow rotation Here
+			arrow->aBody.velocity = resultantVector;
+			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
+			arrow->aBody.hitbox.position = CP_Vector_Add(CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(resultantVector, 10)), bBody->velocity);
+		}
+
+	}
+	return dealdamage;
+}
+
+bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
+{
+	bool arrowBossCol = false;
+	switch (arrow->arrowState)
+	{
+	case RELEASE:
+		arrow->arrowState = MOTION;
+		break;
+	case MOTIONLESS:
+		ArrowPickup(arrow, pBody); //pickup player
+		IdleArrowCollision_Circle(&arrow->aBody, bBody);
+		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) // && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox)
+		{
+			CalculateRecall(arrow, pBody);
+			arrow->arrowState = RECALL;
+		}
+		break;
+	case WITHENTITY:
+		arrow->aBody.hitbox.position = pBody->hitbox.position;
+		MouseTracking(&arrow->aBody);
+		break;
+	default:
+		break;
+	}
+
+	if (arrow->arrowState == MOTION || arrow->arrowState == RECALL)
+	{
+		ArrowInMotion(arrow);
+		arrowBossCol = ArrowBoss1Collision(arrow, bBody);
+	}
+	return arrowBossCol;
 }
 
 /*Update Player*/
@@ -305,7 +379,6 @@ void PlayerUpdate(Player* player)
 		PlayerMovement(player);
 		ArrowTrigger(player);
 	}
-
 }
 
 void PlayerExit()
