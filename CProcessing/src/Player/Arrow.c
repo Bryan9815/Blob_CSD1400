@@ -37,7 +37,7 @@ void CreateArrow(Arrow* arrow)
 
 	arrow->travelDistance = 0.0f;
 	arrow->currentDistance = 0.0f;
-	arrowSpeed = 500.0f;
+	arrowSpeed = 600.0f;
 }
 
 // Calculate the distance travelled by the arrow during release.
@@ -107,6 +107,43 @@ void ArrowPickup(Arrow* arrow, Body* entity)
 	}
 }
 
+//void ArrowInMotion(Arrow* arrow)
+//{
+//	if (arrow->currentDistance >= arrow->travelDistance)
+//	{
+//		arrow->oldPosition = arrow->aBody.hitbox.position;
+//		arrow->charge = 0.0f;
+//		arrow->currentDistance = 0.0f;
+//		arrow->travelDistance = 0.0f;
+//		arrow->arrowState = MOTIONLESS;
+//		arrow->aBody.velocity = CP_Vector_Set(0.0f, 0.0f);
+//	}
+//	else
+//	{
+//		if (!ArrowCollision(&(arrow->aBody)))
+//		{
+//			if (arrow->arrowState == RECALL)
+//			{
+//				arrowSpeed = 600.0f;
+//			}
+//			else if (arrow->arrowState == MOTION)
+//			{
+//				arrowSpeed = 500.0f;
+//			}
+//
+//			CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1),
+//											arrow->aBody.velocity.y * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1));
+//			
+//			//arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
+//			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, newVel);
+//			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
+//		}
+//
+//		arrow->currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
+//		arrow->oldPosition = arrow->aBody.hitbox.position;
+//	}
+//}
+
 void ArrowInMotion(Arrow* arrow)
 {
 	if (arrow->currentDistance >= arrow->travelDistance)
@@ -120,30 +157,35 @@ void ArrowInMotion(Arrow* arrow)
 	}
 	else
 	{
-		if (!ArrowCollision(&(arrow->aBody)))
+		if (arrow->arrowState == MOTION)
 		{
-			if (arrow->arrowState == RECALL)
+			arrowSpeed = 500.0f;
+			if (!ArrowCollision(&(arrow->aBody)))
 			{
-				arrowSpeed = 600.0f;
+
+				CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1),
+					arrow->aBody.velocity.y * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1));
+
+				//arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
+				arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, newVel);
+				CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
 			}
-			else if (arrow->arrowState == MOTION)
-			{
-				arrowSpeed = 500.0f;
-			}
+		}
+		else if (arrow->arrowState == RECALL)
+		{
 
 			CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1),
-											arrow->aBody.velocity.y * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1));
-			
+				arrow->aBody.velocity.y * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1));
+
 			//arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
 			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, newVel);
 			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
+			arrowSpeed = 600.0f;
 		}
-
 		arrow->currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
 		arrow->oldPosition = arrow->aBody.hitbox.position;
 	}
 }
-
 
 //end me now
 //bool ArrowBossCollision(Arrow* arrow, Body* bBody)
