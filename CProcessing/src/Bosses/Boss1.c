@@ -79,6 +79,8 @@ void AttackNearDraw(Boss armorboss)
 		CP_Color WarningColor = CP_Color_Create(255, 0, 0, 125);
 		CP_Settings_Fill(WarningColor);
 		CP_Graphics_DrawCircle(armorboss.BossBody.hitbox.position.x, armorboss.BossBody.hitbox.position.y, (BossRange*2));
+		CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+		CP_Graphics_DrawCircle(armorboss.BossBody.hitbox.position.x, armorboss.BossBody.hitbox.position.y, (NearAttackTimer * BossRange * 4));
 	}
 	else if (NearAttack == ATTACK)
 	{
@@ -153,19 +155,40 @@ void AttackFarDraw(Boss armorboss)
 		//draw rectangle, adjust so it draws from the centre of the short side
 		if (rotation <= 120 && rotation >= 60)
 		{
-			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x + armorboss.BossBody.hitbox.radius), armorboss.BossBody.hitbox.position.y, width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x + armorboss.BossBody.hitbox.radius),
+										  armorboss.BossBody.hitbox.position.y, width, 
+										 (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+			CP_Settings_Fill(CP_Color_Create(255,0,0,255));
+			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x + armorboss.BossBody.hitbox.radius),
+										  armorboss.BossBody.hitbox.position.y, (width * FarAttackTimer * 2),
+										 (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
 		}
 		else if (rotation <= 300 && rotation >= 240)
 		{
-			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x - armorboss.BossBody.hitbox.radius), armorboss.BossBody.hitbox.position.y, width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x - armorboss.BossBody.hitbox.radius),
+										  armorboss.BossBody.hitbox.position.y, width, 
+										 (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x - armorboss.BossBody.hitbox.radius),
+										  armorboss.BossBody.hitbox.position.y, (width * FarAttackTimer * 2),
+										 (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
 		}
 		else if (ChargeTarget.x > armorboss.BossBody.hitbox.position.x)
 		{
-			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y - armorboss.BossBody.hitbox.radius), width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y - armorboss.BossBody.hitbox.radius),
+										 width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y - armorboss.BossBody.hitbox.radius),
+										(width * FarAttackTimer * 2), (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
 		}
 		else
 		{
-			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y + armorboss.BossBody.hitbox.radius), width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y + armorboss.BossBody.hitbox.radius),
+										 width, (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+			CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+			CP_Graphics_DrawRectAdvanced(armorboss.BossBody.hitbox.position.x, (armorboss.BossBody.hitbox.position.y + armorboss.BossBody.hitbox.radius),
+										(width * FarAttackTimer * 2), (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
+
 		}
 	}
 }
