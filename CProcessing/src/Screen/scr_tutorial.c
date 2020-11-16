@@ -4,7 +4,7 @@
 float timer;
 
 GridUnit* switches[2];
-GridUnit* door1[10];
+GridUnit* door1[8];
 GridUnit* portal[4];
 
 bool switchesDown,
