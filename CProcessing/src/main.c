@@ -36,8 +36,10 @@ int main(void)
 	/*The following stuff is for console output.
 	The current console output function from CProcessing
 	is being fixed*/
+	
 	CP_System_ShowConsole();
 	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+	
 
 	// Run Game
 	CP_Engine_SetNextGameState(GameInit, GameUpdate, GameExit);

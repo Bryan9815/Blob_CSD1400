@@ -124,12 +124,10 @@ bool ArrowCollision(Body* entity)
 					if (entity->velocity.y > 0) //if arrow is travelling downwards
 					{
 						n = CP_Vector_Set(0.0f, -1.0f);
-						printf("reflect from bottom\n");
 					}
 					else if (entity->velocity.y < 0) //If arrow is travelling upwards
 					{
 						n = CP_Vector_Set(0.0f, 1.0f);
-						printf("reflect from top\n");
 					}
 					r = ArrowReflection(entity, n);
 				}
@@ -139,18 +137,15 @@ bool ArrowCollision(Body* entity)
 					if (entity->velocity.x > 0) //If arrow is travelling to the right
 					{
 						n = CP_Vector_Set(-1.0f, 0.0f);
-						printf("reflect from right\n");
 					}
 					else if (entity->velocity.x < 0) //If arrow is travelling to the left
 					{
 						n = CP_Vector_Set(1.0f, 0.0f);
-						printf("reflect from left\n");
 					}
 					r = ArrowReflection(entity, n);
 				}
 
 				//printf("%f, %f\n", n.x, n.y);
-				printf("%f, %f\n", r.x, r.y);
 				entity->velocity = r;
 				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 20));
 				

@@ -119,23 +119,10 @@ void PlayerMovement(Player* player)
 		{
 			playerState = STILL;
 			player->pBody.velocity = CP_Vector_Set(0, 0);
-			if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
+			if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_UP))
 			{
 				playerState = MOVING;
-				//player->pBody.velocity = CP_Vector_Set(-1, -1);
-				CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
-				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
-
-				//player->rotation = -45.0f;
-			}
-			else if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_RIGHT))
-			{
-				playerState = MOVING;
-				//player->pBody.velocity = CP_Vector_Set(1, -1);
-				CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
-				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
-
-				//player->rotation = 45.0f;
+				player->pBody.velocity = CP_Vector_Set(0, 0);
 			}
 			else if (GetBlobInputDown(BLOB_UP))
 			{
@@ -144,30 +131,18 @@ void PlayerMovement(Player* player)
 
 				//player->rotation = 0.0f;
 			}
-			else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_RIGHT))
-			{
-				playerState = MOVING;
-				//player->pBody.velocity = CP_Vector_Set(1, 1);
-				CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
-				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
-
-				//player->rotation = 135.0f;
-			}
-			else if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_LEFT))
-			{
-				playerState = MOVING;
-				//player->pBody.velocity = CP_Vector_Set(-1, 1);
-				CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
-				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
-
-				//player->rotation = 225.0f;
-			}
 			else if (GetBlobInputDown(BLOB_DOWN))
 			{
 				playerState = MOVING;
 				player->pBody.velocity = CP_Vector_Set(0, 1);
 
 				//player->rotation = 180.0f;
+			}
+
+			if (GetBlobInputDown(BLOB_LEFT) && GetBlobInputDown(BLOB_RIGHT))
+			{
+				playerState = MOVING;
+				player->pBody.velocity = CP_Vector_Set(0, 0);
 			}
 			else if (GetBlobInputDown(BLOB_LEFT))
 			{
@@ -184,6 +159,43 @@ void PlayerMovement(Player* player)
 				//player->rotation = 90.0f;
 			}
 
+			if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_LEFT))
+			{
+				playerState = MOVING;
+				//player->pBody.velocity = CP_Vector_Set(-1, -1);
+				CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
+				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
+
+				//player->rotation = -45.0f;
+			}
+			if (GetBlobInputDown(BLOB_UP) && GetBlobInputDown(BLOB_RIGHT))
+			{
+				playerState = MOVING;
+				//player->pBody.velocity = CP_Vector_Set(1, -1);
+				CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
+				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, -1.0f));
+
+				//player->rotation = 45.0f;
+			}
+
+			if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_RIGHT))
+			{
+				playerState = MOVING;
+				//player->pBody.velocity = CP_Vector_Set(1, 1);
+				CP_Matrix rotatedir = CP_Matrix_Rotate(-45.0f);
+				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
+
+				//player->rotation = 135.0f;
+			}
+			if (GetBlobInputDown(BLOB_DOWN) && GetBlobInputDown(BLOB_LEFT))
+			{
+				playerState = MOVING;
+				//player->pBody.velocity = CP_Vector_Set(-1, 1);
+				CP_Matrix rotatedir = CP_Matrix_Rotate(45.0f);
+				player->pBody.velocity = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f));
+
+				//player->rotation = 225.0f;
+			}
 			if (CP_Input_KeyTriggered(KEY_SPACE) && (player->numDodge > 0))
 			{
 				player->numDodge -= 1;
@@ -198,7 +210,6 @@ void PlayerMovement(Player* player)
 				player->pBody.velocity.y = player->pBody.velocity.y * (PLAYER_SPEED * CP_System_GetDt() * (dodgeDistance / 20));
 				playerState = DODGING;
 			}
-
 			if (playerState != DODGING)
 			{
 				player->pBody.velocity.x = (player->pBody.velocity.x * PLAYER_SPEED * CP_System_GetDt());
@@ -313,7 +324,6 @@ bool ArrowBoss1Collision(Arrow* arrow, Body* bBody)
 		CP_Vector normal = CP_Vector_Normalize(differences);
 		//CP_Vector resultantVector = ArrowReflection(&arrow->aBody, normal);
 		float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
-		printf("Dot product: %f",dotproduct);
 		CP_Vector resultantVector = CP_Vector_Subtract(arrow->aBody.velocity, CP_Vector_Scale(normal, 2 * dotproduct));
 		arrow->aBody.velocity = resultantVector;
 		//Adjust arrow rotation Here
@@ -357,8 +367,8 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 
 	if (arrow->arrowState == MOTION || arrow->arrowState == RECALL)
 	{
-		ArrowInMotion(arrow);
 		arrowBossCol = ArrowBoss1Collision(arrow, bBody);
+		ArrowInMotion(arrow);
 	}
 	return arrowBossCol;
 }

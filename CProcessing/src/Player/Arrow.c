@@ -4,7 +4,6 @@
 
 //#include "../GameLogic/grid.h"
 
-int timer = 0;
 bool arrowhit = false;
 
 void DrawArrow(Arrow* arrow)
@@ -173,14 +172,14 @@ void ArrowInMotion(Arrow* arrow)
 		}
 		else if (arrow->arrowState == RECALL)
 		{
-
+			arrowSpeed = 600.0f;
 			CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1),
 				arrow->aBody.velocity.y * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1));
 
 			//arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
 			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, newVel);
 			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
-			arrowSpeed = 600.0f;
+			ArrowCollision(&arrow->aBody);
 		}
 		arrow->currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
 		arrow->oldPosition = arrow->aBody.hitbox.position;

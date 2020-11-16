@@ -5,7 +5,7 @@
 #include "../GameLogic/grid.h"
 
 #define PLAYER_SPEED	320.0f
-#define DODGE_COOLDOWN	4	//Seconds
+#define DODGE_COOLDOWN	3	//Seconds
 #define MAX_DODGE		2
 
 typedef struct
