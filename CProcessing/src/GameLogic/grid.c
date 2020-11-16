@@ -114,150 +114,135 @@ void GridInit()//Add starting point
 			k++;
 			continue;
 		}
-		else
+
+		if (levelData[i] == (char)32) //Floor
 		{
 
-			if (levelData[i] == (char)32) //Floor
-			{
+			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
 
-				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
-				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
-				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+			(*(level + j) + k)->isCollidable = false;
+			(*(level + j) + k)->isActive = true;
 
-				(*(level + j) + k)->isCollidable = false;
-				(*(level + j) + k)->isActive = true;
+			(*(level + j) + k)->gridType = GE_FLOOR;
+			(*(level + j) + k)->gridAsset = GA_FLOOR;
 
-				(*(level + j) + k)->gridType = GE_FLOOR;
-				(*(level + j) + k)->gridAsset = GA_FLOOR;
-
-			}
-			else if (levelData[i] == '-' || levelData[i] == '=' || levelData[i] == '|') //WALL
-			{
-
-				(*(level + j) + k)->gridType = GE_WALL;
-
-				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
-				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
-				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
-
-				(*(level + j) + k)->isCollidable = true;
-				(*(level + j) + k)->isActive = true;
-
-				if (levelData[i] == '-')
-					(*(level + j) + k)->gridAsset = GA_WALL1;
-				else if (levelData[i] == '=')
-					(*(level + j) + k)->gridAsset = GA_WALL2;
-				else if (levelData[i] == '|')
-					(*(level + j) + k)->gridAsset = GA_WALL3;
-
-
-			}
-			else if (levelData[i] == '\\')
-			{
-
-				(*(level + j) + k)->gridType = GE_DAMAGE;
-
-				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
-				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH) / 5;
-				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
-
-				(*(level + j) + k)->isCollidable = false;
-				(*(level + j) + k)->isActive = true;
-
-				(*(level + j) + k)->gridAsset = GA_DAMAGE1;
-
-			}
-			else if (levelData[i] == 'X')
-			{
-
-				(*(level + j) + k)->gridType = GE_PIT;
-
-				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
-				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
-				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
-
-				(*(level + j) + k)->isCollidable = true;
-				(*(level + j) + k)->isActive = true;
-
-				(*(level + j) + k)->gridAsset = GA_PIT;
-
-			}
-			else if (levelData[i] == 'S')
-			{
-
-				(*(level + j) + k)->gridType = GE_SWITCH;
-
-				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
-				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
-				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
-
-				(*(level + j) + k)->isCollidable = true;
-				(*(level + j) + k)->isActive = false;
-
-				(*(level + j) + k)->gridAsset = GA_SWITCH;
-
-			}
-			else if (levelData[i] == 'D')
-			{
-
-				(*(level + j) + k)->gridType = GE_DOOR;
-
-				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
-				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
-				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
-
-				(*(level + j) + k)->isActive = true;
-				(*(level + j) + k)->isCollidable = true;
-
-				(*(level + j) + k)->gridAsset = GA_DOOR;
-
-			}
-			else if (levelData[i] == 'P')
-			{
-
-				(*(level + j) + k)->gridType = GE_PORTAL;
-				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
-				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
-				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
-
-				(*(level + j) + k)->isActive = true;
-				(*(level + j) + k)->isCollidable = false;
-
-				(*(level + j) + k)->gridAsset = GA_PORTAL;
-
-			}
-			else
-			{
-				(*(level + j) + k)->gridType = GE_VOID;
-				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
-				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
-				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
-				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
-
-				(*(level + j) + k)->isActive = false;
-				(*(level + j) + k)->isCollidable = false;
-
-				(*(level + j) + k)->gridAsset = GE_VOID;
-			}
-
-			j++;
 		}
+		else if (levelData[i] == '-' || levelData[i] == '=' || levelData[i] == '|') //WALL
+		{
+
+			(*(level + j) + k)->gridType = GE_WALL;
+
+			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+			(*(level + j) + k)->isCollidable = true;
+			(*(level + j) + k)->isActive = true;
+
+			if (levelData[i] == '-')
+				(*(level + j) + k)->gridAsset = GA_WALL1;
+			else if (levelData[i] == '=')
+				(*(level + j) + k)->gridAsset = GA_WALL2;
+			else if (levelData[i] == '|')
+				(*(level + j) + k)->gridAsset = GA_WALL3;
+
+
+		}
+		else if (levelData[i] == '\\')
+		{
+
+			(*(level + j) + k)->gridType = GE_DAMAGE;
+
+			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH) / 5;
+			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+			(*(level + j) + k)->isCollidable = false;
+			(*(level + j) + k)->isActive = true;
+
+			(*(level + j) + k)->gridAsset = GA_DAMAGE1;
+
+		}
+		else if (levelData[i] == 'X')
+		{
+
+			(*(level + j) + k)->gridType = GE_PIT;
+
+			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+			(*(level + j) + k)->isCollidable = true;
+			(*(level + j) + k)->isActive = true;
+
+			(*(level + j) + k)->gridAsset = GA_PIT;
+
+		}
+		else if (levelData[i] == 'S')
+		{
+
+			(*(level + j) + k)->gridType = GE_SWITCH;
+
+			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+			(*(level + j) + k)->isCollidable = true;
+			(*(level + j) + k)->isActive = false;
+
+			(*(level + j) + k)->gridAsset = GA_SWITCH;
+
+		}
+		else if (levelData[i] == 'D')
+		{
+
+			(*(level + j) + k)->gridType = GE_DOOR;
+
+			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+			(*(level + j) + k)->isActive = true;
+			(*(level + j) + k)->isCollidable = true;
+
+			(*(level + j) + k)->gridAsset = GA_DOOR;
+
+		}
+		else if (levelData[i] == 'P')
+		{
+
+			(*(level + j) + k)->gridType = GE_PORTAL;
+			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+			(*(level + j) + k)->isActive = true;
+			(*(level + j) + k)->isCollidable = false;
+
+			(*(level + j) + k)->gridAsset = GA_PORTAL;
+
+		}
+			
+
+		j++;
 	}
+	
 	
 #if 0
 	printf("%s\n", levelData);
