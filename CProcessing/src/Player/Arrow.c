@@ -4,7 +4,7 @@
 
 //#include "../GameLogic/grid.h"
 
-int timer = 0;
+static int timer = 0;
 bool arrowhit = false;
 
 void DrawArrow(Arrow* arrow)
