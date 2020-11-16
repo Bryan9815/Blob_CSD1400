@@ -297,31 +297,33 @@ bool ArrowTrigger(Player* player)
 bool ArrowBoss1Collision(Arrow* arrow, Body* bBody)
 {
 	bool dealdamage = false;
-	CP_Vector differences = CP_Vector_Subtract(arrow->aBody.hitbox.position, bBody->hitbox.position); //Vector from boss position to arrow position
 	if (COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox))
 	{
+		
+		float offset = (arrow->aBody.hitbox.radius + bBody->hitbox.radius) - CP_Vector_Distance(arrow->aBody.hitbox.position, bBody->hitbox.position);
+		CP_Vector offsetv = CP_Vector_Negate(CP_Vector_Scale(arrow->aBody.velocity, offset / CP_Vector_Length(arrow->aBody.velocity)));
+		arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, offsetv);
 
+		CP_Vector differences = CP_Vector_Subtract(arrow->aBody.hitbox.position, bBody->hitbox.position); //Vector from boss position to arrow position
 		CP_Matrix rotatedir = CP_Matrix_Rotate(bBody->rotation); //rotation matrix
 		CP_Vector dir = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f)); //rotate based off (0,1) to get direction vector 
 		float theta = CP_Vector_Angle(differences, dir); //angle between dir vector and arrow vector
+		//r = d-2(d.n)n
+		CP_Sound_Play(ReflectSFX);
+		CP_Vector normal = CP_Vector_Normalize(differences);
+		//CP_Vector resultantVector = ArrowReflection(&arrow->aBody, normal);
+		float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
+		printf("Dot product: %f",dotproduct);
+		CP_Vector resultantVector = CP_Vector_Subtract(arrow->aBody.velocity, CP_Vector_Scale(normal, 2 * dotproduct));
+		arrow->aBody.velocity = resultantVector;
+		//Adjust arrow rotation Here
+		CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
+		//arrow->aBody.hitbox.position = CP_Vector_Add(CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(resultantVector, 10)), bBody->velocity);
+
 		if (theta >= 150.0f) //Assumes gap is 60 degress wide, May need adjusting
 		{
 			dealdamage = true;
-			arrow->currentDistance = 0.0f;
-			arrow->travelDistance = 0.0f;
 			return dealdamage;
-		}
-		else
-		{
-			//r = d-2(d.n)n
-			CP_Sound_Play(ReflectSFX);
-			CP_Vector normal = CP_Vector_Normalize(differences);
-			CP_Vector resultantVector = ArrowReflection(&arrow->aBody, normal);
-			//float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
-			//CP_Vector resultantVector = CP_Vector_Subtract(arrow->aBody.velocity, CP_Vector_Scale(normal, 2 * dotproduct));
-			//Adjust arrow rotation Here
-			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
-			arrow->aBody.hitbox.position = CP_Vector_Add(CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(resultantVector, 20)), bBody->velocity);
 		}
 
 	}

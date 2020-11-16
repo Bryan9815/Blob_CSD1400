@@ -2,15 +2,16 @@
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
 #include "pause_overlay.h"
-#define GAME_OVER_BUTTONS 3
+#define GAME_OVER_BUTTONS 4
 
 typedef enum {
+	RESUME,
 	RETRY,
 	MAIN_MENU,
 	EXIT,
 }ButtonList;
 ;
-Button menuList[GAME_OVER_BUTTONS];
+static Button menuList[GAME_OVER_BUTTONS];
 int selectButton;
 float buttonBuffer = 125.f;
 bool mouseCheck;
@@ -21,11 +22,6 @@ void PauseInit()
 {
 	selectButton = 0;
 	mouseCheck = false;
-	overlayCenter = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);
-
-	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
-	menuList[MAIN_MENU] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBuffer, 250.f, 100.f, "Main Menu");
-	menuList[EXIT] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBuffer * 2, 250.f, 100.f, "Quit");
 }
 
 void PauseDraw(void)
@@ -40,9 +36,10 @@ void PauseDraw(void)
 	CP_Font_DrawText("PAUSE", overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 4);
 
 	// Draw Buttons
-	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
-	menuList[MAIN_MENU] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBuffer, 250.f, 100.f, "Main Menu");
-	menuList[EXIT] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBuffer * 2, 250.f, 100.f, "Quit");
+	menuList[RESUME] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Resume");
+	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBuffer, 250.f, 100.f, "Retry");
+	menuList[MAIN_MENU] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBuffer * 2, 250.f, 100.f, "Main Menu");
+	menuList[EXIT] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBuffer * 3, 250.f, 100.f, "Quit");
 	for (int i = 0; i < GAME_OVER_BUTTONS; i++)
 	{
 		if(menuList[i].isSelected == 1)
@@ -58,8 +55,11 @@ void PauseButtonActivate()
 {
 	switch (selectButton)
 	{
+	case RESUME:
+		SetPlayState(GAME_PLAY);
+		break;
 	case RETRY:
-		SetGameState(SCR_LEVEL1);
+		SetGameState(GetGameState());
 		break;
 	case MAIN_MENU:
 		SetGameState(SCR_MAIN_MENU);

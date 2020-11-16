@@ -82,7 +82,7 @@ void TutorialDraw(Player* player)
 	PlayerDraw(&newPlayer);
 	DrawArrow(&newPlayer.arrow);
 
-	switch (currPlayState)
+	switch (GetPlayState())
 	{
 	case GAME_PLAY:
 		break;
@@ -94,7 +94,7 @@ void TutorialDraw(Player* player)
 
 void TutorialUpdate(Player* player)
 {
-	switch (currPlayState)
+	switch (GetPlayState())
 	{
 	case GAME_PLAY:
 		if (GetBlobInputTriggered(BLOB_PAUSE))
