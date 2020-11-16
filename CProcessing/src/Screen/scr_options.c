@@ -126,8 +126,8 @@ void OptionsDraw(void)
 		break;
 	case CONTROLS:
 		// Draw Overlay
-		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 155));
-		CP_Graphics_DrawRect((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_System_GetWindowWidth()/8*7, (float)CP_System_GetWindowHeight()/8*7);
+		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 255));
+		CP_Graphics_DrawRect((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_System_GetWindowWidth()/8*7, (float)CP_System_GetWindowHeight()/8*7+10.0f);
 		// Draw custom inputs
 		for (int i = 0; i < BLOB_PAUSE + 2; i++)
 		{
