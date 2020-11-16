@@ -324,7 +324,6 @@ bool ArrowBoss1Collision(Arrow* arrow, Body* bBody)
 		CP_Vector normal = CP_Vector_Normalize(differences);
 		//CP_Vector resultantVector = ArrowReflection(&arrow->aBody, normal);
 		float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
-		printf("Dot product: %f",dotproduct);
 		CP_Vector resultantVector = CP_Vector_Subtract(arrow->aBody.velocity, CP_Vector_Scale(normal, 2 * dotproduct));
 		arrow->aBody.velocity = resultantVector;
 		//Adjust arrow rotation Here
