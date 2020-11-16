@@ -28,8 +28,6 @@ typedef enum PlayState
 
 }PlayState;
 
-PlayState currPlayState;
-
 void GameInit(void);
 void GameUpdate(void);
 void GameExit(void);
@@ -37,6 +35,8 @@ void SetGameState(GameState nextGameState);
 
 void ScreenStartFade(FadeType fadeType);
 void DrawOverlay(void);
+GameState GetGameState(void);
+PlayState GetPlayState(void);
 void SetPlayState(PlayState nextPlayState);
 void SetGameOver(bool win);
 Fader* GetFader();
