@@ -13,7 +13,7 @@ typedef enum {
 }ButtonList;
 
 CP_Color bgColor;
-Button menuList[MAIN_MENU_BUTTONS];
+static Button menuList[MAIN_MENU_BUTTONS];
 int selectButton;
 bool mouseCheck;
 CP_Vector mousePos;

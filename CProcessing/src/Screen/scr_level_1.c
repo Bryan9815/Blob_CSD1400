@@ -64,7 +64,6 @@ void Level1Update(Player* player)
 
 void Level1Exit(void) 
 {
-	ResetFader(GetFader());
 	Boss1Exit();
 	AudioL1Exit();
 	GridExit();

@@ -121,6 +121,7 @@ void SetGameOver(bool win)
 
 void GameExit(void)
 {
+	ResetFader(GetFader());
 	switch (preGameState)
 	{
 	case SCR_INTRO:
