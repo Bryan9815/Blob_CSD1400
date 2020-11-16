@@ -119,14 +119,7 @@ bool ArrowCollision(Body* entity)
 			{
 				CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
 				CP_Vector r = entity->velocity;
-				if (((level[i + 1][j].gridType == GE_WALL) || (level[i - 1][j].gridType == GE_WALL)) &&
-					((level[i][j + 1].gridType == GE_WALL) || (level[i][j - 1].gridType == GE_WALL))) // check for corners
-				{
-					//Doesn't trigger at all tbh
-					r = CP_Vector_Negate(entity->velocity);
-					printf("hit corners\n");
-				}
-				else if ((level[i + 1][j].gridType == GE_WALL) && (level[i - 1][j].gridType == GE_WALL) ) //Top and Bottom
+				if ((level[i + 1][j].isCollidable && (level[i + 1][j].gridType != GE_PIT)) && (level[i - 1][j].isCollidable && (level[i + 1][j].gridType != GE_PIT))) //Top and Bottom
 				{
 					if (entity->velocity.y > 0) //if arrow is travelling downwards
 					{
@@ -141,7 +134,7 @@ bool ArrowCollision(Body* entity)
 					r = ArrowReflection(entity, n);
 				}
 				//else if(((level[i + 1][j].gridType == GE_WALL) && (level[i - 1][j].gridType == GE_WALL))
-				else if ((level[i][j + 1].gridType == GE_WALL) && (level[i][j - 1].gridType == GE_WALL)) //Left and Right
+				else if ((level[i][j + 1].isCollidable && (level[i + 1][j].gridType != GE_PIT)) && (level[i][j - 1].isCollidable && (level[i + 1][j].gridType != GE_PIT))) //Left and Right
 				{
 					if (entity->velocity.x > 0) //If arrow is travelling to the right
 					{

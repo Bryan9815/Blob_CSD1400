@@ -50,15 +50,18 @@ void LoadMapFile (MAP _level)	//Call FUNC to load map from file
 	{
 		while (!feof(fp)) /*While not at EOF for the file pf*/
 		{
-			*(levelData + i++) = (char)fgetc(fp);
-			if (*(levelData + i - 1) == '\n' || *(levelData + i - 1) == EOF)
+			if (levelData)
 			{
-				if (finalWidth < w)
-					finalWidth = w - 1;
-				w = 0;
-				h++;
+				*(levelData + i++) = (char)fgetc(fp);
+				if (*(levelData + i - 1) == '\n' || *(levelData + i - 1) == EOF)
+				{
+					if (finalWidth < w)
+						finalWidth = w - 1;
+					w = 0;
+					h++;
+				}
+				w++;
 			}
-			w++;
 		}
 		fclose(fp);
 	}
