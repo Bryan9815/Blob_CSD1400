@@ -18,7 +18,7 @@ void CameraInit(CP_Vector* targetPos, CameraMode cameraMode)
 	centerX = CP_System_GetWindowWidth() / 2.0f;
 	centerY = CP_System_GetWindowHeight() / 2.0f;
 	currentPosition = CP_Vector_Set(-(targetPos->x - centerX), -(targetPos->y - centerY));
-	currentPosition = CP_Vector_Set(-(targetPos->x - centerX), -(targetPos->y - centerY));
+	cameraPos = currentPosition;
 	cameraVelocity = CP_Vector_Set(1, 1);
 	shakeTimer = 0;
 	shakeValue = 15;
