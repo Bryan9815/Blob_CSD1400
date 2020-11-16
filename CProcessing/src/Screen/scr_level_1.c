@@ -25,7 +25,7 @@ void LevelDraw(Player* player)
 	PlayerDraw(&newPlayer);
 	Boss1Draw(ArmorSlime);
 	DrawArrow(&newPlayer.arrow);
-	switch (currPlayState)
+	switch (GetPlayState())
 	{
 	case GAME_PLAY:
 		break;
@@ -37,7 +37,7 @@ void LevelDraw(Player* player)
 
 void Level1Update(Player* player)
 {
-	switch(currPlayState)
+	switch(GetPlayState())
 	{
 	case GAME_PLAY:
 		if (GetBlobInputTriggered(BLOB_PAUSE))

@@ -12,6 +12,7 @@
 
 GameState preGameState = SCR_INTRO; //For Unloading
 GameState currGameState = SCR_INTRO;
+PlayState currPlayState;
 Fader fader;
 
 void ScreenStartFade(FadeType fadeType) 
@@ -55,6 +56,11 @@ void GameInit(void)
 		break;
 	}
 	ScreenStartFade(FADE_OUT);
+}
+
+GameState GetGameState(void)
+{
+	return currGameState;
 }
 
 void SetGameState(GameState nextGameState)
@@ -106,6 +112,11 @@ void GameUpdate(void)
 		break;
 	}
 	UpdateFade(&fader); 
+}
+
+PlayState GetPlayState(void)
+{
+	return currPlayState;
 }
 
 void SetPlayState(PlayState nextPlayState)
