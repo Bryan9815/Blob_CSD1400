@@ -98,8 +98,8 @@ void OptionsDraw(void)
 	{
 	case SOUND:
 		// SFX and Music slider options (currently buttons)
-		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 155));
-		CP_Graphics_DrawRect((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_System_GetWindowWidth() / 8 * 7, (float)CP_System_GetWindowHeight() / 8 * 7);
+		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 255));
+		CP_Graphics_DrawRect((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_System_GetWindowWidth() / 8 * 7, (float)CP_System_GetWindowHeight() / 8 * 7 + 10.0f);
 		for (int i = 0; i < (SFX + 2); i++)
 		{
 			if (i == (SFX + 1)) //for exit button
@@ -127,7 +127,7 @@ void OptionsDraw(void)
 	case CONTROLS:
 		// Draw Overlay
 		CP_Settings_Fill(CP_Color_Create(50, 50, 50, 255));
-		CP_Graphics_DrawRect((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_System_GetWindowWidth()/8*7, (float)CP_System_GetWindowHeight()/8*7+10.0f);
+		CP_Graphics_DrawRect((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_System_GetWindowWidth() / 8 * 7, (float)CP_System_GetWindowHeight() / 8 * 7 + 10.0f);
 		// Draw custom inputs
 		for (int i = 0; i < BLOB_PAUSE + 2; i++)
 		{
@@ -449,14 +449,14 @@ void SoundMenuActiviate(void)
 		soundMenu[soundInputY][soundInputX].isSelected = 1;
 	}
 
-	if (soundMenu[SFX][1].isSelected == 1 && SFX_Vol > SOUND_MIN)
-		SFX_Vol--;
-	else if (soundMenu[SFX][2].isSelected == 1 && SFX_Vol < SOUND_MAX)
-		SFX_Vol++;
-	else if (soundMenu[MUSIC][1].isSelected == 1 && BGM_Vol > SOUND_MIN)
-		BGM_Vol--;
-	else if (soundMenu[MUSIC][2].isSelected == 1 && BGM_Vol < SOUND_MAX)
-		BGM_Vol++;
+	if (soundMenu[SFX][1].isSelected == 1 && GetSFXVolume() > SOUND_MIN)
+		SetSFXVolume(GetSFXVolume() - 1);
+	else if (soundMenu[SFX][2].isSelected == 1 && GetSFXVolume() < SOUND_MAX)
+		SetSFXVolume(GetSFXVolume() + 1);
+	else if (soundMenu[MUSIC][1].isSelected == 1 && GetBGMVolume() > SOUND_MIN)
+		SetBGMVolume(GetBGMVolume() - 1);
+	else if (soundMenu[MUSIC][2].isSelected == 1 && GetBGMVolume() < SOUND_MAX)
+		SetBGMVolume(GetBGMVolume() + 1);
 
 	soundMenu[soundInputY][soundInputX].isSelected = 0;
 }

@@ -1,9 +1,10 @@
 #include <cprocessing.h>
 #include "AudioManager.h"
 #include "../GameLogic/ScreenManager.h"
-
+#include <math.h>
 
 bool MenuPlaying = false;
+float SFX_Vol, BGM_Vol;
 
 //for sound options
 const char* GetSoundText(soundSelect input)
@@ -28,10 +29,10 @@ char* GetVolumeText(soundSelect input)
 	switch (input)
 	{
 	case MUSIC:
-		sprintf_s(volumeLevel, 3, "%d", BGM_Vol);
+		sprintf_s(volumeLevel, 3, "%d", (int)BGM_Vol);
 		break;
 	case SFX:
-		sprintf_s(volumeLevel, 3, "%d", SFX_Vol);
+		sprintf_s(volumeLevel, 3, "%d", (int)SFX_Vol);
 		break;
 	default:
 		return "";
@@ -51,7 +52,7 @@ void AudioMenuInit(void)
 	if (MenuPlaying == false)
 	{
 		BGM_Menu = CP_Sound_LoadMusic("././Assets/Audio/BlobMenu.wav");
-		CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * (float)BGM_Vol));
+		CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * BGM_Vol));
 		CP_Sound_PlayMusic(BGM_Menu);
 		CP_Sound_ResumeAll(); //Resume from pause menu
 		MenuPlaying = true;
@@ -68,7 +69,8 @@ void AudioMenuExit(void)
 void AudioL0Init(void)
 {
 	BGM_Tutorial = CP_Sound_LoadMusic("././Assets/Audio/BlobTutorial.wav");
-	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * (float)BGM_Vol));
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_SFX, (0.1f * SFX_Vol));
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * BGM_Vol));
 	CP_Sound_PlayMusic(BGM_Tutorial);
 }
 
@@ -88,8 +90,8 @@ void AudioL1Init(void)
 	attackSFX = CP_Sound_Load("././Assets/Audio/attackSFX.wav");
 	damageSFX = CP_Sound_Load("././Assets/Audio/bossDamaged.wav");
 	warningSFX = CP_Sound_Load("././Assets/Audio/warningAttackSFX.wav");
-	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_SFX, (0.1f * (float)SFX_Vol));
-	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * (float)BGM_Vol));
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_SFX, (0.1f * SFX_Vol));
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * BGM_Vol));
 	CP_Sound_PlayMusic(BGM_Boss1);
 	CP_Sound_ResumeAll(); //resume if player paused and retry
 	MusicPlaying = true;
@@ -131,4 +133,26 @@ void AudioL1Exit(void)
 	CP_Sound_Free(attackSFX);
 	CP_Sound_Free(damageSFX);
 	CP_Sound_Free(warningSFX);
+}
+
+float GetSFXVolume()
+{
+	return SFX_Vol;
+}
+
+void SetSFXVolume(float newVol)
+{
+	SFX_Vol = roundf(newVol);
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_SFX, (0.1f * newVol));
+}
+
+float GetBGMVolume()
+{
+	return BGM_Vol;
+}
+
+void SetBGMVolume(float newVol)
+{
+	BGM_Vol = roundf(newVol);
+	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * newVol));
 }
