@@ -106,10 +106,30 @@ void GridInit()//Add starting point
 	}
 
 	//Level Variables
-	for (int i = 0, j = 0, k = 0; i < levelWidth * levelHeight + levelHeight; i++)
+	for (int i = 0, j = 0, k = 0; i < BUFFERSIZE; i++)
 	{
-		if (levelData[i] == '\n' || levelData[i] == EOF)
+		if (levelData[i] == EOF) 
 		{
+			break;
+		}
+
+		if (levelData[i] == '\n')
+		{
+			for (j=j; j < levelWidth; j++) 
+			{
+				(*(level + j) + k)->gridType = GE_VOID;
+
+				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+				(*(level + j) + k)->isCollidable = false;
+				(*(level + j) + k)->isActive = false;
+
+				(*(level + j) + k)->gridAsset = GA_VOID;
+			}
 			j = 0;
 			k++;
 			continue;
@@ -237,6 +257,21 @@ void GridInit()//Add starting point
 
 			(*(level + j) + k)->gridAsset = GA_PORTAL;
 
+		}
+		else 
+		{
+			(*(level + j) + k)->gridType = GE_VOID;
+
+			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+			(*(level + j) + k)->isCollidable = false;
+			(*(level + j) + k)->isActive = false;
+
+			(*(level + j) + k)->gridAsset = GA_VOID;
 		}
 			
 
