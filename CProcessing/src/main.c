@@ -15,6 +15,8 @@
 #include "cprocessing.h"
 #include <stdio.h>
 #include "GameLogic/ScreenManager.h"
+#include <crtdbg.h>
+#include <stdlib.h>
 
 static const float WINDOW_SCALE = 0.8f;
 static const int WINDOW_WIDTH = 1600, WINDOW_HEIGHT = 900;
@@ -25,6 +27,15 @@ static const int WINDOW_WIDTH = 1600, WINDOW_HEIGHT = 900;
 // CP_Engine_Run() is the core function that starts the simulation
 int main(void)
 {
+#if defined(DEBUG) | defined(_DEBUG)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+	/*
+	void* asd = malloc(1000);
+	asd;
+	free(asd);
+	*/
+	//free(asd);
 	//Setting the window title
 	CP_System_SetWindowTitle("Blob");
 

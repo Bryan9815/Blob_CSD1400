@@ -106,10 +106,30 @@ void GridInit()//Add starting point
 	}
 
 	//Level Variables
-	for (int i = 0, j = 0, k = 0; i < levelWidth * levelHeight + levelHeight; i++)
+	for (int i = 0, j = 0, k = 0; i < BUFFERSIZE; i++)
 	{
+		if (levelData[i] == EOF) 
+		{
+			break;
+		}
+
 		if (levelData[i] == '\n')
 		{
+			for (j=j; j < levelWidth; j++) 
+			{
+				(*(level + j) + k)->gridType = GE_VOID;
+
+				(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+				(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+				(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+				(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+				(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+				(*(level + j) + k)->isCollidable = false;
+				(*(level + j) + k)->isActive = false;
+
+				(*(level + j) + k)->gridAsset = GA_VOID;
+			}
 			j = 0;
 			k++;
 			continue;
@@ -135,7 +155,7 @@ void GridInit()//Add starting point
 		{
 
 			(*(level + j) + k)->gridType = GE_WALL;
-				
+
 			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
 			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
 			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
@@ -154,7 +174,7 @@ void GridInit()//Add starting point
 
 
 		}
-		else if(levelData[i] == '\\')
+		else if (levelData[i] == '\\')
 		{
 
 			(*(level + j) + k)->gridType = GE_DAMAGE;
@@ -167,7 +187,7 @@ void GridInit()//Add starting point
 
 			(*(level + j) + k)->isCollidable = false;
 			(*(level + j) + k)->isActive = true;
-			
+
 			(*(level + j) + k)->gridAsset = GA_DAMAGE1;
 
 		}
@@ -186,7 +206,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->isActive = true;
 
 			(*(level + j) + k)->gridAsset = GA_PIT;
-			
+
 		}
 		else if (levelData[i] == 'S')
 		{
@@ -203,7 +223,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->isActive = false;
 
 			(*(level + j) + k)->gridAsset = GA_SWITCH;
-			
+
 		}
 		else if (levelData[i] == 'D')
 		{
@@ -238,10 +258,26 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->gridAsset = GA_PORTAL;
 
 		}
+		else 
+		{
+			(*(level + j) + k)->gridType = GE_VOID;
+
+			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+			(*(level + j) + k)->isCollidable = false;
+			(*(level + j) + k)->isActive = false;
+
+			(*(level + j) + k)->gridAsset = GA_VOID;
+		}
+			
 
 		j++;
-
 	}
+	
 	
 #if 0
 	printf("%s\n", levelData);
@@ -384,7 +420,19 @@ void GridDraw(Collider playerHitBox)
 					GRID_UNIT_HEIGHT);
 #endif
 				break;
+			case GA_DAMAGE1:
+				CP_Settings_ImageMode(CP_POSITION_CENTER);
+				CP_Image_DrawSubImage(
+					envSpriteSheet,
+					(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
+					(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
+					GRID_UNIT_WIDTH + 2,
+					GRID_UNIT_HEIGHT + 2,
+					128.0f, 128.0f, 192.0f, 192.0f,
+					255);
+				break;
 			case GA_VOID:
+				/*
 				CP_Settings_RectMode(CP_POSITION_CENTER);
 				CP_Settings_Fill(CP_Color_Create(255, 255, 255, 30));
 				CP_Graphics_DrawRect(
@@ -392,6 +440,7 @@ void GridDraw(Collider playerHitBox)
 					(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
 					GRID_UNIT_WIDTH,
 					GRID_UNIT_HEIGHT);
+					*/
 				break;
 			}
 		}

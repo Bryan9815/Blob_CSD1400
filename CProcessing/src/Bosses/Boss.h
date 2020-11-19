@@ -22,6 +22,7 @@ typedef struct
 	int Health;			//Health of boss
 	BossState State;	//determines boss actions
 	Body BossBody;		//position and velocity of boss movement for collision
+	int bossAlpha;		//for invincibility
 } Boss;
 
 typedef enum
@@ -39,4 +40,4 @@ void BossDraw(Boss currentboss);
 void BossHealthDraw(int bossHealth, CP_Vector bossPos, float bossSize);
 void BossMovement(Boss* currentboss, Player player, GridUnit* grid);
 void BossRotation(Boss* currentboss, CP_Vector position);
-void BossDamage(bool* hit);
+void BossDamage(bool* hit, int* bossAlpha);

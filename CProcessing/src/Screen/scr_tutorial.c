@@ -5,6 +5,7 @@ float timer;
 
 GridUnit* switches[2];
 GridUnit* door1[8];
+GridUnit* damage[8];
 GridUnit* portal[4];
 
 bool switchesDown,
@@ -15,7 +16,7 @@ void TutorialInit(void)
 	LoadMapFile(Level0);
 	GridInit();
 
-	int k = 0, l = 0, m = 0;
+	int k = 0, l = 0, m = 0, n = 0;
 	for (int i = 0; i < GetLevelWidth(); i++) 
 	{
 		for (int j = 0; j < GetLevelHeight(); j++)
@@ -31,6 +32,10 @@ void TutorialInit(void)
 			else if (GetGridUnit(i, j)->gridType == GE_PORTAL)
 			{
 				portal[m++] = GetGridUnit(i, j);
+			}
+			else if (GetGridUnit(i, j)->gridType == GE_DAMAGE)
+			{
+				damage[n++] = GetGridUnit(i, j);
 			}
 		}
 	}
@@ -105,6 +110,13 @@ void TutorialUpdate(Player* player)
 		ArrowStateCheck(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
 		GridUpdate(player->pBody.hitbox, player->arrow.aBody.hitbox);
 
+		for (size_t i = 0; i < sizeof(damage) / sizeof(damage[0]); i++)
+		{
+			//if (COL_IsColliding(player->pBody.hitbox, damage[i]->collider))//Reach the Portal
+			{
+
+			}
+		}
 		//Check Switches
 		for (size_t i = 0; i < sizeof(switches) / sizeof(switches[0]); i++)
 		{
@@ -133,7 +145,7 @@ void TutorialUpdate(Player* player)
 		//Right Clear Room Clear
 		for (size_t i = 0; i < sizeof(portal) / sizeof(portal[0]); i++)
 		{
-			if (COL_IsColliding(player->pBody.hitbox, portal[i]->collider))
+			if (COL_IsColliding(player->pBody.hitbox, portal[i]->collider))//Reach the Portal
 			{
 				ScreenStartFade(FADE_IN);
 				SetPlayState(GAME_SWAP);
@@ -149,7 +161,7 @@ void TutorialUpdate(Player* player)
 			SetPlayState(GAME_PLAY);
 		}
 		break;
-	case GAME_SWAP:
+	case GAME_SWAP://Once the fader ended
 		if (!(GetFader()->isFading)) 
 		{
 			SetGameState(SCR_LEVEL1);
