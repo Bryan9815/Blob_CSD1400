@@ -99,6 +99,42 @@ CP_Vector ArrowReflection(Body* entity, CP_Vector n)
 	return r;
 }
 
+//CP_Vector Circle_Intersect_Rect(Collider circle, Collider rect)
+//{
+//	//CP_Vector v1, v2, v3, v4;
+//	//v1 = CP_Vector_Set(rect->position.x - rect->hitbox.width/2, rect->hitbox.position.y - rect->hitbox.height/2);
+//	//v2 = CP_Vector_Set(rect->position.x + rect->hitbox.width/2, rect->hitbox.position.y - rect->hitbox.height/2);
+//	//v3 = CP_Vector_Set(rect->position.x - rect->hitbox.width/2, rect->hitbox.position.y + rect->hitbox.height/2);
+//	//v3 = CP_Vector_Set(rect->position.x + rect->hitbox.width/2, rect->hitbox.position.y + rect->hitbox.height/2);
+//
+//	CP_Vector offset = CP_Vector_Subtract(circle.position, rect.position);
+//	float ratio;
+//
+//	if (offset.x == 0.0f && offset.y == 0.0f)
+//	{
+//		return offset;
+//	}
+//
+//	if (offset.x == 0.0f)
+//	{
+//		ratio = rect.height / offset.y;
+//	}
+//	else if (offset.y == 0.0f)
+//	{
+//		ratio = rect.width / offset.x;
+//	}
+//	else
+//	{
+//		ratio = (rect.height / offset.y) > (rect.width / offset.x) ?
+//			(rect.width / offset.x) : (rect.height / offset.y);
+//	}
+//	ratio *= 0.5f;
+//
+//	//CP_Vector intersect1 = CP_Vector_Add(rect.position, CP_Vector_Scale(offset, ratio));
+//	CP_Vector intersect2 = CP_Vector_Subtract(circle.position, CP_Vector_Scale(offset, circle.radius / CP_Vector_Length(offset)));
+//	//CP_Vector intersect = CP_Vector_Set(intersect1.x - rect.position.x, intersect2.y - rect.position.y);
+//	return intersect2;
+//}
 
 //Shamelessly stolen from Jia Rong, thanks btw
 bool ArrowCollision(Body* entity)
@@ -119,6 +155,13 @@ bool ArrowCollision(Body* entity)
 			{
 				CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
 				CP_Vector r = entity->velocity;
+				//CP_Vector insct = Circle_Intersect_Rect(entityCol, wallCol);
+				//printf("Intersection: %f, %f\n", insct.x, insct.y);
+				//CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
+				//CP_Graphics_DrawCircle(insct.x, insct.y, entityCol.radius * 2);
+				//if (entity->velocity.x < 
+				//entity->hitbox.position.y = wallCol.
+
 				if ((level[i + 1][j].isCollidable && (level[i + 1][j].gridType != GE_PIT)) && (level[i - 1][j].isCollidable && (level[i + 1][j].gridType != GE_PIT))) //Top and Bottom
 				{
 					if (entity->velocity.y > 0) //if arrow is travelling downwards
