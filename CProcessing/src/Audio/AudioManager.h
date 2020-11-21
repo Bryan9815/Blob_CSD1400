@@ -18,13 +18,13 @@ CP_Sound ReflectSFX, SlamSFX, attackSFX, warningSFX, damageSFX;
 const char* GetSoundText(soundSelect input);
 char* GetVolumeText(soundSelect input);
 
+void VolumeInit(void);
 void AudioMenuInit(void);
 void AudioMenuExit(void);
 
 void AudioL0Init(void);
 void AudioL0Exit(void);
 
-void VolumeInit(void);
 void AudioL1Init(void);
 void AudioL1Play(void);
 void AudioL1Pause(void);

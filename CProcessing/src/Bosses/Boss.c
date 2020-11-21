@@ -6,7 +6,7 @@
 #include "../Screen/scr_level_1.h"
 #include "../Audio/AudioManager.h"
 
-float NoDamageTimer = 0;
+float NoDamageTimer = 0.f;
 
 void BossInit(Boss *currentboss, int health, float size, CP_Vector startPos) //function to set variables of boss(es)
 {
@@ -18,6 +18,7 @@ void BossInit(Boss *currentboss, int health, float size, CP_Vector startPos) //f
 	currentboss->BossBody.rotation = 0.0f;
 	currentboss->State = IDLE;
 	currentboss->bossAlpha = 255;
+	NoDamageTimer = 0.f;
 }
 void BossDraw(Boss currentboss) //function to draw boss(es)
 {
@@ -106,7 +107,7 @@ void BossDamage(bool* hit, int* bossAlpha) // for boss invincibility between hit
 
 		NoDamageTimer += CP_System_GetDt();
 	}
-	else if (NoDamageTimer >= 3.f)
+	else if (NoDamageTimer >= 3.f) //invincibilty over, reset
 	{
 		NoDamageTimer = 0.f;
 		*bossAlpha = 255;
