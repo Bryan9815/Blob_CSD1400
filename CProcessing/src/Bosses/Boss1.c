@@ -12,11 +12,11 @@
 float BossRange = 200.f;
 float NearAttackTimer;
 float FarAttackTimer = 0.f;
-float NearTimer = 0;
-float FarTimer = 0;
-float ChargeTimer = 0;
-float AttackCount = 0;
-float Stuntime = 0;
+float NearTimer = 0.f;
+float FarTimer = 0.f;
+float ChargeTimer = 0.f;
+float AttackCount = 0.f;
+float Stuntime = 0.f;
 
 void Boss1Init(void)
 {
@@ -257,7 +257,7 @@ void BossAction(void) //determines the boss actions, only one should be active a
 		StunTimer(&ArmorSlime); //boss should stop moving, allowing player to shoot
 		break; 
 	case DEFEAT:
-		SetGameOver(true); //proceed to next stage (main menu/win screen for prototype)
+		SetGameOver(true); //proceed to next stage
 		break; 
 	default: //In case it ends up being something else
 		ArmorSlime.State = IDLE;
