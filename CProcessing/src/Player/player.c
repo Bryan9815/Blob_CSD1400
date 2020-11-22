@@ -80,10 +80,14 @@ void PlayerDraw(Player* player)
 	//Draw Dodge Bar
 	if (dodgeTimer > 0)
 	{
+		char numDodgeText = (char)(player->numDodge + '0');
 		CP_Settings_Fill(CP_Color_Create(255, 255, 100, 100));
 		CP_Graphics_DrawRect(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y - player->pBody.hitbox.radius - 10.0f, player->pBody.hitbox.radius, player->pBody.hitbox.radius / 5);
 		CP_Settings_Fill(CP_Color_Create(255, 255, 100, 255));
 		CP_Graphics_DrawRect(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y - player->pBody.hitbox.radius - 10.0f, player->pBody.hitbox.radius * (dodgeTimer / DODGE_COOLDOWN), player->pBody.hitbox.radius / 5);
+		CP_Settings_TextSize(15);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+		CP_Font_DrawText(&numDodgeText, player->pBody.hitbox.position.x + player->pBody.hitbox.radius, player->pBody.hitbox.position.y - player->pBody.hitbox.radius - 10.0f);
 	}
 
 
