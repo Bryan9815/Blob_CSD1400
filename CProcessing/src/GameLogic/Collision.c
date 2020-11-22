@@ -264,12 +264,12 @@ bool ArrowCollision(Body* entity)
 					printf("Offset\n");
 					entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, offset);
 				}
-				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, offset);
-				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, offset);
+				//entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, offset);
+				//entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, offset);
 				//printf("%f, %f\n", n.x, n.y);
 				entity->velocity = r;
 
-				//entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 20));
+				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 20));
 				
 				//float nearestX = Max(wallCol.position.x - wallCol.width / 2, Min(entityCol.position.x , wallCol.position.x + wallCol.width / 2));	//Get Nearest Point X
 				//float nearestY = Max(wallCol.position.y - wallCol.height / 2, Min(entityCol.position.y , wallCol.position.y + wallCol.height / 2)); //Get Nearest Point Y
