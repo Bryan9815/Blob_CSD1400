@@ -13,6 +13,7 @@ void BossInit(Boss *currentboss, int health, float size, CP_Vector startPos) //f
 	currentboss->BossBody.hitbox.shapeType = COL_CIRCLE;
 	currentboss->BossBody.hitbox.position = startPos; //temp(?)
 	currentboss->Health = health;
+	currentboss->maxHealth = health;
 	currentboss->BossBody.hitbox.radius = size;
 	currentboss->BossBody.velocity = CP_Vector_Set(0.f,0.f); //to be balanced
 	currentboss->BossBody.rotation = 0.0f;
@@ -32,13 +33,13 @@ void BossDraw(Boss currentboss) //function to draw boss(es)
 	//CP_Graphics_DrawCircle(currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius*2));
 }
 
-void BossHealthDraw(int bossHealth, CP_Vector bossPos, float bossSize)
+void BossHealthDraw(Boss boss)
 {
 	CP_Settings_Fill(CP_Color_Create(50, 50, 50, 150));
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Graphics_DrawRect((bossPos.x - bossSize), (bossPos.y - bossSize - 10.f), (float)(bossSize * 2), 10.f);
+	CP_Graphics_DrawRect((boss.BossBody.hitbox.position.x - boss.BossBody.hitbox.radius), (boss.BossBody.hitbox.position.y - boss.BossBody.hitbox.radius - 10.f), (boss.BossBody.hitbox.radius * 2), 10.f);
 	CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-	CP_Graphics_DrawRect((bossPos.x - bossSize + 1.f),(bossPos.y - bossSize - 9.f), (float)(bossSize * 2 * bossHealth / 3), 8.f);
+	CP_Graphics_DrawRect((boss.BossBody.hitbox.position.x - boss.BossBody.hitbox.radius + 1.f),(boss.BossBody.hitbox.position.y - boss.BossBody.hitbox.radius - 9.f), (float)(boss.BossBody.hitbox.radius * 2 * boss.Health/boss.maxHealth), 8.f);
 }
 
 void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //boss slowly moves toward player
@@ -83,17 +84,18 @@ void BossRotation(Boss* currentboss, CP_Vector position)
 }
 
 
-void BossDamage(bool* hit, int* bossAlpha) // for boss invincibility between hits
+void BossDamage(bool* hit, Boss* boss) // for boss invincibility between hits
 {
 	if (NoDamageTimer == 0.f)
 	{
 		if (*hit == true)
 		{
-			ArmorSlime.Health--;
+			boss->Health--;
+			//ArmorSlime.Health--;
 			*hit = false;
 			CP_Sound_Play(damageSFX);
 			NoDamageTimer += CP_System_GetDt();
-			*bossAlpha = 100;
+			boss->bossAlpha = 100;
 		}
 	}
 	else if (NoDamageTimer > 0.f && NoDamageTimer < 3.f)
@@ -101,15 +103,15 @@ void BossDamage(bool* hit, int* bossAlpha) // for boss invincibility between hit
 		//boss flicker every 0.25s to show invincibility
 		if ((NoDamageTimer - (int)(NoDamageTimer)) < 0.25f || 
 			((NoDamageTimer - (int)(NoDamageTimer)) < 0.75f) && (NoDamageTimer - (int)(NoDamageTimer)) > 0.5f)
-			*bossAlpha = 100;
+			boss->bossAlpha = 100;
 		else
-			*bossAlpha = 255;
+			boss->bossAlpha = 255;
 
 		NoDamageTimer += CP_System_GetDt();
 	}
 	else if (NoDamageTimer >= 3.f) //invincibilty over, reset
 	{
 		NoDamageTimer = 0.f;
-		*bossAlpha = 255;
+		boss->bossAlpha = 255;
 	}
 }

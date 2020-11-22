@@ -22,6 +22,7 @@
     <ClCompile Include="src\Audio\AudioManager.c" />
     <ClCompile Include="src\Bosses\Boss.c" />
     <ClCompile Include="src\Bosses\Boss1.c" />
+    <ClCompile Include="src\Bosses\Boss2.c" />
     <ClCompile Include="src\Camera\Camera.c" />
     <ClCompile Include="src\GameLogic\BlobInput.c" />
     <ClCompile Include="src\GameLogic\Button.c" />
@@ -39,6 +40,7 @@
     <ClCompile Include="src\Screen\scr_gameover.c" />
     <ClCompile Include="src\Screen\scr_level_1.c" />
     <ClCompile Include="src\Screen\scr_intro.c" />
+    <ClCompile Include="src\Screen\scr_level_2.c" />
     <ClCompile Include="src\Screen\scr_mainmenu.c" />
     <ClCompile Include="src\Screen\scr_options.c" />
     <ClCompile Include="src\Screen\scr_tutorial.c" />
@@ -47,6 +49,7 @@
     <ClInclude Include="src\Audio\AudioManager.h" />
     <ClInclude Include="src\Bosses\Boss.h" />
     <ClInclude Include="src\Bosses\Boss1.h" />
+    <ClInclude Include="src\Bosses\Boss2.h" />
     <ClInclude Include="src\Camera\Camera.h" />
     <ClInclude Include="src\GameLogic\BlobInput.h" />
     <ClInclude Include="src\GameLogic\Button.h" />
@@ -63,6 +66,7 @@
     <ClInclude Include="src\Screen\scr_gameover.h" />
     <ClInclude Include="src\Screen\scr_level_1.h" />
     <ClInclude Include="src\Screen\scr_intro.h" />
+    <ClInclude Include="src\Screen\scr_level_2.h" />
     <ClInclude Include="src\Screen\scr_mainmenu.h" />
     <ClInclude Include="src\Screen\scr_options.h" />
     <ClInclude Include="src\Screen\scr_tutorial.h" />

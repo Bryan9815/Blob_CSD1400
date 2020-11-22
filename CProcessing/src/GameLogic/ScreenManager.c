@@ -5,6 +5,7 @@
 #include "../Screen/scr_options.h"
 #include "../Screen/scr_credits.h"
 #include "../Screen/scr_level_1.h"
+#include "../Screen/scr_level_2.h"
 #include "../Screen/scr_gameover.h"
 #include "../Screen/pause_overlay.h"
 #include "../Screen/scr_tutorial.h"
@@ -51,6 +52,9 @@ void GameInit(void)
 		break;
 	case SCR_LEVEL1:
 		Level1Init();
+		break;
+	case SCR_LEVEL2:
+		Level2Init();
 		break;
 	default:
 		break;
@@ -108,6 +112,9 @@ void GameUpdate(void)
 	case SCR_LEVEL1:
 		Level1Update(&newPlayer);
 		break;
+	case SCR_LEVEL2:
+		Level2Update(&newPlayer);
+		break;
 	default:
 		break;
 	}
@@ -151,6 +158,9 @@ void GameExit(void)
 		break;
 	case SCR_LEVEL1:
 		Level1Exit();
+		break;
+	case SCR_LEVEL2:
+		Level2Exit();
 		break;
 	default:
 		break;

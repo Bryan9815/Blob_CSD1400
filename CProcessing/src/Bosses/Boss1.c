@@ -237,7 +237,7 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	
 }
 
-void BossAction(void) //determines the boss actions, only one should be active at any time
+void Boss1Action(void) //determines the boss actions, only one should be active at any time
 {
 	switch (ArmorSlime.State) 
 	{
@@ -273,7 +273,7 @@ void Boss1Battle(void)
 	}
 
 	B1_StateChange(newPlayer, &ArmorSlime); //determines boss state (other than defeat)
-	BossAction(); //determine boss action
+	Boss1Action(); //determine boss action
 }
 
 void Boss1Draw(Boss armorboss)
@@ -282,7 +282,7 @@ void Boss1Draw(Boss armorboss)
 	AttackNearDraw(armorboss);
 	//Shield1Draw(armorboss);
 	BossDraw(armorboss);
-	BossHealthDraw(armorboss.Health, armorboss.BossBody.hitbox.position,armorboss.BossBody.hitbox.radius);
+	BossHealthDraw(armorboss);
 }
 
 void Boss1Exit(void)

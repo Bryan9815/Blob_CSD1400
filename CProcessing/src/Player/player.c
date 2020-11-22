@@ -218,11 +218,27 @@ void PlayerMovement(Player* player)
 		}
 	}
 
-	bool playerBossCol = PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
-	GridCollisionCheck(&(player->pBody));
-	if (playerBossCol == true && playerState == DODGING)
+	bool playerBossCol;
+	switch (GetGameState())
 	{
-		player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
+	case SCR_LEVEL1:
+		playerBossCol = PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
+		GridCollisionCheck(&(player->pBody));
+		if (playerBossCol == true && playerState == DODGING)
+		{
+			player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
+		}
+		break;
+	case SCR_LEVEL2:
+		playerBossCol = PlayerEntityCollision(&player->pBody, &Boss2.BossBody);
+		GridCollisionCheck(&(player->pBody));
+		if (playerBossCol == true && playerState == DODGING)
+		{
+			player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
+		}
+		break;
+	default:
+		break;
 	}
 	Dodge(player);
 
