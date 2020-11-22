@@ -9,6 +9,7 @@
 
 
 CP_Color backgroundColour;
+float pickuptimer = 0;
 
 void PlayerInit(Player* player) //Default Variables
 {
@@ -79,10 +80,14 @@ void PlayerDraw(Player* player)
 	//Draw Dodge Bar
 	if (dodgeTimer > 0)
 	{
+		char numDodgeText = (char)(player->numDodge + '0');
 		CP_Settings_Fill(CP_Color_Create(255, 255, 100, 100));
 		CP_Graphics_DrawRect(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y - player->pBody.hitbox.radius - 10.0f, player->pBody.hitbox.radius, player->pBody.hitbox.radius / 5);
 		CP_Settings_Fill(CP_Color_Create(255, 255, 100, 255));
 		CP_Graphics_DrawRect(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y - player->pBody.hitbox.radius - 10.0f, player->pBody.hitbox.radius * (dodgeTimer / DODGE_COOLDOWN), player->pBody.hitbox.radius / 5);
+		CP_Settings_TextSize(15);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+		CP_Font_DrawText(&numDodgeText, player->pBody.hitbox.position.x + player->pBody.hitbox.radius, player->pBody.hitbox.position.y - player->pBody.hitbox.radius - 10.0f);
 	}
 
 
@@ -365,7 +370,7 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		arrow->arrowState = MOTION;
 		break;
 	case MOTIONLESS:
-		ArrowPickup(arrow, pBody); //pickup player
+		ArrowPickup(arrow, pBody); //pickup arrow
 		IdleArrowCollision_Circle(&arrow->aBody, bBody);
 		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) // && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox)
 		{
@@ -374,6 +379,7 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		}
 		break;
 	case WITHENTITY:
+		pickuptimer = 0;
 		arrow->aBody.hitbox.position = pBody->hitbox.position;
 		MouseTracking(&arrow->aBody);
 		break;
@@ -383,6 +389,11 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 
 	if (arrow->arrowState == MOTION || arrow->arrowState == RECALL)
 	{
+		pickuptimer += CP_System_GetDt();
+		if (pickuptimer > 0.4f)
+		{
+			ArrowPickup(arrow, pBody); //pickup arrow
+		}
 		arrowBossCol = ArrowBoss1Collision(arrow, bBody);
 		ArrowInMotion(arrow);
 	}
