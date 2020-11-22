@@ -1,28 +1,28 @@
 #include "../GameLogic/ScreenManager.h"
-#include "scr_level_1.h"
+#include "scr_level_2.h"
 #include "../Audio/AudioManager.h"
 
 
-void Level1Init(void) 
+void Level2Init(void) 
 {
-	LoadMapFile(Level1);
+	LoadMapFile(Level2);
 	GridInit();
 	PlayerInit(&newPlayer);
 	newPlayer.pBody.hitbox.position = CP_Vector_Set(800, 800);
 	CameraInit(&newPlayer.pBody.hitbox.position, PAN_PLAYER);
-	Boss1Init();
-	ArmorSlime.BossBody.hitbox.position = CP_Vector_Set(2000, 800);
+	Boss2Init();
+	Boss2.BossBody.hitbox.position = CP_Vector_Set(1425, 800);
 	AudioL1Init();
 	
 	//shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
 }
 
-void LevelDraw(Player* player)
+void Level2Draw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
 
 	GridDraw(player->pBody.hitbox);
-	Boss1Draw(ArmorSlime);
+	Boss2Draw(Boss2);
 	PlayerDraw(&newPlayer);
 	DrawArrow(&newPlayer.arrow);
 	switch (GetPlayState())
@@ -35,7 +35,7 @@ void LevelDraw(Player* player)
 	}
 }
 
-void Level1Update(Player* player)
+void Level2Update(Player* player)
 {
 	switch(GetPlayState())
 	{
@@ -45,10 +45,10 @@ void Level1Update(Player* player)
 			SetPlayState(GAME_PAUSE);
 		}
 		PlayerUpdate(&newPlayer);
-		Boss1Battle();
+		Boss2Battle();
 		AudioL1Play();
-		bool dealdamage = ArrowStateCheck(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
-		BossDamage(&dealdamage, &ArmorSlime);
+		bool dealdamage = ArrowStateCheck(&(newPlayer.pBody), &(Boss2.BossBody), &(newPlayer.arrow));
+		BossDamage(&dealdamage, &Boss2);
 		break;
 	case GAME_PAUSE:
 		AudioL1Pause();
@@ -59,12 +59,12 @@ void Level1Update(Player* player)
 		break;
 	}
 	CameraUpdate(&newPlayer.pBody.hitbox.position, GetFader());
-	LevelDraw(player);
+	Level2Draw(player);
 }
 
-void Level1Exit(void) 
+void Level2Exit(void) 
 {
-	Boss1Exit();
+	Boss2Exit();
 	AudioL1Exit();
 	GridExit();
 }
