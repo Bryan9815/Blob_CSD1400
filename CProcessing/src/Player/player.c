@@ -266,6 +266,9 @@ void PlayerMovement(Player* player)
 	bool playerBossCol;
 	switch (GetGameState())
 	{
+	case SCR_TUTORIAL:
+		GridCollisionCheck(&(player->pBody));
+		break;
 	case SCR_LEVEL1:
 		playerBossCol = PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
 		GridCollisionCheck(&(player->pBody));
