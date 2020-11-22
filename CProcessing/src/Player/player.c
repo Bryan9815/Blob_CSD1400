@@ -9,6 +9,7 @@
 
 
 CP_Color backgroundColour;
+float pickuptimer = 0;
 
 void PlayerInit(Player* player) //Default Variables
 {
@@ -349,7 +350,7 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		arrow->arrowState = MOTION;
 		break;
 	case MOTIONLESS:
-		ArrowPickup(arrow, pBody); //pickup player
+		ArrowPickup(arrow, pBody); //pickup arrow
 		IdleArrowCollision_Circle(&arrow->aBody, bBody);
 		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) // && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox)
 		{
@@ -358,6 +359,7 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		}
 		break;
 	case WITHENTITY:
+		pickuptimer = 0;
 		arrow->aBody.hitbox.position = pBody->hitbox.position;
 		MouseTracking(&arrow->aBody);
 		break;
@@ -367,6 +369,11 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 
 	if (arrow->arrowState == MOTION || arrow->arrowState == RECALL)
 	{
+		pickuptimer += CP_System_GetDt();
+		if (pickuptimer > 0.4f)
+		{
+			ArrowPickup(arrow, pBody); //pickup arrow
+		}
 		arrowBossCol = ArrowBoss1Collision(arrow, bBody);
 		ArrowInMotion(arrow);
 	}

@@ -1,17 +1,28 @@
 #include <cprocessing.h>
 #include "Arrow.h"
 #include "../Audio/AudioManager.h"
+#include <stdio.h>
 
 //#include "../GameLogic/grid.h"
 
-static int timer = 0;
+float timer = 0;
 bool arrowhit = false;
 
 void DrawArrow(Arrow* arrow)
 {
-	
 	//Draw arrow
 	int alpha = 255;
+	if (arrow->charging == 1)
+	{
+		timer += CP_System_GetDt() * 20;
+		printf("%f", timer);
+		CP_Image_DrawAdvanced(arrow->arrowSprite, arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius * 3.0f, arrow->aBody.hitbox.radius * 3.0f, (int)timer, arrow->aBody.rotation);
+	}
+	else
+	{
+		timer = 0;
+	}
+
 	CP_Image_DrawAdvanced(arrow->arrowSprite, arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, alpha, arrow->aBody.rotation);
 }
 
