@@ -2,7 +2,7 @@
 #include "BlobInput.h"
 #include <stdio.h>
 
-BlobKeys keys[6];
+BlobKeys keys[6];	//Use Enum Any as the greatest num instead of hardcoding it at 6
 char turnInputToChar[40];
 
 BlobKeys CreateBlobButton(CP_KEY k1, CP_KEY k2, CP_KEY k3, const char* ck1, const char* ck2, const char* ck3)
@@ -27,6 +27,7 @@ void BlobInputInit()
 	keys[BLOB_RIGHT] = CreateBlobButton(KEY_RIGHT, KEY_D, KEY_L, "RIGHT", "D", "L");
 	keys[BLOB_INTERACT] = CreateBlobButton(KEY_SPACE, KEY_ENTER, KEY_ENTER, "SPACE", "ENTER", "ENTER");
 	keys[BLOB_PAUSE] = CreateBlobButton(KEY_ESCAPE, KEY_ESCAPE, KEY_ESCAPE, "ESC", "ESC", "ESC");
+	//keys[BLOB_SKIP] = CreateBlobButton(KEY_X, KEY_X, KEY_X, "X", "X", "X");
 }
 
 int GetBlobInputTriggered(BlobInput input)

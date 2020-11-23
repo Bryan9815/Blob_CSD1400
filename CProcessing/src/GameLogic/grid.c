@@ -475,6 +475,7 @@ void GridUpdate(Collider playerHitBox, Collider arrowHitBox)
 					level[i][j].isActive = !level[i][j].isActive;
 				}
 			}
+			
 				//GridDraw(i, j, playerHitBox);
 		}
 	}

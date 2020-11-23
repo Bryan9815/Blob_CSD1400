@@ -14,6 +14,9 @@ void CreditsDraw() //Hardcoded DrawCalls for Credits
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 
+	CP_Settings_TextSize(30);
+	CP_Font_DrawText("Space to Skip", (float)CP_System_GetWindowWidth() - 150, ((float)CP_System_GetWindowHeight() / 2 - 50) + currentPosition.y);
+
 	CP_Settings_TextSize(75);
 	CP_Font_DrawText("DIGIPEN INSTITUTE OF TECHNOLOGY", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 100);
 	CP_Settings_TextSize(50);
@@ -51,7 +54,7 @@ void CreditsInit()
 {
 
 	currentPosition = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2);
-	CameraInit(&currentPosition, PAN_PLAYER);
+	CameraInit(&currentPosition, LOCK_PLAYER);
 
 }
 

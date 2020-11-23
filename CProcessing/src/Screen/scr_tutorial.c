@@ -1,6 +1,8 @@
 #include "scr_tutorial.h"
 #include "../Audio/AudioManager.h"
 
+#define SkipDrawDelay 5.0f
+
 float timer;
 
 GridUnit* switches[2];
@@ -11,10 +13,14 @@ GridUnit* portal[4];
 bool switchesDown,
      gateIsOpen;
 
+float skipDrawTimer = SkipDrawDelay;
+
 void TutorialInit(void) 
 {
 	LoadMapFile(Level0);
 	GridInit();
+
+	skipDrawTimer = SkipDrawDelay;
 
 	int k = 0, l = 0, m = 0, n = 0;
 	for (int i = 0; i < GetLevelWidth(); i++) 
@@ -61,6 +67,18 @@ void TutorialDraw(Player* player)
 	//Tutorial Instructions
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 
+	//SKIP
+	if (skipDrawTimer <= 0) 
+	{
+		CP_Settings_TextSize(30);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+		CP_Font_DrawText("X to skip tutorial", CP_System_GetWindowWidth() - 100 + GetCameraPos().x, 20 + GetCameraPos().y);
+	}
+	else 
+	{
+		skipDrawTimer -= CP_System_GetDt();
+	}
+
 	//WASD
 	CP_Settings_TextSize(25);
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
@@ -70,19 +88,19 @@ void TutorialDraw(Player* player)
 
 	//SPACE
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-	CP_Font_DrawText("SPACE", 1000.0f, 350.0f);
+	CP_Font_DrawText("SPACE", 1200.0f, 350.0f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Font_DrawText("TO DASH", 1000.0f, 380.0f);
+	CP_Font_DrawText("TO DASH/DODGE", 1200.0f, 380.0f);
 
 	//MOUSE1
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-	CP_Font_DrawText("MOUSE1", 2250.0f, 350.0f);
+	CP_Font_DrawText("HOLD MOUSE 1", 2250.0f, 350.0f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Font_DrawText("TO FIRE", 2250.0f, 380.0f);
 
 	//MOUSE2
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-	CP_Font_DrawText("MOUSE2", 2750.0f, 350.0f);
+	CP_Font_DrawText("MOUSE 2", 2750.0f, 350.0f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Font_DrawText("TO RECALL", 2750.0f, 380.0f);
 
@@ -109,15 +127,19 @@ void TutorialUpdate(Player* player)
 		{
 			SetPlayState(GAME_PAUSE);
 		}
+		if (CP_Input_KeyTriggered(KEY_X)) //Skips tutorial on X
+		{
+			SetGameState(SCR_LEVEL1);
+		}
 		PlayerUpdate(&newPlayer);
 		ArrowStateCheck(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
 		GridUpdate(player->pBody.hitbox, player->arrow.aBody.hitbox);
 
 		for (size_t i = 0; i < sizeof(damage) / sizeof(damage[0]); i++)
 		{
-			//if (COL_IsColliding(player->pBody.hitbox, damage[i]->collider))//Reach the Portal
+			if (COL_IsColliding(player->pBody.hitbox, damage[i]->collider) && playerState != DODGING)//Damage
 			{
-
+				player->health = 0;
 			}
 		}
 
