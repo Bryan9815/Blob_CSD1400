@@ -162,7 +162,7 @@ void ArrowInMotion(Arrow* arrow)
 		if (arrow->arrowState == MOTION)
 		{
 			arrowSpeed = 500.0f;
-			if (!ArrowCollision(&(arrow->aBody)))
+			if (!ArrowCollision(&(arrow->aBody),arrow->oldPosition))
 			{
 
 				CP_Vector newVel = CP_Vector_Set(arrow->aBody.velocity.x * arrowSpeed * CP_System_GetDt() * ((arrow->charge / ARROW_SSCALE) + 1),
@@ -182,11 +182,11 @@ void ArrowInMotion(Arrow* arrow)
 			//arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, CP_Vector_Scale(arrow->aBody.velocity, 10));
 			arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, newVel);
 			CalculateRotation(&arrow->aBody, arrow->aBody.velocity);
-			ArrowCollision(&arrow->aBody);
+			ArrowCollision(&arrow->aBody,arrow->oldPosition);
 		}
 		arrow->currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
 		arrow->oldPosition = arrow->aBody.hitbox.position;
-		printf("curretn distance: %f\n",arrow->currentDistance);
+		printf("oldpos: %f\n",arrow->oldPosition.x);
 	}
 }
 
