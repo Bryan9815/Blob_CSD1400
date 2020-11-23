@@ -48,7 +48,7 @@ void Level1Update(Player* player)
 		Boss1Battle();
 		AudioL1Play();
 		bool dealdamage = ArrowStateCheck(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
-		BossDamage(&dealdamage, &(ArmorSlime.bossAlpha));
+		BossDamage(&dealdamage, &ArmorSlime);
 		break;
 	case GAME_PAUSE:
 		AudioL1Pause();

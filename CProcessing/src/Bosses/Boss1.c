@@ -12,11 +12,11 @@
 float BossRange = 200.f;
 float NearAttackTimer;
 float FarAttackTimer = 0.f;
-float NearTimer = 0;
-float FarTimer = 0;
-float ChargeTimer = 0;
-float AttackCount = 0;
-float Stuntime = 0;
+float NearTimer = 0.f;
+float FarTimer = 0.f;
+float ChargeTimer = 0.f;
+float AttackCount = 0.f;
+float Stuntime = 0.f;
 
 void Boss1Init(void)
 {
@@ -237,7 +237,7 @@ void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the
 	
 }
 
-void BossAction(void) //determines the boss actions, only one should be active at any time
+void Boss1Action(void) //determines the boss actions, only one should be active at any time
 {
 	switch (ArmorSlime.State) 
 	{
@@ -257,7 +257,7 @@ void BossAction(void) //determines the boss actions, only one should be active a
 		StunTimer(&ArmorSlime); //boss should stop moving, allowing player to shoot
 		break; 
 	case DEFEAT:
-		SetGameOver(true); //proceed to next stage (main menu/win screen for prototype)
+		SetGameOver(true); //proceed to next stage
 		break; 
 	default: //In case it ends up being something else
 		ArmorSlime.State = IDLE;
@@ -273,7 +273,7 @@ void Boss1Battle(void)
 	}
 
 	B1_StateChange(newPlayer, &ArmorSlime); //determines boss state (other than defeat)
-	BossAction(); //determine boss action
+	Boss1Action(); //determine boss action
 }
 
 void Boss1Draw(Boss armorboss)
@@ -282,7 +282,7 @@ void Boss1Draw(Boss armorboss)
 	AttackNearDraw(armorboss);
 	//Shield1Draw(armorboss);
 	BossDraw(armorboss);
-	BossHealthDraw(armorboss.Health, armorboss.BossBody.hitbox.position,armorboss.BossBody.hitbox.radius);
+	BossHealthDraw(armorboss);
 }
 
 void Boss1Exit(void)

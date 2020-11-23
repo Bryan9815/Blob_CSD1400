@@ -7,6 +7,7 @@
 #include "../Player/player.h"
 #include "../Bosses/Boss.h"
 #include "../Bosses/Boss1.h"
+#include "../Bosses/Boss2.h"
 
 typedef enum GameState 
 {
@@ -15,6 +16,7 @@ typedef enum GameState
 	SCR_OPTION,
 	SCR_TUTORIAL,
 	SCR_LEVEL1,
+	SCR_LEVEL2,
 	SCR_CREDITS,
 
 }GameState;

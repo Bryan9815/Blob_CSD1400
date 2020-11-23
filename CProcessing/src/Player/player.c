@@ -9,6 +9,9 @@
 
 
 CP_Color backgroundColour;
+float pickuptimer = 0;
+float chargetimer = 0;
+int pulse = 0;
 
 void PlayerInit(Player* player) //Default Variables
 {
@@ -50,6 +53,36 @@ void PlayerInit(Player* player) //Default Variables
 
 }
 
+void ChargeSFX(Player* player)
+{
+	int r, g, b;
+	if (pulse == 0)
+	{
+		chargetimer += CP_System_GetDt() * 170;
+		printf("charge timer: %f\n", chargetimer);
+		if (chargetimer > 70)
+		{
+			pulse = 1;
+		}
+	}
+	else if (pulse == 1)
+	{
+		chargetimer -= CP_System_GetDt() * 170;
+		printf("charge timer: %f\n", chargetimer);
+		if (chargetimer <= 0)
+		{
+			pulse = 0;
+		}
+	}
+	r = 250;
+	g = 250;
+	b = (int)chargetimer;
+	CP_Settings_NoStroke();
+	CP_Settings_Fill(CP_Color_Create(r, g, b, (int)chargetimer));
+	CP_Graphics_DrawCircle(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2.5f);
+	CP_Image_DrawAdvanced(player->arrow.arrowSprite, player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius * 3.0f, player->arrow.aBody.hitbox.radius * 3.0f, (int)chargetimer, player->arrow.aBody.rotation);
+}
+
 void PlayerDraw(Player* player)
 {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
@@ -79,13 +112,25 @@ void PlayerDraw(Player* player)
 	//Draw Dodge Bar
 	if (dodgeTimer > 0)
 	{
+		char numDodgeText = (char)(player->numDodge + '0');
 		CP_Settings_Fill(CP_Color_Create(255, 255, 100, 100));
 		CP_Graphics_DrawRect(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y - player->pBody.hitbox.radius - 10.0f, player->pBody.hitbox.radius, player->pBody.hitbox.radius / 5);
 		CP_Settings_Fill(CP_Color_Create(255, 255, 100, 255));
 		CP_Graphics_DrawRect(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y - player->pBody.hitbox.radius - 10.0f, player->pBody.hitbox.radius * (dodgeTimer / DODGE_COOLDOWN), player->pBody.hitbox.radius / 5);
+		CP_Settings_TextSize(15);
+		CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+		CP_Font_DrawText(&numDodgeText, player->pBody.hitbox.position.x + player->pBody.hitbox.radius, player->pBody.hitbox.position.y - player->pBody.hitbox.radius - 10.0f);
 	}
 
-
+	if (player->arrow.charging == 1)
+	{
+		ChargeSFX(player);
+		
+	}
+	else
+	{
+		chargetimer = 0;
+	}
 
 	//HitBox
 	//CP_Settings_Fill(CP_Color_Create(255, 0, 0, 200));	
@@ -218,11 +263,30 @@ void PlayerMovement(Player* player)
 		}
 	}
 
-	bool playerBossCol = PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
-	GridCollisionCheck(&(player->pBody));
-	if (playerBossCol == true && playerState == DODGING)
+	bool playerBossCol;
+	switch (GetGameState())
 	{
-		player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
+	case SCR_TUTORIAL:
+		GridCollisionCheck(&(player->pBody));
+		break;
+	case SCR_LEVEL1:
+		playerBossCol = PlayerEntityCollision(&player->pBody, &ArmorSlime.BossBody);
+		GridCollisionCheck(&(player->pBody));
+		if (playerBossCol == true && playerState == DODGING)
+		{
+			player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
+		}
+		break;
+	case SCR_LEVEL2:
+		playerBossCol = PlayerEntityCollision(&player->pBody, &Boss2.BossBody);
+		GridCollisionCheck(&(player->pBody));
+		if (playerBossCol == true && playerState == DODGING)
+		{
+			player->pBody.velocity = CP_Vector_Set(0.0f, 0.0f);
+		}
+		break;
+	default:
+		break;
 	}
 	Dodge(player);
 
@@ -349,7 +413,7 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		arrow->arrowState = MOTION;
 		break;
 	case MOTIONLESS:
-		ArrowPickup(arrow, pBody); //pickup player
+		ArrowPickup(arrow, pBody); //pickup arrow
 		IdleArrowCollision_Circle(&arrow->aBody, bBody);
 		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) // && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox)
 		{
@@ -358,6 +422,7 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		}
 		break;
 	case WITHENTITY:
+		pickuptimer = 0;
 		arrow->aBody.hitbox.position = pBody->hitbox.position;
 		MouseTracking(&arrow->aBody);
 		break;
@@ -367,6 +432,11 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 
 	if (arrow->arrowState == MOTION || arrow->arrowState == RECALL)
 	{
+		pickuptimer += CP_System_GetDt();
+		if (pickuptimer > 0.4f)
+		{
+			ArrowPickup(arrow, pBody); //pickup arrow
+		}
 		arrowBossCol = ArrowBoss1Collision(arrow, bBody);
 		ArrowInMotion(arrow);
 	}

@@ -20,6 +20,7 @@ typedef struct
 	CP_Image bosssprite;//image for boss
 	float Rotation;		//orientation of boss for drawing
 	int Health;			//Health of boss
+	int maxHealth;		//Max health of boss
 	BossState State;	//determines boss actions
 	Body BossBody;		//position and velocity of boss movement for collision
 	int bossAlpha;		//for invincibility
@@ -33,11 +34,11 @@ typedef enum
 } AttackState;
 
 
-Boss ArmorSlime; //currently only 1 boss
+Boss ArmorSlime, Boss2; //currently only 1 boss
 
 void BossInit(Boss* currentboss, int health, float size, CP_Vector startPos);
 void BossDraw(Boss currentboss);
-void BossHealthDraw(int bossHealth, CP_Vector bossPos, float bossSize);
+void BossHealthDraw(Boss boss);
 void BossMovement(Boss* currentboss, Player player, GridUnit* grid);
 void BossRotation(Boss* currentboss, CP_Vector position);
-void BossDamage(bool* hit, int* bossAlpha);
+void BossDamage(bool* hit, Boss* boss);
