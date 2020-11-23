@@ -1,4 +1,4 @@
 #pragma once
 
-void ReadFile();
-void WriteFile();
+void SaveGame();
+void LoadGame();

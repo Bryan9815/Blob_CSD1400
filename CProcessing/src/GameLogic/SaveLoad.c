@@ -1,11 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "ScreenManager.h"
 
-char fileName[] = "/userdata/savedata.txt";
+char fileName[] = "././savedata.txt";
 
-char* data;
+typedef struct Data
+{
+    char* dataStr;
 
-void ReadSaveFile()
+}Data;
+
+Data gameData[2];
+
+
+void LoadData(FILE* stream)
+{
+}
+void LoadGame()
 {
     FILE* fp;
 
@@ -13,13 +24,38 @@ void ReadSaveFile()
 
     if (fp) 
     {
+        LoadData(fp);
         fclose(fp);
     }      
     
 }
 
-void WriteSaveFile()
+void SaveData(FILE * stream) 
 {
-   // FILE  *fp;
-    //fclose(fp);
+    char _buffer[50];
+
+    //Volume
+    sprintf_s(_buffer, 50, "%.2f", GetBGMVolume());
+    fprintf(stream, "%s\n", _buffer);
+
+    sprintf_s(_buffer, 50, "%.2f", GetSFXVolume());
+    fprintf(stream, "%s\n", _buffer);
+
+
+
+}
+
+void SaveGame()
+{
+
+    FILE *fp;
+    fopen_s(&fp, fileName, "wt");
+
+    if (fp)
+    {
+        
+        SaveData(fp);
+        
+        fclose(fp);
+    }
 }

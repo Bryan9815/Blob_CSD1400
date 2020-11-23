@@ -55,13 +55,12 @@ void Boss2Draw()
 	// Draw Boss
 	CP_Image_DrawAdvanced(Boss2.bosssprite, Boss2.BossBody.hitbox.position.x, Boss2.BossBody.hitbox.position.y, (Boss2.BossBody.hitbox.radius * 2), (Boss2.BossBody.hitbox.radius * 2), Boss2.bossAlpha, Boss2.BossBody.rotation);
 
-	if (FarTimer > 0)
+	for (int i = 0; i < 3; i++)
 	{
-		for (int i = 0; i < 3; i++)
-		{
+		if(projectileList[i].active)
 			DrawProjectile(&projectileList[i]);
-		}
 	}
+
 	BossHealthDraw(Boss2);
 }
 
@@ -81,7 +80,7 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 			projectileList[i] = CreateProjectile(Boss2.BossBody.hitbox.position, dirVec, 5.f);
 		}
 		FarTimer = 5.0f;
-		bossState = SHOOT_2;
+		bossState = IDLE_B2;
 		break;
 	case DEFEAT_B2:
 		SetGameOver(true); //proceed to next stage

@@ -4,9 +4,10 @@
 
 typedef struct Projectile
 {
-	CP_Vector position, direction;
-	float velocity;
-	Body collision;
+	CP_Vector direction;
+	Body body;
+	float speed;
+	bool active;
 }Projectile;
 
 Projectile CreateProjectile(CP_Vector pos, CP_Vector dir, float vel);
