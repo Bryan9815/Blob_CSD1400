@@ -43,8 +43,8 @@ char* GetVolumeText(soundSelect input)
 
 void VolumeInit(void)
 {
-	SFX_Vol = 0;
-	BGM_Vol = 0;
+	SFX_Vol = 10;
+	BGM_Vol = 10;
 }
 
 void AudioMenuInit(void)
