@@ -71,7 +71,7 @@ void CameraUpdate(CP_Vector* targetPos, Fader* fader)
 
 CP_Vector GetCameraPos()
 {
-	CP_Vector returnVec = CP_Vector_Set(-cameraPos.x, -cameraPos.y);
+	CP_Vector returnVec = CP_Vector_Set(roundf(-cameraPos.x), roundf(-cameraPos.y));
 	return returnVec;
 }
 

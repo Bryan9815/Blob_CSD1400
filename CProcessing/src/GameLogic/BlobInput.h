@@ -8,6 +8,7 @@ typedef enum BlobInput {
 	BLOB_RIGHT,
 	BLOB_INTERACT,
 	BLOB_PAUSE,
+	BLOB_SKIP,
 	ANY,
 }BlobInput;
 

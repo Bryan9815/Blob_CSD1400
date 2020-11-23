@@ -51,6 +51,7 @@ void CalculateRelease(Arrow* arrow, Body* entity, CP_Vector pos)
 
 	arrow->aBody.velocity = CP_Vector_Normalize(arrow->aBody.velocity);
 	arrow->travelDistance = CP_Vector_Distance(arrow->oldPosition, arrow->newPosition);
+	printf("Travel Distance: %f", arrow->travelDistance);
 }
 
 void CalculateRecall(Arrow* arrow, Body* entity)
@@ -146,7 +147,7 @@ void ArrowPickup(Arrow* arrow, Body* entity)
 
 void ArrowInMotion(Arrow* arrow)
 {
-	if (arrow->currentDistance >= arrow->travelDistance)
+	if (arrow->currentDistance >= arrow->travelDistance || arrow->arrowState == WITHENTITY)
 	{
 		arrow->oldPosition = arrow->aBody.hitbox.position;
 		arrow->charge = 0.0f;
@@ -154,6 +155,7 @@ void ArrowInMotion(Arrow* arrow)
 		arrow->travelDistance = 0.0f;
 		arrow->arrowState = MOTIONLESS;
 		arrow->aBody.velocity = CP_Vector_Set(0.0f, 0.0f);
+		printf("trigger check \n");
 	}
 	else
 	{
@@ -184,6 +186,7 @@ void ArrowInMotion(Arrow* arrow)
 		}
 		arrow->currentDistance += CP_Vector_Distance(arrow->aBody.hitbox.position, arrow->oldPosition);
 		arrow->oldPosition = arrow->aBody.hitbox.position;
+		printf("curretn distance: %f\n",arrow->currentDistance);
 	}
 }
 

@@ -56,37 +56,62 @@ void PlayerInit(Player* player) //Default Variables
 void ChargeSFX(Player* player)
 {
 	int r, g, b;
-	if (pulse == 0)
+	r = 255;
+	g = 255;
+	b = 255;
+	
+	if (player->arrow.charge < (MAX_FORCE - DEFAULT_FORCE))
 	{
-		chargetimer += CP_System_GetDt() * 170;
-		printf("charge timer: %f\n", chargetimer);
-		if (chargetimer > 70)
+		g = 255;
+		b = 0;
+		if (chargetimer == 0)
 		{
-			pulse = 1;
+			chargetimer = 255;
 		}
+		chargetimer -= CP_System_GetDt() * 255;
+		if (chargetimer < 1)
+		{
+			chargetimer = 1;
+		}
+		b = (int)chargetimer;
+		printf("%f\n", 255.0f/chargetimer);
+		CP_Settings_Fill(CP_Color_Create(r, g, b, 70));
+		CP_Graphics_DrawCircle(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2.5f);
 	}
-	else if (pulse == 1)
+	else
 	{
-		chargetimer -= CP_System_GetDt() * 170;
-		printf("charge timer: %f\n", chargetimer);
-		if (chargetimer <= 0)
+		
+		if (pulse == 0)
 		{
-			pulse = 0;
+			chargetimer += CP_System_GetDt() * 170;
+			printf("charge timer: %f\n", chargetimer);
+			if (chargetimer > 70)
+			{
+				pulse = 1;
+			}
 		}
+		else if (pulse == 1)
+		{
+			chargetimer -= CP_System_GetDt() * 170;
+			printf("charge timer: %f\n", chargetimer);
+			if (chargetimer <= 0)
+			{
+				pulse = 0;
+			}
+		}
+		b = (int)chargetimer;
+		CP_Settings_Fill(CP_Color_Create(r, g, b, (int)chargetimer));
+		CP_Graphics_DrawCircle(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2.5f);
+		CP_Image_DrawAdvanced(player->arrow.arrowSprite, player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius * 3.0f, player->arrow.aBody.hitbox.radius * 3.0f, (int)chargetimer, player->arrow.aBody.rotation);
 	}
-	r = 250;
-	g = 250;
-	b = (int)chargetimer;
-	CP_Settings_NoStroke();
-	CP_Settings_Fill(CP_Color_Create(r, g, b, (int)chargetimer));
-	CP_Graphics_DrawCircle(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2.5f);
-	CP_Image_DrawAdvanced(player->arrow.arrowSprite, player->arrow.aBody.hitbox.position.x, player->arrow.aBody.hitbox.position.y, player->arrow.aBody.hitbox.radius * 3.0f, player->arrow.aBody.hitbox.radius * 3.0f, (int)chargetimer, player->arrow.aBody.rotation);
+
 }
 
 void PlayerDraw(Player* player)
 {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
+	CP_Settings_NoStroke();
 	if (playerState == DODGING)
 	{
 		//Draw player
@@ -160,7 +185,7 @@ void PlayerMovement(Player* player)
 	bool shooting = ArrowTrigger(player);
 	if (shooting == false)
 	{
-		if (playerState != DODGING)
+		if (playerState != DODGING && player->arrow.charging == 0)
 		{
 			playerState = STILL;
 			player->pBody.velocity = CP_Vector_Set(0, 0);
@@ -411,12 +436,14 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 	{
 	case RELEASE:
 		arrow->arrowState = MOTION;
+
 		break;
 	case MOTIONLESS:
 		ArrowPickup(arrow, pBody); //pickup arrow
 		IdleArrowCollision_Circle(&arrow->aBody, bBody);
 		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) // && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox)
 		{
+			printf("\n");
 			CalculateRecall(arrow, pBody);
 			arrow->arrowState = RECALL;
 		}
@@ -433,12 +460,15 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 	if (arrow->arrowState == MOTION || arrow->arrowState == RECALL)
 	{
 		pickuptimer += CP_System_GetDt();
-		if (pickuptimer > 0.4f)
+		if (pickuptimer > 0.5f)
 		{
 			ArrowPickup(arrow, pBody); //pickup arrow
 		}
 		arrowBossCol = ArrowBoss1Collision(arrow, bBody);
 		ArrowInMotion(arrow);
+		//printf("Player Pos: %f, %f\n", pBody->hitbox.position.x, pBody->hitbox.position.y);
+		//printf("Arrow Old Pos: %f, %f\n", arrow->oldPosition.x, arrow->oldPosition.y);
+		//printf("Arrow New Pos: %f, %f\n", arrow->newPosition.x, arrow->newPosition.y);
 	}
 	return arrowBossCol;
 }

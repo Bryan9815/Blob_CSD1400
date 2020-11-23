@@ -27,30 +27,31 @@ static const int WINDOW_WIDTH = 1600, WINDOW_HEIGHT = 900;
 // CP_Engine_Run() is the core function that starts the simulation
 int main(void)
 {
+	CP_System_SetWindowTitle("Blob");
+
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-#endif
+	CP_System_SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+
+	/*The following stuff is for console output.
+	The current console output function from CProcessing
+	is being fixed*/
+
+	CP_System_ShowConsole();
+	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
+
 	/*
 	void* asd = malloc(1000);
 	asd;
 	free(asd);
 	*/
 	//free(asd);
-	//Setting the window title
-	CP_System_SetWindowTitle("Blob");
-
-	//Setting the window size and position
-	CP_System_SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+#else
+	CP_System_FullscreenAdvanced(WINDOW_WIDTH, WINDOW_HEIGHT);
+#endif
 
 	CP_System_SetFrameRate(60.0f);
 
-	/*The following stuff is for console output.
-	The current console output function from CProcessing
-	is being fixed*/
-	
-	CP_System_ShowConsole();
-	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
-	
 
 	// Run Game
 	CP_Engine_SetNextGameState(GameInit, GameUpdate, GameExit);
