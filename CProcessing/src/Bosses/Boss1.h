@@ -17,7 +17,7 @@ void AttackCharge(Player* player, Boss* armorboss, GridUnit *grid);
 void AttackFarDraw(Boss armorboss);
 void StunTimer(Boss* currentboss);
 void B1_StateChange(Player player, Boss* currentboss);
-void BossAction(void);
+void Boss1Action(void);
 void Boss1Battle(void);
 void Boss1Draw(Boss armorboss);
 void Boss1Exit(void);
