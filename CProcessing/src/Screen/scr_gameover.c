@@ -2,6 +2,7 @@
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
 #include "scr_GameOver.h"
+#include "../GameLogic/Score.h"
 #define GAME_OVER_BUTTONS 3
 
 typedef enum {
@@ -25,6 +26,7 @@ void GameOverInit(bool win)
 	overlayCenter = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);
 	lose = !win;
 	bgColor = CP_Color_Create(50, 50, 50, 150);
+	Score = CalculateScore(Boss1Timer, lose);
 
 	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
 	menuList[MAIN_MENU] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBufferY, 250.f, 100.f, "Main Menu");
@@ -48,6 +50,7 @@ void GameOverDraw(void)
 	{
 		CP_Font_DrawText("YOU WIN!", overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 4);
 	}
+	DisplayScore(overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 8, Boss1Timer, Score);
 
 	// Draw Buttons
 	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
