@@ -61,27 +61,30 @@ void TutorialDraw(Player* player)
 	//Tutorial Instructions
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 
-	
+	//WASD
 	CP_Settings_TextSize(25);
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 	CP_Font_DrawText("W A S D", 400.0f, 350.0f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Font_DrawText("TO MOVE", 400.0f, 380.0f);
 
+	//SPACE
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
 	CP_Font_DrawText("SPACE", 1000.0f, 350.0f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Font_DrawText("TO DASH", 1000.0f, 380.0f);
 
+	//MOUSE1
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-	CP_Font_DrawText("MOUSE1", 2200.0f, 350.0f);
+	CP_Font_DrawText("MOUSE1", 2250.0f, 350.0f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Font_DrawText("TO FIRE", 2200.0f, 380.0f);
+	CP_Font_DrawText("TO FIRE", 2250.0f, 380.0f);
 
+	//MOUSE2
 	CP_Settings_Fill(CP_Color_Create(255, 0, 0, 255));
-	CP_Font_DrawText("MOUSE2", 2700.0f, 350.0f);
+	CP_Font_DrawText("MOUSE2", 2750.0f, 350.0f);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Font_DrawText("TO RECALL", 2700.0f, 380.0f);
+	CP_Font_DrawText("TO RECALL", 2750.0f, 380.0f);
 
 
 	PlayerDraw(&newPlayer);
@@ -117,6 +120,7 @@ void TutorialUpdate(Player* player)
 
 			}
 		}
+
 		//Check Switches
 		for (size_t i = 0; i < sizeof(switches) / sizeof(switches[0]); i++)
 		{
