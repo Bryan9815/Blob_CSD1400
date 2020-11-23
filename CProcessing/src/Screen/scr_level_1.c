@@ -1,6 +1,7 @@
 #include "../GameLogic/ScreenManager.h"
 #include "scr_level_1.h"
 #include "../Audio/AudioManager.h"
+#include "../GameLogic/Score.h"
 
 
 void Level1Init(void) 
@@ -13,7 +14,7 @@ void Level1Init(void)
 	Boss1Init();
 	ArmorSlime.BossBody.hitbox.position = CP_Vector_Set(2000, 800);
 	AudioL1Init();
-	
+	Boss1Timer = 0.f;
 	//shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
 }
 
@@ -49,6 +50,7 @@ void Level1Update(Player* player)
 		AudioL1Play();
 		bool dealdamage = ArrowStateCheck(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
 		BossDamage(&dealdamage, &ArmorSlime);
+		StageTime(&Boss1Timer);
 		break;
 	case GAME_PAUSE:
 		AudioL1Pause();

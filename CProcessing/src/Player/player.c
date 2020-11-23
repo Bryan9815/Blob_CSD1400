@@ -436,12 +436,14 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 	{
 	case RELEASE:
 		arrow->arrowState = MOTION;
+
 		break;
 	case MOTIONLESS:
 		ArrowPickup(arrow, pBody); //pickup arrow
 		IdleArrowCollision_Circle(&arrow->aBody, bBody);
 		if (CP_Input_MouseTriggered(MOUSE_BUTTON_RIGHT)) // && !COL_IsColliding(arrow->aBody.hitbox, bBody->hitbox)
 		{
+			printf("\n");
 			CalculateRecall(arrow, pBody);
 			arrow->arrowState = RECALL;
 		}
@@ -464,6 +466,9 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		}
 		arrowBossCol = ArrowBoss1Collision(arrow, bBody);
 		ArrowInMotion(arrow);
+		//printf("Player Pos: %f, %f\n", pBody->hitbox.position.x, pBody->hitbox.position.y);
+		//printf("Arrow Old Pos: %f, %f\n", arrow->oldPosition.x, arrow->oldPosition.y);
+		//printf("Arrow New Pos: %f, %f\n", arrow->newPosition.x, arrow->newPosition.y);
 	}
 	return arrowBossCol;
 }

@@ -102,61 +102,128 @@ CP_Vector ArrowReflection(Body* entity, CP_Vector n)
 	return r;
 }
 
-bool checkSide(CP_Vector c1, CP_Vector c2, CP_Vector center)
-{
-	return ((c2.x - c1.x) * (center.y - c1.y) - (c2.y - c1.y) * (center.x - c1.x)) >= 0;
-}
+//bool checkSide(CP_Vector c1, CP_Vector c2, CP_Vector center)
+//{
+//	return ((c2.x - c1.x) * (center.y - c1.y) - (c2.y - c1.y) * (center.x - c1.x)) >= 0;
+//}
+//
+////Buggy with corners
+//CP_Vector Circle_Intersect_Rect(Collider circle, Collider rect)
+//{
+//	CP_Vector v1, v2, v3, v4; //rect vertices
+//	v1 = CP_Vector_Set(rect.position.x - rect.width / 2 + 1, rect.position.y - rect.height / 2 + 1); //Top left
+//	v2 = CP_Vector_Set(rect.position.x + rect.width / 2 + 1, rect.position.y - rect.height / 2 + 1); //Top Right
+//	v3 = CP_Vector_Set(rect.position.x + rect.width / 2 + 1, rect.position.y + rect.height / 2 + 1);  //Bottom Right
+//	v4 = CP_Vector_Set(rect.position.x - rect.width / 2 + 1, rect.position.y + rect.height / 2 + 1);  //Bottom left
+//
+//	CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
+//
+//	bool isAboveV1V3 = checkSide(v3, v1, circle.position);
+//	bool isAboveV2V4 = checkSide(v2, v4, circle.position);
+//
+//
+//
+//	if (isAboveV1V3)
+//	{
+//		if (isAboveV2V4)
+//		{
+//			//Top Edge Intersect
+//			printf("Top Edge\n");
+//			n = CP_Vector_Set(0.0f, -1.0f);
+//			
+//		}
+//		else
+//		{
+//			printf("Right Edge\n");
+//			n = CP_Vector_Set(1.0f, 0.0f);
+//		}
+//	}
+//	else
+//	{
+//		if (isAboveV2V4)
+//		{
+//			//Left Edge Intersect
+//			printf("Left Edge\n");
+//			n = CP_Vector_Set(-1.0f, 0.0f);
+//		}
+//		else
+//		{
+//			printf("Bottom Edge\n");
+//			n = CP_Vector_Set(0.0f, 1.0f);
+//		}
+//	}
+//	return n;
+//}
 
-//Buggy with corners
-CP_Vector Circle_Intersect_Rect(Collider circle, Collider rect)
+CP_Vector Get_CircleRectCOL_Side(Collider circle, Collider rect, CP_Vector v, CP_Vector startPos)
 {
-	CP_Vector v1, v2, v3, v4; //rect vertices
+	CP_Vector v1, v2, v3, v4, n; //rect vertices
+	n = CP_Vector_Set(0.0f, 0.0f);
 	v1 = CP_Vector_Set(rect.position.x - rect.width / 2 + 1, rect.position.y - rect.height / 2 + 1); //Top left
 	v2 = CP_Vector_Set(rect.position.x + rect.width / 2 + 1, rect.position.y - rect.height / 2 + 1); //Top Right
 	v3 = CP_Vector_Set(rect.position.x + rect.width / 2 + 1, rect.position.y + rect.height / 2 + 1);  //Bottom Right
 	v4 = CP_Vector_Set(rect.position.x - rect.width / 2 + 1, rect.position.y + rect.height / 2 + 1);  //Bottom left
+	
+	float topAngle = CP_Vector_Angle(CP_Vector_Subtract(v1, rect.position), CP_Vector_Set(0.0f, -1.0f));
+	float rightAngle = CP_Vector_Angle(CP_Vector_Subtract(v2, rect.position), CP_Vector_Set(1.0f, 0.0f));
+	float bottomAngle = CP_Vector_Angle(CP_Vector_Subtract(v3, rect.position), CP_Vector_Set(0.0f, 1.0f));
+	float leftAngle = CP_Vector_Angle(CP_Vector_Subtract(v4, rect.position), CP_Vector_Set(-1.0f, 0.0f));
 
-	CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
+	//CP_Vector offset = CP_Vector_Subtract(circle.position, rect.position);
+	CP_Vector offset = CP_Vector_Subtract(startPos, rect.position);
+	float topAngleA = CP_Vector_Angle(offset, CP_Vector_Set(0.0f, -1.0f));
+	float rightAngleA = CP_Vector_Angle(offset, CP_Vector_Set(1.0f, 0.0f));
+	float bottomAngleA = CP_Vector_Angle(offset, CP_Vector_Set(0.0f, 1.0f));
+	float leftAngleA = CP_Vector_Angle(offset, CP_Vector_Set(-1.0f, 0.0f));
 
-	bool isAboveV1V3 = checkSide(v3, v1, circle.position);
-	bool isAboveV2V4 = checkSide(v2, v4, circle.position);
-
-
-
-	if (isAboveV1V3)
+	if (topAngleA < topAngle)
 	{
-		if (isAboveV2V4)
-		{
-			//Top Edge Intersect
-			printf("Top Edge\n");
-			
-		}
-		else
-		{
-			printf("Right Edge\n");
-			n = CP_Vector_Set(1.0f, 0.0f);
-		}
+		//Top Edge Intersect
+		printf("Top Edge\n");
+		n = CP_Vector_Set(0.0f, -1.0f);
+
+		//if (v.y > 0)
+		//{
+		//	//Reflect off top
+		//}
+		//else if (v.y < 0)
+		//{
+		//	//Could be Left, Right, or Bottom
+		//	
+		//	//Reflect off Bottom
+		//}
 	}
-	else
+	else if (rightAngleA < rightAngle)
 	{
-		if (isAboveV2V4)
-		{
-			//Left Edge Intersect
-			printf("Left Edge\n");
-			n = CP_Vector_Set(-1.0f, 0.0f);
-		}
-		else
-		{
-			printf("Bottom Edge\n");
-			n = CP_Vector_Set(0.0f, 1.0f);
-		}
+		//Closet to Right
+		printf("Right Edge\n");
+		n = CP_Vector_Set(1.0f, 0.0f);
+	}
+	else if (bottomAngleA < bottomAngle)
+	{
+		printf("Bottom Edge\n");
+		n = CP_Vector_Set(0.0f, 1.0f);
+		////Closet to Bottom
+		//if (v.y < 0)
+		//{
+		//	//Reflect off Bottom
+		//}
+		//else if (v.y > 0)
+		//{
+		//	//Reflect off Bottom
+		//}
+	}
+	else if (leftAngleA < leftAngle)
+	{
+		//Left Edge Intersect
+		printf("Left Edge\n");
+		n = CP_Vector_Set(-1.0f, 0.0f);
 	}
 	return n;
 }
 
-
 //Shamelessly stolen from Jia Rong, thanks btw
-bool ArrowCollision(Body* entity)
+bool ArrowCollision(Body* entity, CP_Vector startPos)
 {
 	bool Colliding = false;
 	for (int i = 0; i < GetLevelWidth(); i++)
@@ -181,49 +248,49 @@ bool ArrowCollision(Body* entity)
 				CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
 				CP_Vector r = entity->velocity;
 
-				//TOUCH FLOOR
-				if ((level[i][j].isCollidable) &&
-					(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol) ||
-						Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol) ||		//Point Collision
-						Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol)) &&
-					(entity->hitbox.position.y + entity->hitbox.radius) <= wallCol.position.y + wallCol.height / 2 &&		//Constrain
-					entity->velocity.y > 0)																																			//Arrow is moving down
-				{
-					printf("Touch Floor\n");
-					n = CP_Vector_Set(0.0f, -1.0f);
-				}
+				////TOUCH FLOOR
+				//if ((level[i][j].isCollidable) &&
+				//	(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol) ||
+				//		Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol) ||		//Point Collision
+				//		Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1, entity->hitbox.position.y + entity->hitbox.radius + entity->velocity.y, wallCol)) &&
+				//	(entity->hitbox.position.y + entity->hitbox.radius) <= wallCol.position.y + wallCol.height / 2 &&		//Constrain
+				//	entity->velocity.y > 0)																																			//Arrow is moving down
+				//{
+				//	printf("Touch Floor\n");
+				//	n = CP_Vector_Set(0.0f, -1.0f);
+				//}
 
-				//TOUCH CEILING
-				else if ((level[i][j].isCollidable) &&
-					(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol) ||
-						Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol) ||		//Point Collision
-						Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol)) &&
-					(entity->hitbox.position.y - entity->hitbox.radius) >= wallCol.position.y - wallCol.height / 2 &&		//Constrain
-					entity->velocity.y < 0)																																			//Arrow is moving up
-				{
-					printf("Touch Ceiling\n");
-					n = CP_Vector_Set(0.0f, 1.0f);
-				}
+				////TOUCH CEILING
+				//else if ((level[i][j].isCollidable) &&
+				//	(Col_PointRect(entity->hitbox.position.x, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol) ||
+				//		Col_PointRect(entity->hitbox.position.x + entity->hitbox.radius - 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol) ||		//Point Collision
+				//		Col_PointRect(entity->hitbox.position.x - entity->hitbox.radius + 1, entity->hitbox.position.y - entity->hitbox.radius + entity->velocity.y, wallCol)) &&
+				//	(entity->hitbox.position.y - entity->hitbox.radius) >= wallCol.position.y - wallCol.height / 2 &&		//Constrain
+				//	entity->velocity.y < 0)																																			//Arrow is moving up
+				//{
+				//	printf("Touch Ceiling\n");
+				//	n = CP_Vector_Set(0.0f, 1.0f);
+				//}
 
-				//TOUCH WALL			 @TODO ADD MORE MATHS SO BAD RIGHT NOW
-				else if ((level[i][j].isCollidable) &&
-					COL_IsColliding(entityCol, wallCol) &&		//Shape Collision
-					wallCol.position.x + wallCol.width / 2 >= entity->hitbox.position.x + entity->hitbox.radius &&		//Constrain
-					entity->velocity.x > 0)																					//Arrow is moving left
-				{
-					printf("Touch Wall\n");
-					n = CP_Vector_Set(1.0f, 0.0f);
-				}
+				////TOUCH WALL			 @TODO ADD MORE MATHS SO BAD RIGHT NOW
+				//else if ((level[i][j].isCollidable) &&
+				//	COL_IsColliding(entityCol, wallCol) &&		//Shape Collision
+				//	wallCol.position.x + wallCol.width / 2 >= entity->hitbox.position.x + entity->hitbox.radius &&		//Constrain
+				//	entity->velocity.x > 0)																					//Arrow is moving left
+				//{
+				//	printf("Touch Wall\n");
+				//	n = CP_Vector_Set(1.0f, 0.0f);
+				//}
 
-				else if ((level[i][j].isCollidable) &&
-					COL_IsColliding(entityCol, wallCol) &&		//Shape Collision
-					wallCol.position.x - wallCol.width / 2 <= entity->hitbox.position.x - entity->hitbox.radius &&		//Constrain
-					entity->velocity.x < 0)																					//Arrow is moving right
-				{
-					printf("Touch Wall\n");
-					n = CP_Vector_Set(-1.0f, 0.0f);
-				}
-
+				//else if ((level[i][j].isCollidable) &&
+				//	COL_IsColliding(entityCol, wallCol) &&		//Shape Collision
+				//	wallCol.position.x - wallCol.width / 2 <= entity->hitbox.position.x - entity->hitbox.radius &&		//Constrain
+				//	entity->velocity.x < 0)																					//Arrow is moving right
+				//{
+				//	printf("Touch Wall\n");
+				//	n = CP_Vector_Set(-1.0f, 0.0f);
+				//}
+				n = Get_CircleRectCOL_Side(entityCol, wallCol, entity->velocity, startPos);
 
 				//n = Circle_Intersect_Rect(entityCol, wallCol);
 				r = ArrowReflection(entity, n);
