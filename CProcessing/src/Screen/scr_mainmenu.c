@@ -20,6 +20,7 @@ CP_Vector mousePos;
 
 void MainMenuInit(void)
 {
+	SaveGame();
 	selectButton = 0;
 	mouseCheck = false;
 	bgColor = CP_Color_Create(0, 0, 0, 255);

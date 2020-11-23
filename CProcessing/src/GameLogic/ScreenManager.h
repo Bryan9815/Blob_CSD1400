@@ -8,6 +8,8 @@
 #include "../Bosses/Boss.h"
 #include "../Bosses/Boss1.h"
 #include "../Bosses/Boss2.h"
+#include "../Audio/AudioManager.h"
+#include "SaveLoad.h"
 
 typedef enum GameState 
 {
