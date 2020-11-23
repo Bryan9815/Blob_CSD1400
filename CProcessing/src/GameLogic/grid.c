@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <cprocessing.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include "grid.h"
 
@@ -41,7 +40,7 @@ void LoadMapFile (MAP _level)	//Call FUNC to load map from file
 	char fileName[40];
 	sprintf_s(fileName, 40, "././Assets/Level/Level%d.txt", (int)_level);	//Checks by enum
 
-	levelData = (char*)malloc(BUFFERSIZE * sizeof(char));
+	levelData = (char*)malloc(BUFFERSIZE * sizeof(char));	//Allocate memory for level, this is freed after GridInit is called
 
 	errno_t err = fopen_s(&fp, fileName, "rt");
 	int i = 0, w = 0, h = 0, finalWidth = 0;
@@ -70,8 +69,8 @@ void LoadMapFile (MAP _level)	//Call FUNC to load map from file
 		printf("File Not Found");	//Error checking
 	}
 	
-	levelWidth = finalWidth;
-	levelHeight = h;
+	levelWidth = finalWidth;	//Final width of Level after reading file
+	levelHeight = h;			//Final height of Level after reading file
 }
 
 /*	GRID DEFAULT VARIABLES
@@ -85,8 +84,7 @@ void LoadMapFile (MAP _level)	//Call FUNC to load map from file
 	unit->isActive = true;
 	unit->isCollidable = false;
 */
-void GridUnitInit(GridUnit * unit, int x, int y) 
-
+void GridUnitInit(GridUnit * unit, int x, int y) //UNUSED for now
 {
 	
 }
@@ -95,7 +93,7 @@ void GridUnitInit(GridUnit * unit, int x, int y)
 void GridInit()//Add starting point
 {
 
-	envSpriteSheet = CP_Image_Load("././Assets/EnvSpriteSheet.png");
+	envSpriteSheet = CP_Image_Load("././Assets/EnvSpriteSheet.png");	//Spritesheet
 	
 	//Allocate Memory for Level
 	level = (GridUnit**)malloc(levelWidth * sizeof(GridUnit));
@@ -113,9 +111,9 @@ void GridInit()//Add starting point
 			break;
 		}
 
-		if (levelData[i] == '\n')
+		if (levelData[i] == '\n')	//Checks for new line, 
 		{
-			for (j=j; j < levelWidth; j++) 
+			for (j=j; j < levelWidth; j++) //Remaining tiles will be init to void
 			{
 				(*(level + j) + k)->gridType = GE_VOID;
 
@@ -137,6 +135,7 @@ void GridInit()//Add starting point
 
 		if (levelData[i] == (char)32) //Floor
 		{
+			(*(level + j) + k)->gridType = GE_FLOOR;
 
 			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
 			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
@@ -146,8 +145,7 @@ void GridInit()//Add starting point
 
 			(*(level + j) + k)->isCollidable = false;
 			(*(level + j) + k)->isActive = true;
-
-			(*(level + j) + k)->gridType = GE_FLOOR;
+			
 			(*(level + j) + k)->gridAsset = GA_FLOOR;
 
 		}
@@ -165,6 +163,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->isCollidable = true;
 			(*(level + j) + k)->isActive = true;
 
+			//Wall Assets
 			if (levelData[i] == '-')
 				(*(level + j) + k)->gridAsset = GA_WALL1;
 			else if (levelData[i] == '=')
@@ -174,7 +173,7 @@ void GridInit()//Add starting point
 
 
 		}
-		else if (levelData[i] == '\\')
+		else if (levelData[i] == '\\')	//Damage1
 		{
 
 			(*(level + j) + k)->gridType = GE_DAMAGE;
@@ -191,7 +190,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->gridAsset = GA_DAMAGE1;
 
 		}
-		else if (levelData[i] == 'X')
+		else if (levelData[i] == 'X')	//PIT
 		{
 
 			(*(level + j) + k)->gridType = GE_PIT;
@@ -208,7 +207,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->gridAsset = GA_PIT;
 
 		}
-		else if (levelData[i] == 'S')
+		else if (levelData[i] == 'S')	//SWITCH
 		{
 
 			(*(level + j) + k)->gridType = GE_SWITCH;
@@ -225,7 +224,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->gridAsset = GA_SWITCH;
 
 		}
-		else if (levelData[i] == 'D')
+		else if (levelData[i] == 'D')	//DOOR
 		{
 
 			(*(level + j) + k)->gridType = GE_DOOR;
@@ -242,7 +241,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->gridAsset = GA_DOOR;
 
 		}
-		else if (levelData[i] == 'P')
+		else if (levelData[i] == 'P')	//PORTAL, TRIGGER TILE
 		{
 
 			(*(level + j) + k)->gridType = GE_PORTAL;
@@ -258,7 +257,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->gridAsset = GA_PORTAL;
 
 		}
-		else 
+		else //SETS ANYOTHER CHARS TO VOID TILE
 		{
 			(*(level + j) + k)->gridType = GE_VOID;
 
@@ -282,11 +281,11 @@ void GridInit()//Add starting point
 #if 0
 	printf("%s\n", levelData);
 #endif
-	free(levelData);
+	free(levelData);	//Frees Memory allocated from reading file data
 }
 
 
-
+//Draw Call for tiles
 void GridDraw(Collider playerHitBox)
 {
 	//Checks thru all the elements
@@ -462,7 +461,7 @@ void GridDraw(Collider playerHitBox)
 }
 
 
-/*Draw Call/Update Function for Grid*/
+/*Update Function for Grid*/
 void GridUpdate(Collider playerHitBox, Collider arrowHitBox)
 {	
 	for (int i = 0; i < levelWidth; i++)
@@ -471,11 +470,12 @@ void GridUpdate(Collider playerHitBox, Collider arrowHitBox)
 		{
 			if (level[i][j].gridType == GE_SWITCH) 
 			{
-				if (COL_IsColliding(arrowHitBox, level[i][j].collider))
+				if (COL_IsColliding(arrowHitBox, level[i][j].collider))	//Switch deactivates upon contact with arrowHitBox
 				{
 					level[i][j].isActive = !level[i][j].isActive;
 				}
 			}
+			
 				//GridDraw(i, j, playerHitBox);
 		}
 	}

@@ -1,17 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define BUFSIZE 255
+char fileName[] = "/userdata/savedata.txt";
 
-char buffer[BUFSIZE];
+char* data;
 
-void ReadFile()
+void ReadSaveFile()
 {
-    //FILE* fp;
+    FILE* fp;
 
+    fopen_s(&fp, fileName, "rt");
+
+    if (fp) 
+    {
+        fclose(fp);
+    }      
+    
 }
 
-void WriteFile()
+void WriteSaveFile()
 {
    // FILE  *fp;
     //fclose(fp);
