@@ -26,7 +26,7 @@ typedef enum
 	GE_SWITCH,
 	GE_DOOR,
 	GE_PORTAL,	
-
+	GE_PILLAR,
 }GRID_ELEMENTS;
 
 //ENUMS that stores the GRID ASSET
@@ -41,8 +41,8 @@ typedef enum
 	GA_PIT,
 	GA_SWITCH,
 	GA_DOOR,
-	GA_PORTAL
-
+	GA_PORTAL,
+	GA_PILLAR,
 }GRID_ASSET;
 
 //ENUM FOR LEVEL DATA
@@ -59,7 +59,7 @@ typedef struct
 {
 	bool isActive;
 	bool isCollidable;
-
+	int hp;
 	Collider collider;
 
 	GRID_ELEMENTS gridType;

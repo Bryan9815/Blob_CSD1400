@@ -41,6 +41,10 @@ void UpdateProjectile(Projectile *projectile)
 				case GE_WALL:
 					projectile->active = false;
 					break;
+				case GE_PILLAR:
+					projectile->active = false;
+					level[i][j].hp--;
+					break;
 				default:
 					break;
 				}
