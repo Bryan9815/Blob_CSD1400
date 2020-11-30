@@ -15,7 +15,9 @@ Data gameData[2];
 
 void LoadData(FILE* stream)
 {
+
 }
+
 void LoadGame()
 {
     FILE* fp;
@@ -41,7 +43,10 @@ void SaveData(FILE * stream)
     sprintf_s(_buffer, 50, "%.2f", GetSFXVolume());
     fprintf(stream, "%s\n", _buffer);
 
+    //Score
 
+
+    //Controls
 
 }
 
