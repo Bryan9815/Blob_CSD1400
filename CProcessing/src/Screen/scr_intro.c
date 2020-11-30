@@ -9,7 +9,7 @@ CP_Color bgColor;
 
 void IntroInit(void)
 {
-	splashTimer = 3.f;	//Hold Timer
+	splashTimer = 1.0f;	//Hold Timer
 
 	splashLogo = CP_Image_Load("././Assets/DigiPen_WHITE.png");
 	logoWidth = (float)CP_Image_GetWidth(splashLogo);

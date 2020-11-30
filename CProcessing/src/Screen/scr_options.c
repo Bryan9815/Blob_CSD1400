@@ -421,6 +421,7 @@ void OptionsMenuActivate(void)
 		overlayNum = CONTROLS;
 		break;
 	case EXIT:
+		SaveGame();
 		SetGameState(SCR_MAIN_MENU);
 		break;
 	default:
