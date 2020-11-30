@@ -22,7 +22,7 @@ void Level2Draw(Player* player)
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
 
 	GridDraw(player->pBody.hitbox);
-	Boss2Draw(Boss2);
+	Boss2Draw();
 	PlayerDraw(&newPlayer);
 	DrawArrow(&newPlayer.arrow);
 	switch (GetPlayState())

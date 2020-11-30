@@ -105,6 +105,9 @@
     <ClCompile Include="src\Screen\scr_level_2.c">
       <Filter>src\Screens\Levels</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bosses\Projectile.c">
+      <Filter>src\Boss</Filter>
+    </ClCompile>
     <ClCompile Include="src\GameLogic\Score.c">
       <Filter>src\GameLogic</Filter>
     </ClCompile>
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="src\Screen\scr_level_2.h">
       <Filter>src\Screens\Levels</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bosses\Projectile.h">
+      <Filter>src\Boss</Filter>
     </ClInclude>
     <ClInclude Include="src\GameLogic\Score.h">
       <Filter>src\GameLogic</Filter>

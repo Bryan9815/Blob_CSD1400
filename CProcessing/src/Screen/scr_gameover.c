@@ -49,8 +49,8 @@ void GameOverDraw(void)
 	else
 	{
 		CP_Font_DrawText("YOU WIN!", overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 4);
+		DisplayScore(overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 8, Boss1Timer, Score);
 	}
-	DisplayScore(overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 8, Boss1Timer, Score);
 
 	// Draw Buttons
 	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
