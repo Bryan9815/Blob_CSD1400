@@ -4,36 +4,58 @@
 
 char fileName[] = "././savedata.txt";
 
+#define DATA_ELEMENTS 3 //Number of elements to save inc of last line
+#define BUFFER 255
+
 typedef struct Data
 {
-    char dataStr[255];
-
+    //char dataStr[BUFFER];
+    char* dataStr;
 }Data;
 
-Data gameData[4];//Maybe use malloc for this
-
+//Data gameData[DATA_ELEMENTS];//Maybe use malloc for this
+Data * gameData;
 
 void LoadData(FILE* stream)
 {
-    int i = 0;
-    while (!feof(stream))
+    
+    gameData = (Data*)malloc(DATA_ELEMENTS * sizeof(Data));
+    if (gameData)
     {
-        char buffer[255];
+        for (size_t i = 0; i < DATA_ELEMENTS; i++)
+        {
+            (gameData + i)->dataStr = malloc(BUFFER);
+        }
 
-        fgets(buffer, 255, stream);
-        strcpy_s((gameData + i)->dataStr, 255, buffer);
-        i++;
+
+        int i = 0;
+        while (!feof(stream))
+        {
+            char buffer[BUFFER];
+
+            fgets(buffer, BUFFER, stream);
+            if ((gameData + i)->dataStr)
+            {
+                strcpy_s((gameData + i)->dataStr, BUFFER, buffer);
+            }
+            i++;
+        }
+
+
+        //Volume
+        if ((gameData)->dataStr) 
+            SetBGMVolume((float)atof(gameData->dataStr));               //printf("Volume is set to %f, from %s\n", GetBGMVolume(), gameData[0].dataStr);
+            
+        if ((gameData[1].dataStr))
+            SetSFXVolume((float)atof((gameData + 1)->dataStr));         //printf("Volume is set to %f, from %s\n", GetSFXVolume(), gameData[1].dataStr);
+                    
+
+        for (size_t j = 0; j < DATA_ELEMENTS; j++)
+        {
+            free((gameData + j)->dataStr);
+        }
     }
-
-
-    //Volume
-    SetBGMVolume((float)atof(gameData[0].dataStr));
-    printf("Volume is set to %f, from %s\n", GetBGMVolume(), gameData[0].dataStr);
-  
-    SetSFXVolume((float)atof(gameData[1].dataStr));
-    printf("Volume is set to %f, from %s\n", GetSFXVolume(), gameData[1].dataStr);
-
-
+    free(gameData);
 
 }
 
