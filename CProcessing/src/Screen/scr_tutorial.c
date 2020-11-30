@@ -1,5 +1,6 @@
 #include "scr_tutorial.h"
 #include "../Audio/AudioManager.h"
+#include "../GameLogic/Score.h"
 
 #define SkipDrawDelay 5.0f
 
@@ -19,7 +20,7 @@ void TutorialInit(void)
 {
 	LoadMapFile(Level0);
 	GridInit();
-
+	tutTimer = 0.f;
 	skipDrawTimer = SkipDrawDelay;
 
 	int k = 0, l = 0, m = 0, n = 0;
@@ -134,7 +135,7 @@ void TutorialUpdate(Player* player)
 		PlayerUpdate(&newPlayer);
 		ArrowStateCheck(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
 		GridUpdate(player->pBody.hitbox, player->arrow.aBody.hitbox);
-
+		StageTime(&tutTimer);
 		for (size_t i = 0; i < sizeof(damage) / sizeof(damage[0]); i++)
 		{
 			if (COL_IsColliding(player->pBody.hitbox, damage[i]->collider) && playerState != DODGING)//Damage

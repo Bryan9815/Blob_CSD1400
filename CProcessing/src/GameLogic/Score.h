@@ -2,11 +2,13 @@
 #include <cprocessing.h>
 #include "../Bosses/Boss.h"
 #include "../Player/player.h"
-#define BUFFERSIZE 15
+#define BUFFERSIZE 10
 
 float Score;
-float Boss1Timer;
+float tutTimer, Boss1Timer;
+char Rank;
 
 void StageTime(float *timer);
 float CalculateScore(float time, bool win);
-void DisplayScore(float scorePosX, float scorePosY, float time, float score);
+void CalculateRank(float score);
+void DisplayScore(float scoreCenterX, float scoreCenterY, float time, float score);
