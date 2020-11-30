@@ -20,7 +20,7 @@ CP_Vector mousePos;
 
 void MainMenuInit(void)
 {
-	SaveGame();
+	LoadGame();
 	selectButton = 0;
 	mouseCheck = false;
 	bgColor = CP_Color_Create(0, 0, 0, 255);
@@ -62,8 +62,8 @@ void MenuButtonActivate()
 	{
 	case START:
 		AudioMenuExit();
-		SetGameState(SCR_TUTORIAL);
-		//SetGameState(SCR_LEVEL2);
+		//SetGameState(SCR_TUTORIAL);
+		SetGameState(SCR_LEVEL2);
 		break;
 	case OPTION:
 		SetGameState(SCR_OPTION);

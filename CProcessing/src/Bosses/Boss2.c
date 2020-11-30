@@ -14,8 +14,11 @@ static float FarTimer = 0.f;
 static float ChargeTimer = 0.f;
 static float AttackCount = 0.f;
 static float Stuntime = 0.f;
+int counter = 0;
 static BossState2 bossState;
-Projectile projectileList[3];
+AttackState shootState;
+Projectile projectileList[50];
+CP_Color WarningColor;
 
 void Boss2Init(void)
 {
@@ -23,6 +26,8 @@ void Boss2Init(void)
 	Boss2.bosssprite = CP_Image_Load("././Assets/Boss1.png");
 	bossState = IDLE_B2;
 	FarAttackTimer = NearAttackTimer = NearTimer = FarTimer = ChargeTimer = AttackCount = Stuntime = 0.f; //reset timers
+	shootState = NOT_ATTACK;
+	WarningColor = CP_Color_Create(0, 0, 0, 175);
 }
 
 void Boss2Movement(Player player, GridUnit* grid) //boss slowly moves toward player
@@ -39,9 +44,10 @@ void B2_StateChange(Player player) //this determines WHEN the boss does its acti
 
 	case IDLE_B2:
 		FarAttackTimer += dt;
-		if (FarAttackTimer >= 5.f)
+		if (FarAttackTimer >= 2.f)
 		{
-			bossState = SHOOT_1;
+			bossState = SHOOT_2;
+			shootState = WARNING;
 			FarAttackTimer = 0.f;
 		}
 		break;
@@ -55,32 +61,165 @@ void Boss2Draw()
 	// Draw Boss
 	CP_Image_DrawAdvanced(Boss2.bosssprite, Boss2.BossBody.hitbox.position.x, Boss2.BossBody.hitbox.position.y, (Boss2.BossBody.hitbox.radius * 2), (Boss2.BossBody.hitbox.radius * 2), Boss2.bossAlpha, Boss2.BossBody.rotation);
 
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < 50; i++)
 	{
 		if(projectileList[i].active)
 			DrawProjectile(&projectileList[i]);
 	}
 
+	CP_Settings_Fill(WarningColor);
+	CP_Graphics_DrawCircle(Boss2.BossBody.hitbox.position.x, Boss2.BossBody.hitbox.position.y, (Boss2.BossBody.hitbox.radius/4));
+
 	BossHealthDraw(Boss2);
+}
+
+void NewProjectile(CP_Vector pos, CP_Vector dir, float vel)
+{
+	for (int i = 0; i < 50; i++)
+	{
+		if (projectileList[i].active == false)
+		{
+			projectileList[i] = CreateProjectile(pos, dir, vel);
+			break;
+		}
+	}
 }
 
 void Boss2Action(void) //determines the boss actions, only one should be active at any time
 {
+	float dt = CP_System_GetDt();
 	switch (bossState)
 	{
 	case IDLE_B2:
 		BossRotation(&Boss2, newPlayer.pBody.hitbox.position); //rotation of boss
 		break;
 	case SHOOT_1:
-		for (int i = 0; i < 3; i++)
+		switch (shootState)
 		{
-			CP_Vector dirVec = CP_Vector_Set(0, 1);
-			CP_Matrix rotation = CP_Matrix_Rotate(Boss2.BossBody.rotation - 10 + (i * 10));
-			dirVec = CP_Vector_MatrixMultiply(rotation, dirVec);
-			projectileList[i] = CreateProjectile(Boss2.BossBody.hitbox.position, dirVec, 5.f);
+		case NOT_ATTACK:
+			break;
+		case WARNING:
+			FarTimer += dt;
+			WarningColor = CP_Color_Create((int)(170 * FarTimer), 0, 0, (int)(170 * FarTimer));
+			if (FarTimer > 1.5f)
+			{
+				FarTimer = 0;
+				shootState = ATTACK;
+			}
+			break;
+		case ATTACK:
+			FarTimer += dt;
+			if (FarTimer >= 0.25f)
+			{
+				for (int i = 0; i < 3; i++)
+				{
+					CP_Vector dirVec = CP_Vector_Set(0, 1);
+					CP_Matrix rotationProj = CP_Matrix_Rotate(Boss2.BossBody.rotation - 10 + (i * 10));
+					dirVec = CP_Vector_MatrixMultiply(rotationProj, dirVec);
+					NewProjectile(Boss2.BossBody.hitbox.position, dirVec, 7.5f);
+				}
+				counter++;
+				FarTimer = 0.0f;
+			}
+			if (counter == 3)
+			{
+				bossState = IDLE_B2;
+				counter = 0;
+				shootState = NOT_ATTACK;
+				WarningColor = CP_Color_Create(0, 0, 0, 175);
+			}
+			break;
+		default:
+			break;
 		}
-		FarTimer = 5.0f;
-		bossState = IDLE_B2;
+		break;
+	case SHOOT_2:
+		switch (shootState)
+		{
+		case NOT_ATTACK:
+			break;
+		case WARNING:
+			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
+			FarTimer += dt;
+			WarningColor = CP_Color_Create((int)(170 * FarTimer), 0, 0, (int)(170 * FarTimer));
+			if (FarTimer > 1.5f)
+			{
+				FarTimer = 0;
+				shootState = ATTACK;
+			}
+			break;
+		case ATTACK:
+			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
+			FarTimer += dt;
+			if (FarTimer >= 0.25f)
+			{
+				for (int i = 0; i < 10; i++)
+				{
+					CP_Vector dirVec = CP_Vector_Set(0, 1);
+					CP_Matrix rotationProj = CP_Matrix_Rotate(Boss2.BossBody.rotation + (i * 36));
+					dirVec = CP_Vector_MatrixMultiply(rotationProj, dirVec);
+					NewProjectile(Boss2.BossBody.hitbox.position, dirVec, 7.5f);
+				}
+				counter++;
+				FarTimer = 0.0f;
+			}
+			if (counter == 5)
+			{
+				bossState = IDLE_B2;
+				counter = 0;
+				shootState = NOT_ATTACK;
+				WarningColor = CP_Color_Create(0, 0, 0, 175);
+				// Set stun timer
+			}
+			break;
+		default:
+			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
+			break;
+		}
+		break;
+	case SHOOT_3:
+		switch (shootState)
+		{
+		case NOT_ATTACK:
+			break;
+		case WARNING:
+			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
+			FarTimer += dt;
+			WarningColor = CP_Color_Create((int)(170 * FarTimer), 0, 0, (int)(170 * FarTimer));
+			if (FarTimer > 1.5f)
+			{
+				FarTimer = 0;
+				shootState = ATTACK;
+			}
+			break;
+		case ATTACK:
+			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
+			FarTimer += dt;
+			if (FarTimer >= 0.25f)
+			{
+				for (int i = 0; i < 50; i++)
+				{
+					CP_Vector dirVec = CP_Vector_Set(0, 1);
+					CP_Matrix rotationProj = CP_Matrix_Rotate(Boss2.BossBody.rotation + 45 + (i * (360 / 50)));
+					dirVec = CP_Vector_MatrixMultiply(rotationProj, dirVec);
+					NewProjectile(Boss2.BossBody.hitbox.position, dirVec, 7.5f);
+				}
+				counter++;
+				FarTimer = 0.0f;
+			}
+			if (counter == 1)
+			{
+				bossState = IDLE_B2;
+				counter = 0;
+				shootState = NOT_ATTACK;
+				WarningColor = CP_Color_Create(0, 0, 0, 175);
+				// Set stun timer
+			}
+			break;
+		default:
+			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
+			break;
+		}
 		break;
 	case DEFEAT_B2:
 		SetGameOver(true); //proceed to next stage
@@ -96,18 +235,20 @@ void Boss2Battle(void)
 	{
 		bossState = DEFEAT_B2;
 	}
-	if (FarTimer > 0)
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			UpdateProjectile(&projectileList[i]);
-		}
-	}
 	B2_StateChange(newPlayer); //determines boss state (other than defeat)
 	Boss2Action(); //determine boss action
+	for (int i = 0; i < 50; i++)
+	{
+		if(projectileList[i].active == true)
+			UpdateProjectile(&projectileList[i]);
+	}
 }
 
 void Boss2Exit(void)
 {
+	for (int i = 0; i < 50; i++)
+	{
+		projectileList[i].active = false;
+	}
 	CP_Image_Free(&(ArmorSlime.bosssprite));
 }
