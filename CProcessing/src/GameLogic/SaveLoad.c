@@ -6,15 +6,34 @@ char fileName[] = "././savedata.txt";
 
 typedef struct Data
 {
-    char* dataStr;
+    char dataStr[255];
 
 }Data;
 
-Data gameData[2];
+Data gameData[4];//Maybe use malloc for this
 
 
 void LoadData(FILE* stream)
 {
+    int i = 0;
+    while (!feof(stream))
+    {
+        char buffer[255];
+
+        fgets(buffer, 255, stream);
+        strcpy_s((gameData + i)->dataStr, 255, buffer);
+        i++;
+    }
+
+
+    //Volume
+    SetBGMVolume((float)atof(gameData[0].dataStr));
+    printf("Volume is set to %f, from %s\n", GetBGMVolume(), gameData[0].dataStr);
+  
+    SetSFXVolume((float)atof(gameData[1].dataStr));
+    printf("Volume is set to %f, from %s\n", GetSFXVolume(), gameData[1].dataStr);
+
+
 
 }
 
@@ -24,7 +43,7 @@ void LoadGame()
 
     fopen_s(&fp, fileName, "rt");
 
-    if (fp) 
+    if (fp != NULL) 
     {
         LoadData(fp);
         fclose(fp);
@@ -44,6 +63,7 @@ void SaveData(FILE * stream)
     fprintf(stream, "%s\n", _buffer);
 
     //Score
+
 
 
     //Controls
