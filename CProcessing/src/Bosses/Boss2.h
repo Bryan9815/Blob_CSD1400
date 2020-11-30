@@ -9,6 +9,7 @@ typedef enum BossState2
 	DASH,
 	SHOOT_1,
 	SHOOT_2,
+	SHOOT_3,
 
 	DEFEAT_B2
 } BossState2;

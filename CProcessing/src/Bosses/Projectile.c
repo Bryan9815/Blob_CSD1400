@@ -1,4 +1,5 @@
 #include "Projectile.h"
+#include "../Player/player.h"
 
 Projectile CreateProjectile(CP_Vector pos, CP_Vector dir, float vel)
 {
@@ -23,6 +24,11 @@ void DrawProjectile(Projectile* projectile)
 void UpdateProjectile(Projectile *projectile)
 {
 	projectile->body.hitbox.position = CP_Vector_Add(projectile->body.velocity, projectile->body.hitbox.position);
+
+	if (COL_IsColliding(projectile->body.hitbox, newPlayer.pBody.hitbox) && playerState != DODGING) //check if player is hit by attack
+	{
+		newPlayer.health = 0;
+	}
 
 	for (int i = 0; i < GetLevelWidth(); i++)
 	{
