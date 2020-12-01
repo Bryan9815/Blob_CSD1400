@@ -58,6 +58,7 @@ void Level2Update(Player* player)
 		}
 		break;
 	}
+	GridUpdate(player->pBody.hitbox, player->arrow.aBody.hitbox);
 	CameraUpdate(&newPlayer.pBody.hitbox.position, GetFader());
 	Level2Draw(player);
 }

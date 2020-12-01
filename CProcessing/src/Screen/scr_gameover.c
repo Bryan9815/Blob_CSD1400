@@ -69,6 +69,9 @@ void GameOverDraw(void)
 	case SCR_LEVEL1:
 		DisplayScore(overlayCenter.x - (float)CP_System_GetWindowWidth() / 4, overlayCenter.y + buttonBufferY, Boss1Timer, Score);
 		break;
+	case SCR_LEVEL2:
+		DisplayScore(overlayCenter.x - (float)CP_System_GetWindowWidth() / 4, overlayCenter.y + buttonBufferY, Boss1Timer, Score);
+		break;
 	}
 
 	// Draw Buttons

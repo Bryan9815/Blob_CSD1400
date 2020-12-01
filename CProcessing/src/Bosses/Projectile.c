@@ -42,8 +42,11 @@ void UpdateProjectile(Projectile *projectile)
 					projectile->active = false;
 					break;
 				case GE_PILLAR:
-					projectile->active = false;
-					level[i][j].hp--;
+					if (level[i][j].isActive == true)
+					{
+						projectile->active = false;
+						level[i][j].hp--;
+					}
 					break;
 				default:
 					break;
