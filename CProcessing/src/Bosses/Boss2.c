@@ -5,6 +5,7 @@
 #include "Projectile.h"
 #include "../GameLogic/Collider.h"
 #include "../GameLogic/ScreenManager.h"
+#include <math.h>
 
 static float BossRange = 500.f;
 static float NearAttackTimer;
@@ -46,7 +47,7 @@ void B2_StateChange(Player player) //this determines WHEN the boss does its acti
 		FarAttackTimer += dt;
 		if (FarAttackTimer >= 2.f)
 		{
-			bossState = SHOOT_2;
+			bossState = SHOOT_1;
 			shootState = WARNING;
 			FarAttackTimer = 0.f;
 		}
@@ -85,13 +86,45 @@ void NewProjectile(CP_Vector pos, CP_Vector dir, float vel)
 	}
 }
 
+void Boss2Rotation(Boss* currentboss, CP_Vector position, float dt)
+{
+	//For rotation
+	CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
+	CP_Vector MoveDir = CP_Vector_Subtract(position, currentboss->BossBody.hitbox.position);
+
+	float targetRotation, rotationOffset;
+
+	if (position.x < currentboss->BossBody.hitbox.position.x)
+		targetRotation = CP_Vector_Angle(UpDir, MoveDir); //clockwise rotation of boss from upward dir
+	else
+	{
+		targetRotation = 360.f - CP_Vector_Angle(UpDir, MoveDir); //find the larger angle if > 180 degrees
+		//currentboss->BossBody.rotation += 360;
+	}
+
+	rotationOffset = roundf(targetRotation - currentboss->BossBody.rotation);
+	if (currentboss->BossBody.rotation != targetRotation)
+	{
+		if (currentboss->BossBody.rotation < 90 && targetRotation > 180)
+			currentboss->BossBody.rotation -= (rotationOffset * dt);
+		else if(currentboss->BossBody.rotation > 270 && targetRotation < 180)
+			currentboss->BossBody.rotation -= (rotationOffset * dt);
+		else
+			currentboss->BossBody.rotation += (rotationOffset * dt);
+	}
+	if (currentboss->BossBody.rotation < 0)
+		currentboss->BossBody.rotation += 360;
+	if (currentboss->BossBody.rotation > 360)
+		currentboss->BossBody.rotation -= 360;
+}
+
 void Boss2Action(void) //determines the boss actions, only one should be active at any time
 {
 	float dt = CP_System_GetDt();
 	switch (bossState)
 	{
 	case IDLE_B2:
-		BossRotation(&Boss2, newPlayer.pBody.hitbox.position); //rotation of boss
+		Boss2Rotation(&Boss2, newPlayer.pBody.hitbox.position, dt); //rotation of boss
 		break;
 	case SHOOT_1:
 		switch (shootState)
