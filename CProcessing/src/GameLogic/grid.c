@@ -453,7 +453,7 @@ void GridDraw(Collider playerHitBox)
 				CP_Settings_RectMode(CP_POSITION_CENTER);
 				if (level[i][j].isActive)
 				{
-					CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
+					CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
 					CP_Graphics_DrawRect(
 						(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
 						(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
@@ -461,15 +461,13 @@ void GridDraw(Collider playerHitBox)
 						GRID_UNIT_HEIGHT);
 				}
 				else
-				{		CP_Image_DrawSubImage(
-						envSpriteSheet,
+				{		
+					CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
+					CP_Graphics_DrawRect(
 						(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
 						(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
-						GRID_UNIT_WIDTH + 2,
-						GRID_UNIT_HEIGHT + 2,
-						//0, 64.0f, 64.0f, 128.0f,
-						1 * TEXTURESIZE, 1 * TEXTURESIZE, 2 * TEXTURESIZE, 2 * TEXTURESIZE,
-						255);
+						GRID_UNIT_WIDTH,
+						GRID_UNIT_HEIGHT);
 				}
 				break;
 			case GA_VOID:

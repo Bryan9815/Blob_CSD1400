@@ -236,7 +236,7 @@ bool ArrowCollision(Body* entity, CP_Vector startPos)
 			CP_Vector offset = CP_Vector_Negate(CP_Vector_Normalize(entity->velocity));
 
 			//Fuck my life
-			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH || level[i][j].gridType == GE_DOOR || (level[i][j].gridType == GE_PILLAR && level[i][j].isActive == true)))
+			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH || level[i][j].gridType == GE_DOOR || level[i][j].gridType == GE_PILLAR))
 			{
 				while (COL_IsColliding(entity->hitbox, wallCol))
 				{
@@ -259,6 +259,11 @@ bool ArrowCollision(Body* entity, CP_Vector startPos)
 				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 20));
 				Colliding = true;
 
+				if (level[i][j].gridType == GE_PILLAR && level[i][j].isActive == false)
+				{
+					level[i][j].hp = 5;
+					level[i][j].isActive = true;
+				}
 			}
 		}
 	}

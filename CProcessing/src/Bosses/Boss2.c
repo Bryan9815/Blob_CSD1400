@@ -8,14 +8,10 @@
 #include <math.h>
 
 static float BossRange = 500.f;
-static float NearAttackTimer;
-static float FarAttackTimer = 0.f;
-static float NearTimer = 0.f;
-static float FarTimer = 0.f;
-static float ChargeTimer = 0.f;
-static float AttackCount = 0.f;
+static float AttackTimer = 0.f;
 static float Stuntime = 0.f;
-int counter = 0;
+static int AttackCount = 0;
+static int AttackVarCount = 0;
 static BossState2 bossState;
 AttackState shootState;
 Projectile projectileList[50];
@@ -26,7 +22,8 @@ void Boss2Init(void)
 	BossInit(&Boss2, 5, 60.0f, CP_Vector_Set(200.f,200.f));
 	Boss2.bosssprite = CP_Image_Load("././Assets/Boss1.png");
 	bossState = IDLE_B2;
-	FarAttackTimer = NearAttackTimer = NearTimer = FarTimer = ChargeTimer = AttackCount = Stuntime = 0.f; //reset timers
+	AttackTimer = Stuntime = 0.f; //reset timers
+	AttackCount = AttackVarCount = 0;
 	shootState = NOT_ATTACK;
 	WarningColor = CP_Color_Create(0, 0, 0, 175);
 }
@@ -39,17 +36,30 @@ void Boss2Movement(Player player, GridUnit* grid) //boss slowly moves toward pla
 void B2_StateChange(Player player) //this determines WHEN the boss does its actions
 {
 	float dt = CP_System_GetDt();
-	//float PlayerDist = CP_Vector_Distance(player.pBody.hitbox.position, Boss2.BossBody.hitbox.position);
 	switch (bossState)
 	{
 
 	case IDLE_B2:
-		FarAttackTimer += dt;
-		if (FarAttackTimer >= 2.f)
+		AttackTimer += dt;
+		if (AttackTimer >= 2.f)
 		{
-			bossState = SHOOT_1;
+			switch (AttackVarCount)
+			{
+			case 2:
+				if(CP_Random_RangeInt(1, 2) == 1)
+					bossState = SHOOT_2;
+				else
+					bossState = SHOOT_3;
+				
+				AttackVarCount = 0;
+				break;
+			default:
+				bossState = SHOOT_1;
+				AttackVarCount++;
+				break;
+			}
 			shootState = WARNING;
-			FarAttackTimer = 0.f;
+			AttackTimer = 0.f;
 		}
 		break;
 	default:
@@ -118,6 +128,17 @@ void Boss2Rotation(Boss* currentboss, CP_Vector position, float dt)
 		currentboss->BossBody.rotation -= 360;
 }
 
+void StunTimer_B2()
+{
+
+	Stuntime += CP_System_GetDt();
+	if (Stuntime >= 3) //stunned for 3 sec
+	{
+		bossState = IDLE_B2; //revert to idle after
+		Stuntime = 0;
+	}
+}
+
 void Boss2Action(void) //determines the boss actions, only one should be active at any time
 {
 	float dt = CP_System_GetDt();
@@ -132,17 +153,17 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 		case NOT_ATTACK:
 			break;
 		case WARNING:
-			FarTimer += dt;
-			WarningColor = CP_Color_Create((int)(170 * FarTimer), 0, 0, (int)(170 * FarTimer));
-			if (FarTimer > 1.5f)
+			AttackTimer += dt;
+			WarningColor = CP_Color_Create((int)(170 * AttackTimer), 0, 0, (int)(170 * AttackTimer));
+			if (AttackTimer > 1.5f)
 			{
-				FarTimer = 0;
+				AttackTimer = 0;
 				shootState = ATTACK;
 			}
 			break;
 		case ATTACK:
-			FarTimer += dt;
-			if (FarTimer >= 0.25f)
+			AttackTimer += dt;
+			if (AttackTimer >= 0.25f)
 			{
 				for (int i = 0; i < 3; i++)
 				{
@@ -151,13 +172,13 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 					dirVec = CP_Vector_MatrixMultiply(rotationProj, dirVec);
 					NewProjectile(Boss2.BossBody.hitbox.position, dirVec, 7.5f);
 				}
-				counter++;
-				FarTimer = 0.0f;
+				AttackCount++;
+				AttackTimer = 0.0f;
 			}
-			if (counter == 3)
+			if (AttackCount == 3)
 			{
 				bossState = IDLE_B2;
-				counter = 0;
+				AttackCount = 0;
 				shootState = NOT_ATTACK;
 				WarningColor = CP_Color_Create(0, 0, 0, 175);
 			}
@@ -173,18 +194,18 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 			break;
 		case WARNING:
 			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
-			FarTimer += dt;
-			WarningColor = CP_Color_Create((int)(170 * FarTimer), 0, 0, (int)(170 * FarTimer));
-			if (FarTimer > 1.5f)
+			AttackTimer += dt;
+			WarningColor = CP_Color_Create((int)(170 * AttackTimer), 0, 0, (int)(170 * AttackTimer));
+			if (AttackTimer > 1.5f)
 			{
-				FarTimer = 0;
+				AttackTimer = 0;
 				shootState = ATTACK;
 			}
 			break;
 		case ATTACK:
 			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
-			FarTimer += dt;
-			if (FarTimer >= 0.25f)
+			AttackTimer += dt;
+			if (AttackTimer >= 0.25f)
 			{
 				for (int i = 0; i < 10; i++)
 				{
@@ -193,16 +214,16 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 					dirVec = CP_Vector_MatrixMultiply(rotationProj, dirVec);
 					NewProjectile(Boss2.BossBody.hitbox.position, dirVec, 7.5f);
 				}
-				counter++;
-				FarTimer = 0.0f;
+				AttackCount++;
+				AttackTimer = 0.0f;
 			}
-			if (counter == 5)
+			if (AttackCount == 5)
 			{
 				bossState = IDLE_B2;
-				counter = 0;
+				AttackCount = 0;
 				shootState = NOT_ATTACK;
 				WarningColor = CP_Color_Create(0, 0, 0, 175);
-				// Set stun timer
+				bossState = STUNNED_B2;
 			}
 			break;
 		default:
@@ -216,19 +237,19 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 		case NOT_ATTACK:
 			break;
 		case WARNING:
-			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
-			FarTimer += dt;
-			WarningColor = CP_Color_Create((int)(170 * FarTimer), 0, 0, (int)(170 * FarTimer));
-			if (FarTimer > 1.5f)
+			Boss2Rotation(&Boss2, newPlayer.pBody.hitbox.position, dt);
+			AttackTimer += dt;
+			WarningColor = CP_Color_Create((int)(170 * AttackTimer), 0, 0, (int)(170 * AttackTimer));
+			if (AttackTimer > 1.5f)
 			{
-				FarTimer = 0;
+				AttackTimer = 0;
 				shootState = ATTACK;
 			}
 			break;
 		case ATTACK:
 			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
-			FarTimer += dt;
-			if (FarTimer >= 0.25f)
+			AttackTimer += dt;
+			if (AttackTimer >= 0.25f)
 			{
 				for (int i = 0; i < 50; i++)
 				{
@@ -237,22 +258,25 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 					dirVec = CP_Vector_MatrixMultiply(rotationProj, dirVec);
 					NewProjectile(Boss2.BossBody.hitbox.position, dirVec, 7.5f);
 				}
-				counter++;
-				FarTimer = 0.0f;
+				AttackCount++;
+				AttackTimer = 0.0f;
 			}
-			if (counter == 1)
+			if (AttackCount == 1)
 			{
 				bossState = IDLE_B2;
-				counter = 0;
+				AttackCount = 0;
 				shootState = NOT_ATTACK;
 				WarningColor = CP_Color_Create(0, 0, 0, 175);
-				// Set stun timer
+				bossState = STUNNED_B2;
 			}
 			break;
 		default:
 			BossRotation(&Boss2, newPlayer.pBody.hitbox.position);
 			break;
 		}
+		break;
+	case STUNNED_B2:
+		StunTimer_B2();
 		break;
 	case DEFEAT_B2:
 		SetGameOver(true); //proceed to next stage
