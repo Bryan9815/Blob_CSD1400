@@ -3,10 +3,7 @@
 #include "Boss.h"
 #include "../Audio/AudioManager.h"
 #include "Boss1.h"
-//#include "../GameLogic/grid.h"
-//#include "../Screen/scr_level_1.h"
 #include "../GameLogic/Collider.h"
-//#include "../GameLogic/Collision.h"
 #include "../GameLogic/ScreenManager.h"
 
 float BossRange = 200.f;
@@ -25,12 +22,6 @@ void Boss1Init(void)
 	NearAttack = FarAttack = NOT_ATTACK; //reset attack states
 	FarAttackTimer = NearAttackTimer = NearTimer = FarTimer = ChargeTimer = AttackCount = Stuntime = 0.f; //reset timers
 }
-
-/*void Shield1Draw(Boss armorboss) //draws shield for boss 1, left here in case needed
-{
-	CP_Settings_ImageMode(CP_POSITION_CENTER); //draw from center of boss
-	CP_Image_DrawAdvanced(shield, armorboss.BossBody.hitbox.position.x, armorboss.BossBody.hitbox.position.y, 200.f, 200.f, 30, armorboss.BossBody.rotation);
-}*/
 
 void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 {
@@ -246,7 +237,6 @@ void Boss1Action(void) //determines the boss actions, only one should be active 
 		BossRotation(&ArmorSlime, newPlayer.pBody.hitbox.position); //rotation of boss
 		break;
 	case ATTACK_NEAR:
-		//BossMovement(&ArmorSlime, player, grid); //boss should only be walking in idle
 		AttackNear(&ArmorSlime, &newPlayer); //boss does close range attack
 		BossRotation(&ArmorSlime, newPlayer.pBody.hitbox.position);
 		break;
@@ -280,7 +270,6 @@ void Boss1Draw(Boss armorboss)
 {
 	AttackFarDraw(armorboss);
 	AttackNearDraw(armorboss);
-	//Shield1Draw(armorboss);
 	BossDraw(armorboss);
 	BossHealthDraw(armorboss);
 }

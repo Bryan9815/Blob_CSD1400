@@ -5,6 +5,7 @@
 #define DEFAULT_FORCE 30.0f
 #define MAX_FORCE 60.0f
 #define ARROW_SSCALE 45
+#define ARROW_SPEED 600.0f
 
 float arrowSpeed;
 CP_Color		arrowColor;

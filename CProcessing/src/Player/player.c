@@ -404,7 +404,7 @@ bool ArrowBoss1Collision(Arrow* arrow, Body* bBody)
 		CP_Vector offsetv = CP_Vector_Negate(CP_Vector_Scale(arrow->aBody.velocity, offset / CP_Vector_Length(arrow->aBody.velocity)));
 		arrow->aBody.hitbox.position = CP_Vector_Add(arrow->aBody.hitbox.position, offsetv);
 
-		CP_Vector differences = CP_Vector_Subtract(arrow->aBody.hitbox.position, bBody->hitbox.position); //Vector from boss position to arrow position
+		CP_Vector differences = CP_Vector_Subtract(arrow->aBody.hitbox.position, bBody->hitbox.position); //Vector from arrow position to boss position
 		CP_Matrix rotatedir = CP_Matrix_Rotate(bBody->rotation); //rotation matrix
 		CP_Vector dir = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f)); //rotate based off (0,1) to get direction vector 
 		float theta = CP_Vector_Angle(differences, dir); //angle between dir vector and arrow vector

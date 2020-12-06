@@ -95,16 +95,14 @@ bool GridCollisionCheck(Body* entity)
 CP_Vector ArrowReflection(Body* entity, CP_Vector n)
 {
 	float dotproduct = CP_Vector_DotProduct(entity->velocity, n);
-	printf("%f\n",dotproduct);
+	//printf("%f\n",dotproduct);
 	CP_Vector r = CP_Vector_Subtract(entity->velocity, CP_Vector_Scale(n, 2 * dotproduct));
-	//printf("Velocity: (%.2f, %.2f)\n", entity->velocity.x, entity->velocity.y);
-	//printf("Reflection: (%.2f, %.2f)\n", r.x, r.y);
+	/*printf("Velocity: (%.2f, %.2f)\n", entity->velocity.x, entity->velocity.y);
+	printf("Reflection: (%.2f, %.2f)\n", r.x, r.y);*/
 	return r;
 }
 
-////Buggy with corners
-
-
+//End me now
 CP_Vector Get_CircleRectCOL_Side(Collider circle, Collider rect, CP_Vector v, CP_Vector startPos)
 {
 	CP_Vector v1, v2, v3, v4, n; //rect vertices
@@ -171,7 +169,6 @@ bool WallCollision(Body* entity)
 	return Colliding;
 }  
 
-//Shamelessly stolen from Jia Rong, thanks btw
 bool ArrowCollision(Body* entity, CP_Vector startPos)
 {
 	bool Colliding = false;
@@ -185,7 +182,7 @@ bool ArrowCollision(Body* entity, CP_Vector startPos)
 			CP_Vector offset = CP_Vector_Negate(CP_Vector_Normalize(entity->velocity));
 
 			//Fuck my life
-			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH || level[i][j].gridType == GE_DOOR))
+			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH || level[i][j].gridType == GE_DOOR || level[i][j].gridType == GE_PILLAR))
 			{
 				while (COL_IsColliding(entity->hitbox, wallCol))
 				{
@@ -193,7 +190,7 @@ bool ArrowCollision(Body* entity, CP_Vector startPos)
 				}
 				CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
 				CP_Vector r = entity->velocity;
-				//}
+
 				n = Get_CircleRectCOL_Side(entityCol, wallCol, entity->velocity, startPos);
 				r = ArrowReflection(entity, n);
 				while (COL_IsColliding(entity->hitbox, wallCol))
@@ -206,6 +203,11 @@ bool ArrowCollision(Body* entity, CP_Vector startPos)
 				
 				Colliding = true;
 
+				if (level[i][j].gridType == GE_PILLAR && level[i][j].isActive == false)
+				{
+					level[i][j].hp = 5;
+					level[i][j].isActive = true;
+				}
 			}
 		}
 	}

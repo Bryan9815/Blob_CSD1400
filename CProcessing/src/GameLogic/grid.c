@@ -181,7 +181,7 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
 			(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
 			(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
-			(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH) / 5;
+			(*(level + j) + k)->collider.width = 2 * (float)(GRID_UNIT_WIDTH) / 5;
 			(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
 
 			(*(level + j) + k)->isCollidable = false;
@@ -255,6 +255,24 @@ void GridInit()//Add starting point
 			(*(level + j) + k)->isCollidable = false;
 
 			(*(level + j) + k)->gridAsset = GA_PORTAL;
+
+		}
+		else if (levelData[i] == 'V') //Pillar
+		{
+
+		(*(level + j) + k)->gridType = GE_PILLAR;
+
+		(*(level + j) + k)->collider.shapeType = COL_RECT;				//RECT COLLIDER					
+		(*(level + j) + k)->collider.position.x = (float)(j * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2);
+		(*(level + j) + k)->collider.position.y = (float)(k * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2);
+		(*(level + j) + k)->collider.width = (float)(GRID_UNIT_WIDTH);
+		(*(level + j) + k)->collider.height = (float)(GRID_UNIT_HEIGHT);
+
+		(*(level + j) + k)->isCollidable = true;
+		(*(level + j) + k)->isActive = true;
+		(*(level + j) + k)->hp = 5;
+		(*(level + j) + k)->gridAsset = GA_PILLAR;
+
 
 		}
 		else //SETS ANYOTHER CHARS TO VOID TILE
@@ -355,7 +373,7 @@ void GridDraw(Collider playerHitBox)
 			case GA_SWITCH:
 				//
 				CP_Settings_RectMode(CP_POSITION_CENTER);
-				if(!level[i][j].isActive)
+				if (!level[i][j].isActive)
 					CP_Settings_Fill(CP_Color_Create(255, 192, 203, 255));
 				else
 					CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
@@ -368,14 +386,14 @@ void GridDraw(Collider playerHitBox)
 			case GA_DOOR:
 				CP_Settings_ImageMode(CP_POSITION_CENTER);
 				if (level[i][j].isActive)
-				CP_Image_DrawSubImage(
-					envSpriteSheet,
-					(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
-					(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
-					GRID_UNIT_WIDTH + 2,
-					GRID_UNIT_HEIGHT + 2,
-					0, 128.0f, 64.0f, 192.0f,
-					255);
+					CP_Image_DrawSubImage(
+						envSpriteSheet,
+						(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
+						(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
+						GRID_UNIT_WIDTH + 2,
+						GRID_UNIT_HEIGHT + 2,
+						0, 128.0f, 64.0f, 192.0f,
+						255);
 				else
 					CP_Image_DrawSubImage(
 						envSpriteSheet,
@@ -430,6 +448,28 @@ void GridDraw(Collider playerHitBox)
 					128.0f, 128.0f, 192.0f, 192.0f,
 					255);
 				break;
+			case GA_PILLAR:
+				//
+				CP_Settings_RectMode(CP_POSITION_CENTER);
+				if (level[i][j].isActive)
+				{
+					CP_Settings_Fill(CP_Color_Create(0, 0, 255, 255));
+					CP_Graphics_DrawRect(
+						(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
+						(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
+						GRID_UNIT_WIDTH,
+						GRID_UNIT_HEIGHT);
+				}
+				else
+				{		
+					CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
+					CP_Graphics_DrawRect(
+						(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
+						(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
+						GRID_UNIT_WIDTH,
+						GRID_UNIT_HEIGHT);
+				}
+				break;
 			case GA_VOID:
 				/*
 				CP_Settings_RectMode(CP_POSITION_CENTER);
@@ -475,7 +515,13 @@ void GridUpdate(Collider playerHitBox, Collider arrowHitBox)
 					level[i][j].isActive = !level[i][j].isActive;
 				}
 			}
-			
+			if (level[i][j].gridType == GE_PILLAR)
+			{
+				if (level[i][j].hp <= 0)
+				{
+					level[i][j].isActive = false;
+				}
+			}
 				//GridDraw(i, j, playerHitBox);
 		}
 	}

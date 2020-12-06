@@ -26,11 +26,24 @@ void GameOverInit(bool win)
 	overlayCenter = CP_Vector_Set((float)CP_System_GetWindowWidth() / 2 + GetCameraPos().x, (float)CP_System_GetWindowHeight() / 2 + GetCameraPos().y);
 	lose = !win;
 	bgColor = CP_Color_Create(50, 50, 50, 150);
-	Score = CalculateScore(Boss1Timer, lose);
+	
+	switch (GetGameState())
+	{
+	case SCR_TUTORIAL:
+		Score = CalculateScore(tutTimer, lose);
+		break;
+	case SCR_LEVEL1:
+		Score = CalculateScore(Boss1Timer, lose);
+		break;
+	case SCR_LEVEL2:
+		Score = CalculateScore(Boss2Timer, lose);
+		break;
+	}
+	CalculateRank(Score);
 
-	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
-	menuList[MAIN_MENU] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBufferY, 250.f, 100.f, "Main Menu");
-	menuList[EXIT] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBufferY * 2, 250.f, 100.f, "Quit");
+	menuList[RETRY] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth()/4), overlayCenter.y, 250.f, 100.f, "Retry");
+	menuList[MAIN_MENU] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y + buttonBufferY, 250.f, 100.f, "Main Menu");
+	menuList[EXIT] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y + buttonBufferY * 2, 250.f, 100.f, "Quit");
 }
 
 void GameOverDraw(void)
@@ -50,12 +63,40 @@ void GameOverDraw(void)
 	{
 		CP_Font_DrawText("YOU WIN!", overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 4);
 	}
-	DisplayScore(overlayCenter.x, overlayCenter.y - (float)CP_System_GetWindowHeight() / 8, Boss1Timer, Score);
+
+	switch (GetGameState())
+	{
+	case SCR_TUTORIAL:
+		DisplayScore(overlayCenter.x - (float)CP_System_GetWindowWidth() / 4, overlayCenter.y + buttonBufferY, tutTimer, Score);
+		break;
+	case SCR_LEVEL1:
+		DisplayScore(overlayCenter.x - (float)CP_System_GetWindowWidth() / 4, overlayCenter.y + buttonBufferY, Boss1Timer, Score);
+		break;
+	case SCR_LEVEL2:
+		DisplayScore(overlayCenter.x - (float)CP_System_GetWindowWidth() / 4, overlayCenter.y + buttonBufferY, Boss2Timer, Score);
+		break;
+	}
 
 	// Draw Buttons
-	menuList[RETRY] = CreateButton(overlayCenter.x, overlayCenter.y, 250.f, 100.f, "Retry");
-	menuList[MAIN_MENU] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBufferY, 250.f, 100.f, "Main Menu");
-	menuList[EXIT] = CreateButton(overlayCenter.x, overlayCenter.y + buttonBufferY * 2, 250.f, 100.f, "Quit");
+	if (lose)
+	{
+		menuList[RETRY] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y, 250.f, 100.f, "Retry");
+	}
+	else
+	{
+		switch (GetGameState())
+		{
+		case SCR_LEVEL1:
+			menuList[RETRY] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y, 250.f, 100.f, "Continue");
+			break;
+		case SCR_LEVEL2:
+			menuList[RETRY] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y, 250.f, 100.f, "Restart");
+			break;
+		}		
+	}
+	menuList[MAIN_MENU] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y + buttonBufferY, 250.f, 100.f, "Main Menu");
+	menuList[EXIT] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y + buttonBufferY * 2, 250.f, 100.f, "Quit");
+
 	for (int i = 0; i < GAME_OVER_BUTTONS; i++)
 	{
 		if(menuList[i].isSelected == 1)
@@ -72,7 +113,20 @@ void GameOverButtonActivate()
 	switch (selectButton)
 	{
 	case RETRY:
-		SetGameState(GetGameState());
+		if(lose)
+			SetGameState(GetGameState());
+		else
+		{
+			switch (GetGameState())
+			{
+			case SCR_LEVEL1:
+				SetGameState(SCR_LEVEL2);
+				break;
+			case SCR_LEVEL2:
+				SetGameState(SCR_LEVEL1);
+				break;
+			}
+		}
 		break;
 	case MAIN_MENU:
 		SetGameState(SCR_MAIN_MENU);

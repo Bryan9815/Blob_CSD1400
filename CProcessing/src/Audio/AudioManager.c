@@ -96,11 +96,6 @@ void AudioL1Init(void)
 	CP_Sound_ResumeAll(); //resume if player paused and retry
 	MusicPlaying = true;
 	SFXPlaying = false;
-	//test if track is loaded
-	/*if (attackSFX && damageSFX && warningSFX)
-		printf("work");
-	else
-		printf("no work");*/
 }
 
 void AudioL1Play(void)

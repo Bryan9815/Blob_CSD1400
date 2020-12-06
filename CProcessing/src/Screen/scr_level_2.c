@@ -1,7 +1,7 @@
 #include "../GameLogic/ScreenManager.h"
 #include "scr_level_2.h"
 #include "../Audio/AudioManager.h"
-
+#include "../GameLogic/Score.h"
 
 void Level2Init(void) 
 {
@@ -13,8 +13,7 @@ void Level2Init(void)
 	Boss2Init();
 	Boss2.BossBody.hitbox.position = CP_Vector_Set(1425, 800);
 	AudioL1Init();
-	
-	//shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
+	Boss2Timer = 0.f;
 }
 
 void Level2Draw(Player* player)
@@ -22,7 +21,7 @@ void Level2Draw(Player* player)
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
 
 	GridDraw(player->pBody.hitbox);
-	Boss2Draw(Boss2);
+	Boss2Draw();
 	PlayerDraw(&newPlayer);
 	DrawArrow(&newPlayer.arrow);
 	switch (GetPlayState())
@@ -47,6 +46,7 @@ void Level2Update(Player* player)
 		PlayerUpdate(&newPlayer);
 		Boss2Battle();
 		AudioL1Play();
+		StageTime(&Boss2Timer);
 		bool dealdamage = ArrowStateCheck(&(newPlayer.pBody), &(Boss2.BossBody), &(newPlayer.arrow));
 		BossDamage(&dealdamage, &Boss2);
 		break;
@@ -58,6 +58,7 @@ void Level2Update(Player* player)
 		}
 		break;
 	}
+	GridUpdate(player->pBody.hitbox, player->arrow.aBody.hitbox);
 	CameraUpdate(&newPlayer.pBody.hitbox.position, GetFader());
 	Level2Draw(player);
 }

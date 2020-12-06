@@ -15,7 +15,6 @@ void Level1Init(void)
 	ArmorSlime.BossBody.hitbox.position = CP_Vector_Set(2000, 800);
 	AudioL1Init();
 	Boss1Timer = 0.f;
-	//shield = CP_Image_Load("././Assets/Shield1.png"); //the shield for boss 1 because the back has to be exposed
 }
 
 void LevelDraw(Player* player)
