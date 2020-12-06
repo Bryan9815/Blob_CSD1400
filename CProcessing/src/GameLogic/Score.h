@@ -5,7 +5,7 @@
 #define BUFFERSIZE 10
 
 float Score;
-float tutTimer, Boss1Timer;
+float tutTimer, Boss1Timer, Boss2Timer;
 char Rank;
 
 void StageTime(float *timer);

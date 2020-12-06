@@ -23,23 +23,23 @@ void BossInit(Boss *currentboss, int health, float size, CP_Vector startPos) //f
 }
 void BossDraw(Boss currentboss) //function to draw boss(es)
 {
-
-	//CP_Color BossColor = CP_Color_Create(0, 255, 255, 60);
-	//CP_Settings_Fill(BossColor);
 	CP_Image_DrawAdvanced(currentboss.bosssprite, 
 						  currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, 
 						 (currentboss.BossBody.hitbox.radius * 2), (currentboss.BossBody.hitbox.radius * 2),
 						  currentboss.bossAlpha, currentboss.BossBody.rotation);
-	//CP_Graphics_DrawCircle(currentboss.BossBody.hitbox.position.x, currentboss.BossBody.hitbox.position.y, (currentboss.BossBody.hitbox.radius*2));
 }
 
 void BossHealthDraw(Boss boss)
 {
 	CP_Settings_Fill(CP_Color_Create(50, 50, 50, 150));
 	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Graphics_DrawRect((boss.BossBody.hitbox.position.x - boss.BossBody.hitbox.radius), (boss.BossBody.hitbox.position.y - boss.BossBody.hitbox.radius - 10.f), (boss.BossBody.hitbox.radius * 2), 10.f);
+	CP_Graphics_DrawRect((boss.BossBody.hitbox.position.x - boss.BossBody.hitbox.radius), 
+						 (boss.BossBody.hitbox.position.y - boss.BossBody.hitbox.radius - 10.f),
+						 (boss.BossBody.hitbox.radius * 2), 10.f);
 	CP_Settings_Fill(CP_Color_Create(0, 255, 0, 255));
-	CP_Graphics_DrawRect((boss.BossBody.hitbox.position.x - boss.BossBody.hitbox.radius + 1.f),(boss.BossBody.hitbox.position.y - boss.BossBody.hitbox.radius - 9.f), (float)(boss.BossBody.hitbox.radius * 2 * boss.Health/boss.maxHealth), 8.f);
+	CP_Graphics_DrawRect((boss.BossBody.hitbox.position.x - boss.BossBody.hitbox.radius + 1.f),
+						 (boss.BossBody.hitbox.position.y - boss.BossBody.hitbox.radius - 9.f), 
+						 (float)(boss.BossBody.hitbox.radius * 2 * boss.Health/boss.maxHealth), 8.f);
 }
 
 void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //boss slowly moves toward player
@@ -52,14 +52,16 @@ void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //boss slowl
 	else
 		distance = 600.f * CP_System_GetDt();
 		
-	if (COL_Dist(currentboss->BossBody.hitbox, player.pBody.hitbox) >= (currentboss->BossBody.hitbox.radius + player.pBody.hitbox.radius + distance)) //boss destination does not overlap with player
+	if (COL_Dist(currentboss->BossBody.hitbox, player.pBody.hitbox) >= 
+		(currentboss->BossBody.hitbox.radius + player.pBody.hitbox.radius + distance)) //boss destination does not overlap with player
 	{
 		currentboss->BossBody.velocity = CP_Vector_Scale(DirVector, distance); //scale direction vector with speed over dt
 		GridCollisionCheck(&(currentboss->BossBody));
 	}
 	else
 	{
-		distance = COL_Dist(currentboss->BossBody.hitbox, player.pBody.hitbox) - (currentboss->BossBody.hitbox.radius + player.pBody.hitbox.radius); //find distance from player
+		distance = COL_Dist(currentboss->BossBody.hitbox, player.pBody.hitbox) 
+				- (currentboss->BossBody.hitbox.radius + player.pBody.hitbox.radius); //find distance from player
 		currentboss->BossBody.velocity = CP_Vector_Scale(DirVector, distance); //scale direction vector with remaining distance
 		GridCollisionCheck(&(currentboss->BossBody));
 	}
@@ -73,10 +75,6 @@ void BossRotation(Boss* currentboss, CP_Vector position)
 	CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
 	CP_Vector MoveDir = CP_Vector_Subtract(position, currentboss->BossBody.hitbox.position);
 
-	//if (position.x < currentboss->BossBody.hitbox.position.x)
-	//	currentboss->Rotation = CP_Vector_Angle(UpDir, MoveDir); //clockwise rotation of boss from upward dir
-	//else
-	//	currentboss->Rotation = 360.f - CP_Vector_Angle(UpDir,MoveDir); //find the larger angle if > 180 degrees
 	if (position.x < currentboss->BossBody.hitbox.position.x)
 		currentboss->BossBody.rotation = CP_Vector_Angle(UpDir, MoveDir); //clockwise rotation of boss from upward dir
 	else
@@ -91,7 +89,6 @@ void BossDamage(bool* hit, Boss* boss) // for boss invincibility between hits
 		if (*hit == true)
 		{
 			boss->Health--;
-			//ArmorSlime.Health--;
 			*hit = false;
 			CP_Sound_Play(damageSFX);
 			NoDamageTimer += CP_System_GetDt();

@@ -35,6 +35,9 @@ void GameOverInit(bool win)
 	case SCR_LEVEL1:
 		Score = CalculateScore(Boss1Timer, lose);
 		break;
+	case SCR_LEVEL2:
+		Score = CalculateScore(Boss2Timer, lose);
+		break;
 	}
 	CalculateRank(Score);
 
@@ -70,7 +73,7 @@ void GameOverDraw(void)
 		DisplayScore(overlayCenter.x - (float)CP_System_GetWindowWidth() / 4, overlayCenter.y + buttonBufferY, Boss1Timer, Score);
 		break;
 	case SCR_LEVEL2:
-		DisplayScore(overlayCenter.x - (float)CP_System_GetWindowWidth() / 4, overlayCenter.y + buttonBufferY, Boss1Timer, Score);
+		DisplayScore(overlayCenter.x - (float)CP_System_GetWindowWidth() / 4, overlayCenter.y + buttonBufferY, Boss2Timer, Score);
 		break;
 	}
 
