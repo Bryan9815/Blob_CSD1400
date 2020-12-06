@@ -266,7 +266,7 @@ void PlayerMovement(Player* player)
 
 				//player->rotation = 225.0f;
 			}
-			if (GetBlobInputTriggered(BLOB_INTERACT) && (player->numDodge > 0))
+			if (CP_Input_KeyTriggered(KEY_SPACE) && (player->numDodge > 0))
 			{
 				player->numDodge -= 1;
 				if (playerState == STILL)
