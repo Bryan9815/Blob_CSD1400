@@ -7,7 +7,6 @@
 #include "../GameLogic/ScreenManager.h"
 #include <math.h>
 
-static float BossRange = 500.f;
 static float AttackTimer = 0.f;
 static float Stuntime = 0.f;
 static int AttackCount = 0;
@@ -19,7 +18,7 @@ CP_Color WarningColor;
 
 void Boss2Init(void)
 {
-	BossInit(&Boss2, 5, 60.0f, CP_Vector_Set(200.f,200.f));
+	BossInit(&Boss2, 3, 60.0f, CP_Vector_Set(200.f,200.f));
 	Boss2.bosssprite = CP_Image_Load("././Assets/Boss1.png");
 	bossState = IDLE_B2;
 	AttackTimer = Stuntime = 0.f; //reset timers

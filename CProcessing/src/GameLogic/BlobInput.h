@@ -13,9 +13,9 @@ typedef enum BlobInput {
 }BlobInput;
 
 typedef struct BlobKeys {
-	CP_KEY key[3];
-	const char* c_key[3];
-	char new_c_key[3][40];
+	CP_KEY key[2];
+	const char* c_key[2];
+	char new_c_key[2][40];
 }BlobKeys;
 
 void BlobInputInit();
