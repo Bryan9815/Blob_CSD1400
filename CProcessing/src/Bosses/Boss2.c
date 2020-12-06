@@ -28,11 +28,6 @@ void Boss2Init(void)
 	WarningColor = CP_Color_Create(0, 0, 0, 175);
 }
 
-void Boss2Movement(Player player, GridUnit* grid) //boss slowly moves toward player
-{
-	
-}
-
 void B2_StateChange(Player player) //this determines WHEN the boss does its actions
 {
 	float dt = CP_System_GetDt();
@@ -60,6 +55,12 @@ void B2_StateChange(Player player) //this determines WHEN the boss does its acti
 			}
 			shootState = WARNING;
 			AttackTimer = 0.f;
+
+			if (SFXPlaying == false)
+			{
+				CP_Sound_Play(warningSFX);
+				SFXPlaying = true;
+			}
 		}
 		break;
 	default:
@@ -167,6 +168,10 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 			{
 				for (int i = 0; i < 3; i++)
 				{
+					if (SFXPlaying == true)
+					{
+						CP_Sound_Play(attackSFX);
+					}
 					CP_Vector dirVec = CP_Vector_Set(0, 1);
 					CP_Matrix rotationProj = CP_Matrix_Rotate(Boss2.BossBody.rotation - 10 + (i * 10));
 					dirVec = CP_Vector_MatrixMultiply(rotationProj, dirVec);
@@ -177,6 +182,7 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 			}
 			if (AttackCount == 3)
 			{
+				SFXPlaying = false;
 				bossState = IDLE_B2;
 				AttackCount = 0;
 				shootState = NOT_ATTACK;
@@ -209,6 +215,10 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 			{
 				for (int i = 0; i < 10; i++)
 				{
+					if (SFXPlaying == true)
+					{
+						CP_Sound_Play(attackSFX);
+					}
 					CP_Vector dirVec = CP_Vector_Set(0, 1);
 					CP_Matrix rotationProj = CP_Matrix_Rotate(Boss2.BossBody.rotation + (i * 36));
 					dirVec = CP_Vector_MatrixMultiply(rotationProj, dirVec);
@@ -219,6 +229,7 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 			}
 			if (AttackCount == 5)
 			{
+				SFXPlaying = false;
 				bossState = IDLE_B2;
 				AttackCount = 0;
 				shootState = NOT_ATTACK;
@@ -257,12 +268,17 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 					CP_Matrix rotationProj = CP_Matrix_Rotate(Boss2.BossBody.rotation + 45 + (i * (360 / 50)));
 					dirVec = CP_Vector_MatrixMultiply(rotationProj, dirVec);
 					NewProjectile(Boss2.BossBody.hitbox.position, dirVec, 7.5f);
+					if (SFXPlaying == true)
+					{
+						CP_Sound_Play(attackSFX);
+					}
 				}
 				AttackCount++;
 				AttackTimer = 0.0f;
 			}
 			if (AttackCount == 1)
 			{
+				SFXPlaying = false;
 				bossState = IDLE_B2;
 				AttackCount = 0;
 				shootState = NOT_ATTACK;
