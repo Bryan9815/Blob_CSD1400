@@ -462,7 +462,7 @@ void GridDraw(Collider playerHitBox)
 				}
 				else
 				{		
-					CP_Settings_Fill(CP_Color_Create(255, 0, 255, 255));
+					CP_Settings_Fill(CP_Color_Create(255, 192, 203, 255));
 					CP_Graphics_DrawRect(
 						(float)(i * GRID_UNIT_WIDTH + GRID_UNIT_WIDTH / 2),
 						(float)(j * GRID_UNIT_HEIGHT + GRID_UNIT_HEIGHT / 2),
