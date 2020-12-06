@@ -94,6 +94,12 @@ void OptionsDraw(void)
 {
 	CP_Settings_Background(bgColor);
 
+	CP_Settings_TextSize(125.0f);
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	CP_Font_DrawText("OPTIONS", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 3);
+	
+
+
 	// Draw Buttons
 	for (int i = 0; i < OPTIONS_BUTTONS; i++)
 	{
