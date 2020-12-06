@@ -456,7 +456,7 @@ void ControlMenuActivate(void)
 	}
 }
 
-void SoundMenuActiviate(void)
+void SoundMenuActivate(void)
 {
 	if (soundInputY == 2)
 		overlayNum = OPTIONS_BUTTONS;
@@ -600,7 +600,7 @@ void OptionsInput(void)
 						soundMenu[soundInputY][soundInputX].isSelected = 1;
 					else if (CP_Input_MouseReleased(MOUSE_BUTTON_1))
 					{
-						SoundMenuActiviate();
+						SoundMenuActivate();
 						soundMenu[soundInputY][soundInputX].isSelected = 0;
 						mouseCheck = true;
 					}
@@ -614,7 +614,7 @@ void OptionsInput(void)
 				}
 				if (GetBlobInputTriggered(BLOB_INTERACT))
 				{
-					ControlMenuActivate();
+					SoundMenuActivate();
 				}
 				break;
 			case CONTROLS:
