@@ -18,7 +18,7 @@ int customInputX, customInputY;
 int soundInputX, soundInputY;
 int changingInput;
 bool mouseCheck;
-Button customInputMenu[BLOB_PAUSE+2][4];
+Button customInputMenu[BLOB_PAUSE+2][3];
 Button soundMenu[SFX + 2][3];
 CP_Vector mousePos;
 
@@ -27,11 +27,20 @@ void CustomInputButtonsInit(void)
 	mouseCheck = false;
 	for (int i = 0; i <= BLOB_PAUSE; i++)
 	{
-		customInputMenu[i][0] = CreateButton((float)CP_System_GetWindowWidth() / 6, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobInputName(i));
+		customInputMenu[i][0] = CreateButton((float)CP_System_GetWindowWidth() / 2 + ((float)CP_System_GetWindowWidth() / 3 * -1), (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobInputName(i));
 		customInputMenu[i][0].objColor = WHITE;
-		for (int j = 1; j <= 3; j++)
+		for (int j = 1; j <= 2; j++)
 		{
-			customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 6 + 350.f * j, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
+			/*switch (j)
+			{
+			case 1:
+				customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 2 - 450.f, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
+				break;
+			case 2:
+				customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 2 + 450.f, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
+				break;
+			}			*/
+			customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 2 + ((float)CP_System_GetWindowWidth() / 3 * (j-1)), (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
 			customInputMenu[i][j].isSelected = 0;
 			customInputMenu[i][j].objColor = WHITE;
 		}
@@ -140,7 +149,7 @@ void OptionsDraw(void)
 				CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 				CP_Font_DrawText(customInputMenu[i][0].text, customInputMenu[i][0].posX, customInputMenu[i][0].posY);
 			}
-			for (int j = 1; j < 4; j++)
+			for (int j = 1; j < 3; j++)
 			{
 				if (i != BLOB_PAUSE + 1)
 				{
@@ -620,13 +629,13 @@ void OptionsInput(void)
 				if (GetBlobInputTriggered(BLOB_LEFT))
 				{
 					if (customInputX == 1)
-						customInputX = 3;
+						customInputX = 2;
 					else
 						customInputX--;
 				}
 				else if (GetBlobInputTriggered(BLOB_RIGHT))
 				{
-					if (customInputX == 3)
+					if (customInputX == 2)
 						customInputX = 1;
 					else
 						customInputX++;
