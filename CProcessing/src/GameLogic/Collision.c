@@ -102,59 +102,7 @@ CP_Vector ArrowReflection(Body* entity, CP_Vector n)
 	return r;
 }
 
-//bool checkSide(CP_Vector c1, CP_Vector c2, CP_Vector center)
-//{
-//	return ((c2.x - c1.x) * (center.y - c1.y) - (c2.y - c1.y) * (center.x - c1.x)) >= 0;
-//}
-//
-////Buggy with corners
-//CP_Vector Circle_Intersect_Rect(Collider circle, Collider rect)
-//{
-//	CP_Vector v1, v2, v3, v4; //rect vertices
-//	v1 = CP_Vector_Set(rect.position.x - rect.width / 2 + 1, rect.position.y - rect.height / 2 + 1); //Top left
-//	v2 = CP_Vector_Set(rect.position.x + rect.width / 2 + 1, rect.position.y - rect.height / 2 + 1); //Top Right
-//	v3 = CP_Vector_Set(rect.position.x + rect.width / 2 + 1, rect.position.y + rect.height / 2 + 1);  //Bottom Right
-//	v4 = CP_Vector_Set(rect.position.x - rect.width / 2 + 1, rect.position.y + rect.height / 2 + 1);  //Bottom left
-//
-//	CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
-//
-//	bool isAboveV1V3 = checkSide(v3, v1, circle.position);
-//	bool isAboveV2V4 = checkSide(v2, v4, circle.position);
-//
-//
-//
-//	if (isAboveV1V3)
-//	{
-//		if (isAboveV2V4)
-//		{
-//			//Top Edge Intersect
-//			printf("Top Edge\n");
-//			n = CP_Vector_Set(0.0f, -1.0f);
-//			
-//		}
-//		else
-//		{
-//			printf("Right Edge\n");
-//			n = CP_Vector_Set(1.0f, 0.0f);
-//		}
-//	}
-//	else
-//	{
-//		if (isAboveV2V4)
-//		{
-//			//Left Edge Intersect
-//			printf("Left Edge\n");
-//			n = CP_Vector_Set(-1.0f, 0.0f);
-//		}
-//		else
-//		{
-//			printf("Bottom Edge\n");
-//			n = CP_Vector_Set(0.0f, 1.0f);
-//		}
-//	}
-//	return n;
-//}
-
+//End me now
 CP_Vector Get_CircleRectCOL_Side(Collider circle, Collider rect, CP_Vector v, CP_Vector startPos)
 {
 	CP_Vector v1, v2, v3, v4, n; //rect vertices
@@ -181,17 +129,6 @@ CP_Vector Get_CircleRectCOL_Side(Collider circle, Collider rect, CP_Vector v, CP
 		//Top Edge Intersect
 		printf("Top Edge\n");
 		n = CP_Vector_Set(0.0f, -1.0f);
-
-		//if (v.y > 0)
-		//{
-		//	//Reflect off top
-		//}
-		//else if (v.y < 0)
-		//{
-		//	//Could be Left, Right, or Bottom
-		//	
-		//	//Reflect off Bottom
-		//}
 	}
 	else if (rightAngleA < rightAngle)
 	{
@@ -203,15 +140,6 @@ CP_Vector Get_CircleRectCOL_Side(Collider circle, Collider rect, CP_Vector v, CP
 	{
 		printf("Bottom Edge\n");
 		n = CP_Vector_Set(0.0f, 1.0f);
-		////Closet to Bottom
-		//if (v.y < 0)
-		//{
-		//	//Reflect off Bottom
-		//}
-		//else if (v.y > 0)
-		//{
-		//	//Reflect off Bottom
-		//}
 	}
 	else if (leftAngleA < leftAngle)
 	{
@@ -222,7 +150,25 @@ CP_Vector Get_CircleRectCOL_Side(Collider circle, Collider rect, CP_Vector v, CP
 	return n;
 }
 
-//Shamelessly stolen from Jia Rong, thanks btw
+bool WallCollision(Body* entity)
+{
+	bool Colliding = false;
+	for (int i = 0; i < GetLevelWidth(); i++)
+	{
+		for (int j = 0; j < GetLevelHeight(); j++)
+		{
+			Collider wallCol = level[i][j].collider;
+			Collider entityCol = entity->hitbox;
+			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH || level[i][j].gridType == GE_DOOR))
+			{
+				Colliding = true;
+				return Colliding;
+			}
+		}
+	}
+	return Colliding;
+}  
+
 bool ArrowCollision(Body* entity, CP_Vector startPos)
 {
 	bool Colliding = false;
@@ -242,7 +188,6 @@ bool ArrowCollision(Body* entity, CP_Vector startPos)
 				{
 					entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, offset);
 				}
-
 				CP_Vector n = CP_Vector_Set(0.0f, 0.0f);
 				CP_Vector r = entity->velocity;
 
@@ -253,10 +198,9 @@ bool ArrowCollision(Body* entity, CP_Vector startPos)
 					printf("Offset\n");
 					entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, offset);
 				}
-
 				entity->velocity = r;
-
 				entity->hitbox.position = CP_Vector_Add(entity->hitbox.position, CP_Vector_Scale(entity->velocity, 20));
+				
 				Colliding = true;
 
 				if (level[i][j].gridType == GE_PILLAR && level[i][j].isActive == false)
