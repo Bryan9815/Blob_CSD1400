@@ -62,8 +62,7 @@ void MenuButtonActivate()
 	{
 	case START:
 		AudioMenuExit();
-		//SetGameState(SCR_TUTORIAL);
-		SetGameState(SCR_LEVEL2);
+		SetGameState(SCR_TUTORIAL);
 		break;
 	case OPTION:
 		SetGameState(SCR_OPTION);

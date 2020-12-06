@@ -75,9 +75,25 @@ void GameOverDraw(void)
 	}
 
 	// Draw Buttons
-	menuList[RETRY] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y, 250.f, 100.f, "Retry");
+	if (lose)
+	{
+		menuList[RETRY] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y, 250.f, 100.f, "Retry");
+	}
+	else
+	{
+		switch (GetGameState())
+		{
+		case SCR_LEVEL1:
+			menuList[RETRY] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y, 250.f, 100.f, "Continue");
+			break;
+		case SCR_LEVEL2:
+			menuList[RETRY] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y, 250.f, 100.f, "Restart");
+			break;
+		}		
+	}
 	menuList[MAIN_MENU] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y + buttonBufferY, 250.f, 100.f, "Main Menu");
 	menuList[EXIT] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y + buttonBufferY * 2, 250.f, 100.f, "Quit");
+
 	for (int i = 0; i < GAME_OVER_BUTTONS; i++)
 	{
 		if(menuList[i].isSelected == 1)
@@ -94,7 +110,20 @@ void GameOverButtonActivate()
 	switch (selectButton)
 	{
 	case RETRY:
-		SetGameState(GetGameState());
+		if(lose)
+			SetGameState(GetGameState());
+		else
+		{
+			switch (GetGameState())
+			{
+			case SCR_LEVEL1:
+				SetGameState(SCR_LEVEL2);
+				break;
+			case SCR_LEVEL2:
+				SetGameState(SCR_LEVEL1);
+				break;
+			}
+		}
 		break;
 	case MAIN_MENU:
 		SetGameState(SCR_MAIN_MENU);
