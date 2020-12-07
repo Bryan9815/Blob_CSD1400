@@ -17,19 +17,21 @@ static Button menuList[MAIN_MENU_BUTTONS];
 int selectButton;
 bool mouseCheck;
 CP_Vector mousePos;
+CP_Image mainMenuImg;
 
 void MainMenuInit(void)
 {
 	LoadGame();
+	mainMenuImg = CP_Image_Load("././Assets/MainMenuScr.png");
 	selectButton = 0;
 	mouseCheck = false;
 	bgColor = CP_Color_Create(0, 0, 0, 255);
-	float buttonBufferY = 125.f;
-
-	menuList[START] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, 250.f, 100.f, "Start");
-	menuList[OPTION] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 250.f, 100.f, "Options");
-	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 250.f, 100.f, "Credits");
-	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 250.f, 100.f, "Quit");
+	float buttonBufferY = 90.f;
+	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
+	menuList[START] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, 200.f, 75.f, "Start");
+	menuList[OPTION] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY, 200.f, 75.f, "Options");
+	menuList[CREDITS] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 2, 200.f, 75.f, "Credits");
+	menuList[EXIT] = CreateButton((float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2 + buttonBufferY * 3, 200.f, 75.f, "Quit");
 	AudioMenuInit();
 }
 
@@ -38,12 +40,14 @@ void MainMenuInit(void)
 void MainMenuDraw(void)
 {
 	CP_Settings_Background(bgColor);
+	CP_Settings_ImageMode(CP_POSITION_CENTER);
+	CP_Image_Draw(mainMenuImg, (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 2, (float)CP_System_GetWindowWidth(), (float)CP_System_GetWindowHeight(), 255);
 
 	//Title
-	CP_Settings_TextSize(200.0f);
+	//CP_Settings_TextSize(200.0f);
+	
+	//CP_Font_DrawText("BLOB", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 3);
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
-	CP_Font_DrawText("BLOB", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() / 3);
-
 	// Draw Buttons
 	for (int i = 0; i < MAIN_MENU_BUTTONS; i++)
 	{
@@ -143,4 +147,5 @@ void MainMenuUpdate(void)
 
 void MainMenuExit(void)
 {	
+	CP_Image_Free(&mainMenuImg);
 }

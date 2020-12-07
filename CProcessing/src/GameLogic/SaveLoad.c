@@ -1,19 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ScreenManager.h"
+#include <string.h>
 
 char fileName[] = "././savedata.txt";
 
-#define DATA_ELEMENTS 3 //Number of elements to save inc of last line
+#define DATA_ELEMENTS 9 //Number of elements to save inc of last line
 #define BUFFER 255
 
 typedef struct Data
 {
-    //char dataStr[BUFFER];
     char* dataStr;
+
 }Data;
 
-//Data gameData[DATA_ELEMENTS];//Maybe use malloc for this
 Data * gameData;
 
 void LoadData(FILE* stream)
@@ -43,16 +43,28 @@ void LoadData(FILE* stream)
 
 
         //Volume
-        if ((gameData)->dataStr) 
-            SetBGMVolume((float)atof(gameData->dataStr));               //printf("Volume is set to %f, from %s\n", GetBGMVolume(), gameData[0].dataStr);
+        //if ((gameData)->dataStr) 
+        SetBGMVolume((float)atof(gameData->dataStr));               //printf("Volume is set to %f, from %s\n", GetBGMVolume(), gameData[0].dataStr);
             
-        if ((gameData[1].dataStr))
-            SetSFXVolume((float)atof((gameData + 1)->dataStr));         //printf("Volume is set to %f, from %s\n", GetSFXVolume(), gameData[1].dataStr);
-                    
-
-        for (size_t j = 0; j < DATA_ELEMENTS; j++)
+        //if ((gameData[1].dataStr))
+        SetSFXVolume((float)atof((gameData + 1)->dataStr));         //printf("Volume is set to %f, from %s\n", GetSFXVolume(), gameData[1].dataStr);
+           
+        /*
+        for (size_t j = 0; j < BLOB_PAUSE + 1; j++)
         {
-            free((gameData + j)->dataStr);
+            CP_KEY key0, key1, key2;
+            char c_key0[40], c_key1[40], c_key2[40];
+
+            int errorcheck = sscanf_s((gameData + 2 + j)->dataStr, "%ld %ld %ld %s %s %s", &key0, &key1, &key2, c_key0, 40, c_key1, 40, c_key2, 40);
+
+            printf("%d %d %d %s %s %s, %d\n", key0, key1, key2, c_key0, c_key1, c_key2, errorcheck);
+            if(errorcheck == 6)
+                keys[j] = CreateBlobButton(key0, key1, key2, c_key0, c_key1, c_key2);
+        }*/
+        
+        for (size_t k = 0; k < DATA_ELEMENTS; k++)
+        {
+            free((gameData + k)->dataStr);
         }
     }
     free(gameData);
@@ -75,20 +87,27 @@ void LoadGame()
 
 void SaveData(FILE * stream) 
 {
-    char _buffer[50];
+    char _buffer[BUFFER];
 
     //Volume
-    sprintf_s(_buffer, 50, "%.2f", GetBGMVolume());
+    sprintf_s(_buffer, BUFFER, "%.2f", GetBGMVolume());
     fprintf(stream, "%s\n", _buffer);
 
-    sprintf_s(_buffer, 50, "%.2f", GetSFXVolume());
+    sprintf_s(_buffer, BUFFER, "%.2f", GetSFXVolume());
     fprintf(stream, "%s\n", _buffer);
 
+    //Controls
+    /*for (size_t i = 0; i < BLOB_PAUSE + 1; i++)
+    {
+        sprintf_s(_buffer, BUFFER, "%ld %ld %ld %s %s %s", keys[i].key[0], keys[i].key[1], keys[i].key[2], keys[i].c_key[0], keys[i].c_key[1], keys[i].c_key[2]);
+        fprintf(stream, "%s\n", _buffer);
+    }*/
+   
     //Score
 
 
 
-    //Controls
+    
 
 }
 
