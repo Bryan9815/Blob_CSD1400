@@ -47,7 +47,8 @@ int main(void)
 	*/
 	//free(asd);
 #else
-	CP_System_FullscreenAdvanced(WINDOW_WIDTH, WINDOW_HEIGHT);
+	CP_System_Fullscreen();
+	//CP_System_FullscreenAdvanced(WINDOW_WIDTH, WINDOW_HEIGHT);
 #endif
 
 	CP_System_SetFrameRate(60.0f);
