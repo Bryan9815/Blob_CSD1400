@@ -1,7 +1,7 @@
 //---------------------------------------------------------
 // file:	main.c
-// author:	[NAME]
-// email:	[DIGIPEN EMAIL ADDRESS]
+// author:	[Phang Jia Rong]
+// email:	[jiarong.phang@digipen.edu]
 //
 // brief:	Main entry point for the sample project
 //			of the CProcessing library
@@ -20,7 +20,6 @@
 
 static const float WINDOW_SCALE = 0.8f;
 static const int WINDOW_WIDTH = 1600, WINDOW_HEIGHT = 900;
-
 
 // main() the starting point for the program
 // CP_Engine_SetNextGameState() tells CProcessing which functions to use for init, update and exit
