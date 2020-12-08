@@ -1,3 +1,12 @@
+﻿//---------------------------------------------------------
+// file:	Camera.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Camera for moving the screen
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include <cprocessing.h>
 #include "../GameLogic/BlobInput.h"
 #include "Camera.h"
@@ -13,6 +22,7 @@ static CP_Matrix scaleMatrix, rotationMatrix, translationMatrix;
 float shakeTimer, shakeValue;
 CameraMode camMode;
 
+// Initializes Camera variables
 void CameraInit(CP_Vector* targetPos, CameraMode cameraMode)
 {
 	centerX = CP_System_GetWindowWidth() / 2.0f;
@@ -25,12 +35,14 @@ void CameraInit(CP_Vector* targetPos, CameraMode cameraMode)
 	camMode = cameraMode;
 }
 
+// Shakes the screen
 void ScreenShake(float timer, float shakeVal)
 {
 	shakeTimer = timer;
 	shakeValue = shakeVal;
 }
 
+// Update function
 void CameraUpdate(CP_Vector* targetPos, Fader* fader)
 {
 	float dt = CP_System_GetDt();
@@ -69,22 +81,26 @@ void CameraUpdate(CP_Vector* targetPos, Fader* fader)
 	CP_Settings_ApplyMatrix(translationMatrix);
 }
 
+// Getter function that returns the camera's position
 CP_Vector GetCameraPos()
 {
 	CP_Vector returnVec = CP_Vector_Set(roundf(-cameraPos.x), roundf(-cameraPos.y));
 	return returnVec;
 }
 
+// Changes between Lock and Panning camera modes
 void SetCameraMode(CameraMode cameraMode)
 {
 	camMode = cameraMode;
 }
 
+// Getter function that returns current camera mode
 CameraMode GetCameraMode(void)
 {
 	return camMode;
 }
 
+// Exit function
 void CameraExit(void)
 {
 

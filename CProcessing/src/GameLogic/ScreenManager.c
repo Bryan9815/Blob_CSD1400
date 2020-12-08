@@ -1,3 +1,13 @@
+﻿//---------------------------------------------------------
+// file:	ScreenManager.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Manages transition from screen to screen
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #pragma once
 #include "ScreenManager.h"
 #include "../Screen/scr_intro.h"
@@ -16,16 +26,19 @@ GameState currGameState = SCR_INTRO;
 PlayState currPlayState;
 Fader fader;
 
+// Fades screen to black
 void ScreenStartFade(FadeType fadeType) 
 {
 	StartFade(&fader, fadeType);
 }
 
+// Getter function for fader
 Fader* GetFader()
 {
 	return &fader;
 }
 
+// Initializes PlayState and calls Init functions of each screen
 void GameInit(void)
 {
 	currPlayState = GAME_PLAY;
@@ -62,17 +75,20 @@ void GameInit(void)
 	ScreenStartFade(FADE_OUT);
 }
 
+// Getter function for GameState
 GameState GetGameState(void)
 {
 	return currGameState;
 }
 
+// Setter function for GameState
 void SetGameState(GameState nextGameState)
 {
 	currGameState = nextGameState;
 	CP_Engine_SetNextGameStateForced(GameInit, GameUpdate, GameExit);
 }
 
+// Draws overlays above the current screen
 void DrawOverlay(void)
 {
 	switch (currPlayState)
@@ -90,6 +106,7 @@ void DrawOverlay(void)
 	}
 }
 
+// Calls update functions of other screens
 void GameUpdate(void)
 {
 	switch (currGameState)
@@ -121,22 +138,26 @@ void GameUpdate(void)
 	UpdateFade(&fader); 
 }
 
+// Getter function for PlayState
 PlayState GetPlayState(void)
 {
 	return currPlayState;
 }
 
+// Setter function for PlayState
 void SetPlayState(PlayState nextPlayState)
 {
 	currPlayState = nextPlayState;
 }
 
+// Ends the game in scr_tutorial, scr_level_1 and scr_level_2 as either a win or lost
 void SetGameOver(bool win)
 {
 	GameOverInit(win);
 	SetPlayState(GAME_OVER);
 }
 
+// Resets fader and GameState and calls exit function of each screen
 void GameExit(void)
 {
 	ResetFader(GetFader());

@@ -1,5 +1,15 @@
+﻿//---------------------------------------------------------
+// file:	Button.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Create and Draw Button objects
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include "Button.h"
 
+// Create Button
 Button CreateButton(float x, float y, float w, float h, const char* text)
 {
 	Button newButton;
@@ -12,6 +22,7 @@ Button CreateButton(float x, float y, float w, float h, const char* text)
 	return newButton;
 }
 
+// Draw Button
 void DrawButton(Button button, float textSize, float scale, CP_Color buttonColor)
 {
 	CP_Settings_Fill(buttonColor);

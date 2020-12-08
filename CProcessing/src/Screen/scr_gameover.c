@@ -1,3 +1,14 @@
+﻿//---------------------------------------------------------
+// file:	scr_gameover.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Ends the game after player dies or the boss is
+//			killed and creates a menu over the current screen
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include <cprocessing.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
@@ -19,6 +30,7 @@ bool mouseCheck;
 bool lose;
 CP_Vector mousePos, overlayCenter;
 
+// Initializes GameOver
 void GameOverInit(bool win)
 {
 	selectButton = 0;
@@ -45,7 +57,7 @@ void GameOverInit(bool win)
 	menuList[MAIN_MENU] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y + buttonBufferY, 250.f, 100.f, "Main Menu");
 	menuList[EXIT] = CreateButton((overlayCenter.x + (float)CP_System_GetWindowWidth() / 4), overlayCenter.y + buttonBufferY * 2, 250.f, 100.f, "Quit");
 }
-
+// Draws GameOver
 void GameOverDraw(void)
 {
 	CP_Settings_Fill(bgColor);
@@ -108,6 +120,7 @@ void GameOverDraw(void)
 	}
 }
 
+// Activates the selected button in the menu
 void GameOverButtonActivate()
 {
 	switch (selectButton)
@@ -139,6 +152,7 @@ void GameOverButtonActivate()
 	}
 }
 
+// Updates GameOver
 void GameOverUpdate(void)
 {
 	CP_Vector oldMousePos = CP_Vector_Set(mousePos.x, mousePos.y);
@@ -202,8 +216,7 @@ void GameOverUpdate(void)
 	GameOverDraw();
 }
 
-
-
+// Exits GameOver
 void GameOverExit(void)
 {	
 	

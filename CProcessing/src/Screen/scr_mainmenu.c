@@ -1,3 +1,12 @@
+﻿//---------------------------------------------------------
+// file:	scr_options.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Main menu [Play, Options, Credit, Exit]
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include <cprocessing.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
@@ -19,6 +28,7 @@ bool mouseCheck;
 CP_Vector mousePos;
 CP_Image mainMenuImg;
 
+// Initializes Main Menu
 void MainMenuInit(void)
 {
 	LoadGame();
@@ -35,8 +45,7 @@ void MainMenuInit(void)
 	AudioMenuInit();
 }
 
-
-
+// Draws Main Menu
 void MainMenuDraw(void)
 {
 	CP_Settings_Background(bgColor);
@@ -60,6 +69,7 @@ void MainMenuDraw(void)
 	}
 }
 
+// Activats the selected button in the menu
 void MenuButtonActivate()
 {
 	switch (selectButton)
@@ -82,6 +92,7 @@ void MenuButtonActivate()
 	}
 }
 
+// Updates Main Menu
 void MainMenuUpdate(void)
 {
 	CP_Vector oldMousePos = CP_Vector_Set(mousePos.x, mousePos.y);
@@ -143,8 +154,7 @@ void MainMenuUpdate(void)
 	MainMenuDraw();
 }
 
-
-
+// Exits Main Menu
 void MainMenuExit(void)
 {	
 	CP_Image_Free(&mainMenuImg);

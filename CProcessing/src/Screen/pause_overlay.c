@@ -1,3 +1,13 @@
+﻿//---------------------------------------------------------
+// file:	pause_overlay.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Pauses the game and creates a menu over the current screen
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include <cprocessing.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
@@ -10,7 +20,7 @@ typedef enum {
 	MAIN_MENU,
 	EXIT,
 }ButtonList;
-;
+
 static Button menuList[GAME_OVER_BUTTONS];
 int selectButton;
 float buttonBuffer = 125.f;
@@ -18,12 +28,14 @@ bool mouseCheck;
 bool lose;
 CP_Vector mousePos, overlayCenter;
 
+// Intializes Pause_Overlay
 void PauseInit()
 {
 	selectButton = 0;
 	mouseCheck = false;
 }
 
+// Draws Pause_Overlay
 void PauseDraw(void)
 {
 	CP_Settings_Fill(CP_Color_Create(50, 50, 50, 150));
@@ -51,6 +63,7 @@ void PauseDraw(void)
 	}
 }
 
+// Activates the selected button in the pause menu
 void PauseButtonActivate()
 {
 	switch (selectButton)
@@ -72,6 +85,7 @@ void PauseButtonActivate()
 	}
 }
 
+// Updates Pause_Overlay
 void PauseUpdate(void)
 {
 	CP_Vector oldMousePos = CP_Vector_Set(mousePos.x, mousePos.y);
@@ -135,8 +149,7 @@ void PauseUpdate(void)
 	PauseDraw();
 }
 
-
-
+// Exits Pause_Overlay
 void PauseExit(void)
 {	
 	

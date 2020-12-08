@@ -1,3 +1,12 @@
+﻿//---------------------------------------------------------
+// file:	BlobInput.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Get and set custom inputs for the whole game
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #pragma once
 #include "BlobInput.h"
 #include <stdio.h>
@@ -5,6 +14,7 @@
 BlobKeys keys[6];	//Use Enum Any as the greatest num instead of hardcoding it at 6
 char turnInputToChar[40];
 
+// Creates BlobKey
 BlobKeys CreateBlobButton(CP_KEY k1, CP_KEY k2, const char* ck1, const char* ck2)
 {
 	BlobKeys newKey;
@@ -17,6 +27,7 @@ BlobKeys CreateBlobButton(CP_KEY k1, CP_KEY k2, const char* ck1, const char* ck2
 	return newKey;
 }
 
+// Initializes default controls
 void BlobInputInit()
 {
 	keys[BLOB_UP] = CreateBlobButton(KEY_UP, KEY_W, "UP", "W");
@@ -28,6 +39,7 @@ void BlobInputInit()
 	//keys[BLOB_SKIP] = CreateBlobButton(KEY_X, KEY_X, KEY_X, "X", "X", "X");
 }
 
+// Checks if a BlobInput was triggered
 int GetBlobInputTriggered(BlobInput input)
 {
 	for (int i = 0; i < 3; i++)
@@ -38,6 +50,7 @@ int GetBlobInputTriggered(BlobInput input)
 	return 0;
 }
 
+// Checks if a BlobInput is held down
 int GetBlobInputDown(BlobInput input)
 {
 	for (int i = 0; i < 3; i++)
@@ -59,6 +72,7 @@ int GetBlobInputDown(BlobInput input)
 	return 0;
 }
 
+// Checks if a BlobInput was released
 int GetBlobInputReleased(BlobInput input)
 {
 	for (int i = 0; i < 3; i++)
@@ -69,6 +83,7 @@ int GetBlobInputReleased(BlobInput input)
 	return 0;
 }
 
+// Returns the requested BlobInput name
 const char* GetBlobInputName(BlobInput input)
 {
 	switch (input)
@@ -97,14 +112,16 @@ const char* GetBlobInputName(BlobInput input)
 	}
 }
 
+// Returns the requested BlobKey name
 const char* GetBlobKeyName(BlobInput input, int keyNum)
 {
-	if (input <= BLOB_PAUSE && keyNum < 3)
+	if (input <= BLOB_PAUSE && keyNum < 2)
 		return keys[input].c_key[keyNum];
 	else
-		return keys[BLOB_PAUSE].c_key[2];
+		return keys[BLOB_PAUSE].c_key[1];
 }
 
+// Setter function for BlobInput, also checks if new input is already in a different BlobInput and swaps them if it is
 void EditBlobInput(BlobInput blobInput, int keyNum, CP_KEY newInput)
 {
 	for (int i = 0; i <= BLOB_PAUSE; i++)

@@ -1,3 +1,13 @@
+﻿//---------------------------------------------------------
+// file:	Boss2.h
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Header file for Boss2.c
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #pragma once
 #include <cprocessing.h>
 #include "Boss.h"

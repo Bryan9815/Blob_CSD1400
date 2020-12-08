@@ -1,3 +1,17 @@
+﻿//---------------------------------------------------------
+// file:	scr_options.c
+// author:	[Teh Kai Hong Bryan]
+//			[Koh Le An Leonard]
+// email:	[t.kaihongbryan@digipen.edu]
+//			[l.koh@digipen.edu]
+//
+// brief:	Options menu [Sound and Custom Input settings]
+//
+//			Lines 57-72, 123-149, 468-487, and 555-627 written by Koh Le An Leonard
+//			Everything else written by Teh Kai Hong Bryan
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include <cprocessing.h>
 #include "../GameLogic/Button.h"
 #include "../GameLogic/ScreenManager.h"
@@ -22,6 +36,7 @@ Button customInputMenu[BLOB_PAUSE+2][3];
 Button soundMenu[SFX + 2][3];
 CP_Vector mousePos;
 
+// Initializes custom input buttons
 void CustomInputButtonsInit(void)
 {
 	mouseCheck = false;
@@ -31,15 +46,6 @@ void CustomInputButtonsInit(void)
 		customInputMenu[i][0].objColor = WHITE;
 		for (int j = 1; j <= 2; j++)
 		{
-			/*switch (j)
-			{
-			case 1:
-				customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 2 - 450.f, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
-				break;
-			case 2:
-				customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 2 + 450.f, (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
-				break;
-			}			*/
 			customInputMenu[i][j] = CreateButton((float)CP_System_GetWindowWidth() / 2 + ((float)CP_System_GetWindowWidth() / 3 * (j-1)), (float)CP_System_GetWindowHeight() / 8 + 75.f * i, 250.f, 50.f, GetBlobKeyName(i, j - 1));
 			customInputMenu[i][j].isSelected = 0;
 			customInputMenu[i][j].objColor = WHITE;
@@ -47,6 +53,7 @@ void CustomInputButtonsInit(void)
 	}
 }
 
+// Initializes Sound Menu
 void SoundMenuInit(void)
 {
 	mouseCheck = false;
@@ -64,6 +71,7 @@ void SoundMenuInit(void)
 	soundMenu[2][0].objColor = WHITE;
 }
 
+// Initializes Options Menu
 void OptionsInit(void)
 {
 	selectButton = 0;
@@ -90,6 +98,7 @@ void OptionsInit(void)
 	SoundMenuInit();
 }
 
+// Draws Options Menu
 void OptionsDraw(void)
 {
 	CP_Settings_Background(bgColor);

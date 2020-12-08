@@ -1,3 +1,12 @@
+﻿//---------------------------------------------------------
+// file:	Boss2.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Boss for second level
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include <cprocessing.h>
 #include <stdio.h>
 #include "../Audio/AudioManager.h"
@@ -16,6 +25,7 @@ AttackState shootState;
 Projectile projectileList[50];
 CP_Color WarningColor;
 
+// Initializes variables for Boss2
 void Boss2Init(void)
 {
 	BossInit(&Boss2, 3, 60.0f, CP_Vector_Set(200.f,200.f));
@@ -27,7 +37,8 @@ void Boss2Init(void)
 	WarningColor = CP_Color_Create(0, 0, 0, 175);
 }
 
-void B2_StateChange(Player player) //this determines WHEN the boss does its actions
+// Boss2 behavior
+void B2_StateChange(Player player) 
 {
 	float dt = CP_System_GetDt();
 	switch (bossState)
@@ -67,6 +78,7 @@ void B2_StateChange(Player player) //this determines WHEN the boss does its acti
 	}
 }
 
+// Draws Boss2 and its attacks
 void Boss2Draw()
 {
 	// Draw Boss
@@ -84,6 +96,7 @@ void Boss2Draw()
 	BossHealthDraw(Boss2);
 }
 
+// Spawns a new projectile with the stated position, direction and velocity
 void NewProjectile(CP_Vector pos, CP_Vector dir, float vel)
 {
 	for (int i = 0; i < 50; i++)
@@ -96,6 +109,7 @@ void NewProjectile(CP_Vector pos, CP_Vector dir, float vel)
 	}
 }
 
+// Boss rotates to face the player
 void Boss2Rotation(Boss* currentboss, CP_Vector position, float dt)
 {
 	//For rotation
@@ -128,6 +142,7 @@ void Boss2Rotation(Boss* currentboss, CP_Vector position, float dt)
 		currentboss->BossBody.rotation -= 360;
 }
 
+// Handle stunned status
 void StunTimer_B2()
 {
 
@@ -139,6 +154,7 @@ void StunTimer_B2()
 	}
 }
 
+// Determines what the Boss does in each state
 void Boss2Action(void) //determines the boss actions, only one should be active at any time
 {
 	float dt = CP_System_GetDt();
@@ -301,6 +317,7 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 	}
 }
 
+// Boss update function
 void Boss2Battle(void)
 {
 	if (Boss2.Health == 0) //defeat should come first to stop all other functions
@@ -316,6 +333,7 @@ void Boss2Battle(void)
 	}
 }
 
+// Exit function
 void Boss2Exit(void)
 {
 	for (int i = 0; i < 50; i++)

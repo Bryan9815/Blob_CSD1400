@@ -1,8 +1,19 @@
+﻿//---------------------------------------------------------
+// file:	scr_level_2.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	File for level 2 screen
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include "../GameLogic/ScreenManager.h"
 #include "scr_level_2.h"
 #include "../Audio/AudioManager.h"
 #include "../GameLogic/Score.h"
 
+// Initializes level 2 map for Blob
 void Level2Init(void) 
 {
 	LoadMapFile(Level2);
@@ -16,6 +27,7 @@ void Level2Init(void)
 	Boss2Timer = 0.f;
 }
 
+// Draws level 2
 void Level2Draw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
@@ -34,6 +46,7 @@ void Level2Draw(Player* player)
 	}
 }
 
+// Updates level 2
 void Level2Update(Player* player)
 {
 	switch(GetPlayState())
@@ -63,6 +76,7 @@ void Level2Update(Player* player)
 	Level2Draw(player);
 }
 
+// Exits level 2
 void Level2Exit(void) 
 {
 	Boss2Exit();
