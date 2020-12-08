@@ -157,7 +157,7 @@ void AttackFarDraw(Boss armorboss) //draws warning area for boss charge attack
 		
 		if (rotation <= 120 && rotation >= 60)
 		{
-			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x + armorboss.BossBody.hitbox.radius * ),
+			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x + armorboss.BossBody.hitbox.radius),
 										  armorboss.BossBody.hitbox.position.y, width, 
 										 (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
 			CP_Settings_Fill(CP_Color_Create(255,0,0,255));
