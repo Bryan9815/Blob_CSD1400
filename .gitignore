@@ -51,6 +51,7 @@ dkms.conf
 /CProcessing/.vs
 /CProcessing/Debug
 /CProcessing/x64
+/CProcessing/Release
 /.vs/VSWorkspaceState.json
 /.vs
 /.gitignore

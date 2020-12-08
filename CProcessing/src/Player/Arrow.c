@@ -1,3 +1,12 @@
+﻿// file:	Arrow.c
+// author:	[Lim Zi Qing]
+// email:	[ziqing.l@digipen.edu]
+//
+// brief:	Arrow object with Arrow collision
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <cprocessing.h>
 #include "Arrow.h"
 #include "../Audio/AudioManager.h"
@@ -8,6 +17,7 @@
 float timer = 0;
 bool arrowhit = false;
 
+//Draw the arrow
 void DrawArrow(Arrow* arrow)
 {
 	//Draw arrow
@@ -15,6 +25,7 @@ void DrawArrow(Arrow* arrow)
 	CP_Image_DrawAdvanced(arrow->arrowSprite, arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, alpha, arrow->aBody.rotation);
 }
 
+//Initialize the arrow
 void CreateArrow(Arrow* arrow)
 {
 	arrowColor = CP_Color_Create(255, 0, 0, 255);
@@ -40,7 +51,6 @@ void CreateArrow(Arrow* arrow)
 }
 
 // Calculate the distance travelled by the arrow during release.
-// CP_Vector pos is the new position of the arrow without any charge.
 void CalculateRelease(Arrow* arrow, Body* entity, CP_Vector pos) 
 {
 	arrow->oldPosition = entity->hitbox.position;
@@ -52,6 +62,7 @@ void CalculateRelease(Arrow* arrow, Body* entity, CP_Vector pos)
 	arrow->travelDistance = CP_Vector_Distance(arrow->oldPosition, arrow->newPosition);
 }
 
+//Calculates the new position and distance of the arrow recall
 void CalculateRecall(Arrow* arrow, Body* entity)
 {
 	arrow->oldPosition = arrow->aBody.hitbox.position;
@@ -62,6 +73,7 @@ void CalculateRecall(Arrow* arrow, Body* entity)
 	arrow->travelDistance = CP_Vector_Distance(arrow->oldPosition, arrow->newPosition);
 }
 
+//Calculates rotation of an object based on the axis and a direction
 void CalculateRotation(Body* aBody, CP_Vector vector)
 {
 	if (vector.x < 0)
@@ -74,12 +86,14 @@ void CalculateRotation(Body* aBody, CP_Vector vector)
 	}
 }
 
+//tracks position of mouse for arrow release
 void MouseTracking(Body* aBody)
 {
 	CP_Vector mousePositionVector = CP_Vector_Subtract(CP_Vector_Set(CP_Input_GetMouseWorldX(), CP_Input_GetMouseWorldY()), aBody->hitbox.position);
 	CalculateRotation(aBody, mousePositionVector);
 }
 
+//Arrow collision with circulr object
 void IdleArrowCollision_Circle(Body* aBody, Body* entity) //Push Arrow Away when in contact with circular entity
 {
 	if (COL_IsColliding(aBody->hitbox, entity->hitbox))
@@ -95,6 +109,7 @@ void IdleArrowCollision_Circle(Body* aBody, Body* entity) //Push Arrow Away when
 	}
 }
 
+//Arrow pickup
 void ArrowPickup(Arrow* arrow, Body* entity)
 {
 	if (COL_IsColliding(arrow->aBody.hitbox, entity->hitbox) == true)
@@ -106,7 +121,7 @@ void ArrowPickup(Arrow* arrow, Body* entity)
 	}
 }
 
-
+//Arrow mnovement
 void ArrowInMotion(Arrow* arrow)
 {
 	if (arrow->currentDistance >= arrow->travelDistance || arrow->arrowState == WITHENTITY)
