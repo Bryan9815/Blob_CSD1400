@@ -23,7 +23,7 @@ float pickuptimer = 0;
 float chargetimer = 0;
 int pulse = 0;
 
-void PlayerInit(Player* player) //Default Variables
+void PlayerInit(Player* player) //Initialize player
 {
 	//Set Player and Arrow state
 	playerState = STILL;
@@ -117,7 +117,7 @@ void ChargeSFX(Player* player) //Player arrow charge effect
 
 }
 
-void PlayerDraw(Player* player) //Draw layer
+void PlayerDraw(Player* player) //Draw player
 {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
@@ -332,7 +332,7 @@ void Dodge(Player* player) //Player dodge
 		
 }
 
-void DodgeRecharge(Player* player) //Recharge Dodge
+void DodgeRecharge(Player* player) //Recharge Player Dodge
 {
 	if (player->numDodge < 2)
 	{
@@ -457,9 +457,6 @@ bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 		}
 		arrowBossCol = ArrowBoss1Collision(arrow, bBody);
 		ArrowInMotion(arrow);
-		//printf("Player Pos: %f, %f\n", pBody->hitbox.position.x, pBody->hitbox.position.y);
-		//printf("Arrow Old Pos: %f, %f\n", arrow->oldPosition.x, arrow->oldPosition.y);
-		//printf("Arrow New Pos: %f, %f\n", arrow->newPosition.x, arrow->newPosition.y);
 	}
 	return arrowBossCol;
 }
@@ -473,11 +470,8 @@ void PlayerUpdate(Player* player)
 		PlayerMovement(player);
 		ArrowTrigger(player);
 	}
-	else //when player is dead
+	else //Player death
 	{
-		//for now
-		//move to game over screen later
-		//set values to default if needed
 		SetGameOver(false);
 		PlayerMovement(player);
 		ArrowTrigger(player);

@@ -17,6 +17,7 @@
 float timer = 0;
 bool arrowhit = false;
 
+//Draw the arrow
 void DrawArrow(Arrow* arrow)
 {
 	//Draw arrow
@@ -24,6 +25,7 @@ void DrawArrow(Arrow* arrow)
 	CP_Image_DrawAdvanced(arrow->arrowSprite, arrow->aBody.hitbox.position.x, arrow->aBody.hitbox.position.y, arrow->aBody.hitbox.radius, arrow->aBody.hitbox.radius, alpha, arrow->aBody.rotation);
 }
 
+//Initialize the arrow
 void CreateArrow(Arrow* arrow)
 {
 	arrowColor = CP_Color_Create(255, 0, 0, 255);
