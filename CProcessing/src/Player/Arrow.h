@@ -1,3 +1,12 @@
+﻿// file:	Arrow.h
+// author:	[Lim Zi Qing]
+// email:	[ziqing.l@digipen.edu]
+//
+// brief:	Header file for Arrow.c
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 #include <cprocessing.h>
 #include "../GameLogic/Collision.h"
@@ -25,11 +34,8 @@ typedef struct
 	CP_Image	arrowSprite;
 	ArrowState  arrowState;
 
-	CP_Vector	oldPosition,
-				newPosition;
-
-	float		chargeTimer,
-				chargeScale;
+	CP_Vector	oldPosition,	//Original position
+				newPosition;	//Position to move to
 
 	float		charge;
 	int			charging;
