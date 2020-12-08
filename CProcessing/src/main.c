@@ -37,7 +37,6 @@ int main(void)
 	is being fixed*/
 
 	CP_System_ShowConsole();
-	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 
 	/*
 	void* asd = malloc(1000);
@@ -46,6 +45,7 @@ int main(void)
 	*/
 	//free(asd);
 #else
+	freopen_s((FILE**)stdout, "CONOUT$", "w", stdout);
 	CP_System_Fullscreen();
 	//CP_System_FullscreenAdvanced(WINDOW_WIDTH, WINDOW_HEIGHT);
 #endif
