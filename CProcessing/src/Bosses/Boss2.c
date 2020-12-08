@@ -96,7 +96,7 @@ void Boss2Draw()
 	BossHealthDraw(Boss2);
 }
 
-// Spawns a new projectile with the stated position, direction and velocity
+// Adds a new projectile into projectileList with the stated position, direction and velocity
 void NewProjectile(CP_Vector pos, CP_Vector dir, float vel)
 {
 	for (int i = 0; i < 50; i++)

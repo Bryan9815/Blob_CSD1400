@@ -1,6 +1,17 @@
+﻿//---------------------------------------------------------
+// file:	Projectile.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Projectile object
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include "Projectile.h"
 #include "../Player/player.h"
 
+// Creates a projectile with the stated position, direction and velocity
 Projectile CreateProjectile(CP_Vector pos, CP_Vector dir, float vel)
 {
 	Projectile newProjectile;
@@ -14,6 +25,7 @@ Projectile CreateProjectile(CP_Vector pos, CP_Vector dir, float vel)
 	return newProjectile;
 }
 
+// Draws projectile
 void DrawProjectile(Projectile* projectile)
 {
 	CP_Color WarningColor = CP_Color_Create(255, 0, 0, 255);
@@ -21,6 +33,7 @@ void DrawProjectile(Projectile* projectile)
 	CP_Graphics_DrawCircle(projectile->body.hitbox.position.x, projectile->body.hitbox.position.y, projectile->body.hitbox.radius*2);
 }
 
+// Updates projectile
 void UpdateProjectile(Projectile *projectile)
 {
 	projectile->body.hitbox.position = CP_Vector_Add(projectile->body.velocity, projectile->body.hitbox.position);

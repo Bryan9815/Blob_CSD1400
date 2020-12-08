@@ -1,3 +1,13 @@
+﻿//---------------------------------------------------------
+// file:	Projectile.h
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Header file for Projectile.c
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #pragma once
 #include <cprocessing.h>
 #include "../GameLogic/Collision.h"
