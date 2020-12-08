@@ -1,3 +1,13 @@
+﻿//---------------------------------------------------------
+// file:	player.c
+// author:	[Lim Zi Qing]
+// email:	[ziqing.l@digipen.edu]
+//
+// brief:	Player object. Contains main player code, collision, and functions.
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <stdio.h>
 #include <cprocessing.h>
 #include "player.h"
@@ -53,7 +63,7 @@ void PlayerInit(Player* player) //Default Variables
 
 }
 
-void ChargeSFX(Player* player)
+void ChargeSFX(Player* player) //Player arrow charge effect
 {
 	int r, g, b;
 	r = 255;
@@ -107,17 +117,16 @@ void ChargeSFX(Player* player)
 
 }
 
-void PlayerDraw(Player* player)
+void PlayerDraw(Player* player) //Draw layer
 {
 	CP_Settings_EllipseMode(CP_POSITION_CENTER);
 	CP_Settings_RectMode(CP_POSITION_CENTER);
 	CP_Settings_NoStroke();
 	if (playerState == DODGING)
 	{
-		//Draw player
 		int transparency = 50;
 		
-		//Draw player sprite
+		//Draw player
 		CP_Image_DrawAdvanced(sprite, player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, transparency, player->pBody.rotation);
 
 		//Draw arrow
@@ -127,8 +136,6 @@ void PlayerDraw(Player* player)
 	else
 	{
 		//Draw player
-		//CP_Settings_Fill(playerColor);
-		//CP_Graphics_DrawEllipseAdvanced(player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, player->pBody.rotation);
 
 		CP_Image_DrawAdvanced(sprite, player->pBody.hitbox.position.x, player->pBody.hitbox.position.y, player->pBody.hitbox.radius * 2, player->pBody.hitbox.radius * 2, 255, player->pBody.rotation);
 
@@ -159,27 +166,9 @@ void PlayerDraw(Player* player)
 
 	//HitBox
 	//CP_Settings_Fill(CP_Color_Create(255, 0, 0, 200));	
-#if 0
-	CP_Settings_EllipseMode(CP_POSITION_CENTER);
-	CP_Graphics_DrawCircle(					//CIRCLE COLLIDER
-		player->pBody.hitbox.position.x,
-		player->pBody.hitbox.position.y,
-		player->pBody.hitbox.radius * 2);
-#endif
-#if 0
-	CP_Settings_RectMode(CP_POSITION_CORNER);
-	CP_Graphics_DrawRect(					//RECT COLLIDER
-		player->hitBox.position.x,
-		player->hitBox.position.y,
-		player->hitBox.width,
-		player->hitBox.height
-	);
-#endif
-	//Draw Dio
-	//CP_Image_DrawAdvanced(sprite, player->position.x, player->position.y, dioWidth, dioHeight, 255, player->rotation);
 }
 
-void PlayerMovement(Player* player)
+void PlayerMovement(Player* player) //Player movement
 {
 	CP_Settings_Background(backgroundColour);
 	bool shooting = ArrowTrigger(player);
@@ -319,7 +308,7 @@ void PlayerMovement(Player* player)
 	player->pBody.hitbox.position.y += player->pBody.velocity.y;
 }
 
-void Dodge(Player* player)
+void Dodge(Player* player) //Player dodge
 {
 	DodgeRecharge(player);
 	if (playerState == DODGING)
@@ -356,7 +345,7 @@ void DodgeRecharge(Player* player) //Recharge Dodge
 	}
 }
 
-bool ArrowTrigger(Player* player)
+bool ArrowTrigger(Player* player) //Fucntion for arrow
 {
 	if (player->arrow.arrowState == WITHENTITY)
 	{
@@ -394,6 +383,7 @@ bool ArrowTrigger(Player* player)
 }
 
 //end me now
+//Collision with Boss 1
 bool ArrowBoss1Collision(Arrow* arrow, Body* bBody)
 {
 	bool dealdamage = false;
@@ -429,6 +419,7 @@ bool ArrowBoss1Collision(Arrow* arrow, Body* bBody)
 	return dealdamage;
 }
 
+//Check Arrow State and adjust position
 bool ArrowStateCheck(Body* pBody, Body* bBody, Arrow* arrow)
 {
 	bool arrowBossCol = false;

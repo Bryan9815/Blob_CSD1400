@@ -1,3 +1,13 @@
+﻿//---------------------------------------------------------
+// file:	player.h
+// author:	[Lim Zi Qing]
+// email:	[ziqing.l@digipen.edu]
+//
+// brief:	Header file for player.c
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 #include <cprocessing.h>
 #include "Arrow.h"
