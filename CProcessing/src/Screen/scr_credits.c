@@ -43,7 +43,7 @@ void CreditsDraw()
 	CP_Settings_TextSize(50);
 	CP_Font_DrawText("WWW.DIGIPEN.EDU", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 500);
 	CP_Settings_TextSize(50);
-	CP_Font_DrawText("COPYRIGHT © 2020 BY DIGIPEN CORP, USA. ALL RIGHTS RESERVED.", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 600);
+	CP_Font_DrawText("ALL CONTENT © 2020 DigiPen Institute of Technology Singapore, ALL RIGHTS RESERVED.", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 600);
 
 	CP_Settings_TextSize(50);
 	CP_Font_DrawText("DEVELOPED BY", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 1200);
@@ -60,6 +60,12 @@ void CreditsDraw()
 	CP_Settings_TextSize(75);
 	CP_Font_DrawText("Cheng Ding Xiang", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2175);
 	CP_Font_DrawText("Raymond Teo", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2250);
+
+	CP_Settings_TextSize(50);
+	CP_Font_DrawText("PRESIDENT", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2400);
+
+	CP_Settings_TextSize(75);
+	CP_Font_DrawText("Claude Comair", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2475);
 
 }
 
