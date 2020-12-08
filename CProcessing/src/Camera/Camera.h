@@ -1,7 +1,16 @@
+﻿//---------------------------------------------------------
+// file:	Camera.h
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Header file for Camera.c
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #pragma once
 #include <cprocessing.h>
 #include "../Screen/fader.h"
-
 
 typedef enum CameraMode
 {

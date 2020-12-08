@@ -1,3 +1,13 @@
+﻿//---------------------------------------------------------
+// file:	scr_intro.c
+// author:	[Teh Kai Hong Bryan]
+// email:	[t.kaihongbryan@digipen.edu]
+//
+// brief:	Header file for scr_intro.c
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
 #include <cprocessing.h>
 #include "../GameLogic/ScreenManager.h"
 #include "SCR_intro.h"
@@ -7,6 +17,7 @@ float logoAlpha;
 CP_Image splashLogo;
 CP_Color bgColor;
 
+// Initializes Intro
 void IntroInit(void)
 {
 	splashTimer = 2.0f;	//Hold Timer
@@ -21,6 +32,7 @@ void IntroInit(void)
 	bgColor = CP_Color_Create(0, 0, 0, 255);
 }
 
+// Updates Intro
 void IntroUpdate(void)
 {
 	CP_Settings_Background(bgColor);
@@ -48,6 +60,7 @@ void IntroUpdate(void)
 	CP_Image_Draw(splashLogo, logoPosX, logoPosY, logoWidth, logoHeight, (int)logoAlpha);
 }
 
+// Exits Intro
 void IntroExit(void)
 {
 	CP_Image_Free(&splashLogo);
