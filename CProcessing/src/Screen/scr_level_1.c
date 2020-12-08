@@ -1,9 +1,20 @@
+//---------------------------------------------------------
+// file:	scr_level_1.c
+// author:	[Phang Jia Rong]
+// email:	[jiarong.phang@digipen.edu]
+//
+// brief:	Handles the functionality and update for level_1
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #include "../GameLogic/ScreenManager.h"
 #include "scr_level_1.h"
 #include "../Audio/AudioManager.h"
 #include "../GameLogic/Score.h"
 
-
+//Level 1 Init
 void Level1Init(void) 
 {
 	LoadMapFile(Level1);
@@ -17,6 +28,7 @@ void Level1Init(void)
 	Boss1Timer = 0.f;
 }
 
+//Draw for Level_1
 void LevelDraw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
@@ -35,6 +47,7 @@ void LevelDraw(Player* player)
 	}
 }
 
+//Update for Level1
 void Level1Update(Player* player)
 {
 	switch(GetPlayState())
@@ -63,6 +76,7 @@ void Level1Update(Player* player)
 	LevelDraw(player);
 }
 
+//Exit Call for Level1
 void Level1Exit(void) 
 {
 	Boss1Exit();

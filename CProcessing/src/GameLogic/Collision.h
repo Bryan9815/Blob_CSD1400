@@ -1,3 +1,16 @@
+//---------------------------------------------------------
+// file:	Collsion.h
+// author:	[Phang Jia Rong]
+//			[Lim Zi Qing]
+//
+// email:	[jiarong.phang@digipen.edu]
+//			[ziqing.l@digipen.edu]
+//
+// brief:	Header file for Collsion.c
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 #include "grid.h"
 #include <stdbool.h>

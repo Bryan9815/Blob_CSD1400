@@ -1,3 +1,14 @@
+//---------------------------------------------------------
+// file:	scr_tutorial.c
+// author:	[Phang Jia Rong]
+// email:	[jiarong.phang@digipen.edu]
+//
+// brief:	Handles the functionality and update for tutorial
+//			level. (level_0)
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "scr_tutorial.h"
 #include "../Audio/AudioManager.h"
 #include "../GameLogic/Score.h"
@@ -16,6 +27,7 @@ bool switchesDown,
 
 float skipDrawTimer = SkipDrawDelay;
 
+//Initialize Tutorial
 void TutorialInit(void) 
 {
 	LoadMapFile(Level0);
@@ -23,24 +35,25 @@ void TutorialInit(void)
 	tutTimer = 0.f;
 	skipDrawTimer = SkipDrawDelay;
 
+	//Init Arrays for each interactable grid element
 	int k = 0, l = 0, m = 0, n = 0;
 	for (int i = 0; i < GetLevelWidth(); i++) 
 	{
 		for (int j = 0; j < GetLevelHeight(); j++)
 		{
-			if (GetGridUnit(i, j)->gridType == GE_SWITCH) 
+			if (GetGridUnit(i, j)->gridType == GE_SWITCH)	//Switches
 			{
 				switches[k++] = GetGridUnit(i, j);
 			}
-			else if (GetGridUnit(i, j)->gridType == GE_DOOR)
+			else if (GetGridUnit(i, j)->gridType == GE_DOOR)	//Door
 			{
 				door1[l++] = GetGridUnit(i, j);
 			}
-			else if (GetGridUnit(i, j)->gridType == GE_PORTAL)
+			else if (GetGridUnit(i, j)->gridType == GE_PORTAL)	//Portal Trigger
 			{
 				portal[m++] = GetGridUnit(i, j);
 			}
-			else if (GetGridUnit(i, j)->gridType == GE_DAMAGE)
+			else if (GetGridUnit(i, j)->gridType == GE_DAMAGE)	//Damage
 			{
 				damage[n++] = GetGridUnit(i, j);
 			}
@@ -63,12 +76,13 @@ void TutorialDraw(Player* player)
 {
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
 
+	//Draw Level
 	GridDraw(player->pBody.hitbox);
 
 	//Tutorial Instructions
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
 
-	//SKIP
+	//Draw SKIP Message
 	if (skipDrawTimer <= 0) 
 	{
 		CP_Settings_TextSize(30);
@@ -77,7 +91,7 @@ void TutorialDraw(Player* player)
 	}
 	else 
 	{
-		skipDrawTimer -= CP_System_GetDt();
+		skipDrawTimer -= CP_System_GetDt();		//Skip Message Delay
 	}
 
 	//WASD
@@ -105,7 +119,7 @@ void TutorialDraw(Player* player)
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Font_DrawText("TO RECALL", 2750.0f, 380.0f);
 
-
+	//Player and Arrow
 	PlayerDraw(&newPlayer);
 	DrawArrow(&newPlayer.arrow);
 
@@ -123,7 +137,7 @@ void TutorialUpdate(Player* player)
 {
 	switch (GetPlayState())
 	{
-	case GAME_PLAY:
+	case GAME_PLAY:	//Gameplay Sequence
 		if (GetBlobInputTriggered(BLOB_PAUSE))
 		{
 			SetPlayState(GAME_PAUSE);
@@ -136,9 +150,11 @@ void TutorialUpdate(Player* player)
 		ArrowStateCheck(&(newPlayer.pBody), &(ArmorSlime.BossBody), &(newPlayer.arrow));
 		GridUpdate(player->pBody.hitbox, player->arrow.aBody.hitbox);
 		StageTime(&tutTimer);
+
+		//Damage tiles
 		for (size_t i = 0; i < sizeof(damage) / sizeof(damage[0]); i++)
 		{
-			if (COL_IsColliding(player->pBody.hitbox, damage[i]->collider) && playerState != DODGING)//Damage
+			if (COL_IsColliding(player->pBody.hitbox, damage[i]->collider) && playerState != DODGING)
 			{
 				player->health = 0;
 			}
@@ -199,6 +215,7 @@ void TutorialUpdate(Player* player)
 	TutorialDraw(player);
 }
 
+//Tutorial Exit Call 
 void TutorialExit(void)
 {
 	AudioL0Exit();

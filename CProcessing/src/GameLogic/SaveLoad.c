@@ -1,3 +1,17 @@
+//---------------------------------------------------------
+// file:	SaveLoad.c
+// author:	[Phang Jia Rong]
+// email:	[jiarong.phang@digipen.edu]
+//
+// brief:	Reads/Write Data for saving and loading
+//
+//          Currently functionality handles saving 
+//          and loading of volume to text file
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "ScreenManager.h"
@@ -8,6 +22,7 @@ char fileName[] = "././savedata.txt";
 #define DATA_ELEMENTS 9 //Number of elements to save inc of last line
 #define BUFFER 255
 
+//Struct that stores the data for each line in savedata file
 typedef struct Data
 {
     char* dataStr;
@@ -16,6 +31,7 @@ typedef struct Data
 
 Data * gameData;
 
+//Loads data from file
 void LoadData(FILE* stream)
 {
     
@@ -71,6 +87,7 @@ void LoadData(FILE* stream)
 
 }
 
+//Call to Load Game Variables from savedata
 void LoadGame()
 {
     FILE* fp;
@@ -85,6 +102,7 @@ void LoadGame()
     
 }
 
+//Save data to file
 void SaveData(FILE * stream) 
 {
     char _buffer[BUFFER];
@@ -111,6 +129,7 @@ void SaveData(FILE * stream)
 
 }
 
+//Call to Save Game Variables to savedata
 void SaveGame()
 {
 

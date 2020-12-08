@@ -1,13 +1,26 @@
+//---------------------------------------------------------
+// file:	Collider.c
+// author:	[Phang Jia Rong]
+//
+// email:	[jiarong.phang@digipen.edu]
+//
+// brief:	Collider Object with basic collision detection
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "Collider.h"
 
-
+//Check Distance between two colldiers, and their centre
 float COL_Dist(Collider hitBox1, Collider hitBox2) //Distance between two colliders
 {
 	return CP_Math_Distance(hitBox1.position.x, hitBox1.position.y, hitBox2.position.x, hitBox2.position.y);
 	
 }
 
-bool Circle_RectCollision(Collider circle, Collider rect) //Check for collision Circle/Rect
+//Check for Circle and Rect Collsion
+bool Circle_RectCollision(Collider circle, Collider rect) 
 {
 	bool col = false;
 
@@ -26,6 +39,7 @@ bool Circle_RectCollision(Collider circle, Collider rect) //Check for collision 
 	return col = (CP_Math_Distance(circle.position.x, circle.position.y, nearestX, nearestY) < circle.radius) ? true : false;	//Distance less than radii
 }
 
+//Detect if two colliders are colliding
 bool COL_IsColliding (Collider hitBox1, Collider hitBox2) //Collsion checking between 2 Collider
 {
 	bool col = false;

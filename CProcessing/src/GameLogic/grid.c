@@ -1,3 +1,18 @@
+//---------------------------------------------------------
+// file:	grid.c
+// author:	[Phang Jia Rong]
+// email:	[jiarong.phang@digipen.edu]
+//
+// brief:	File that generates the level in a 2D Grid
+//			The levels are generated through text files
+//          found in Assets/Level
+//			
+//          Functions to initialize, update and free the 
+//			level is found here
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <cprocessing.h>
@@ -7,7 +22,7 @@
 /*Debug Flag*/
 #define debug false
 
-//ASSET
+//SpriteSheet for Levels
 CP_Image envSpriteSheet;
 
 //BUFFER SIZE FOR MAP
@@ -23,12 +38,14 @@ int levelWidth = 0, levelHeight = 0;
 //ASSETS
 #define TEXTURESIZE 64
 
-int GetLevelWidth()//LEVEL WIDTH
+//LEVEL WIDTH in Units
+int GetLevelWidth()
 {
 	return levelWidth;
 }
 
-int GetLevelHeight()//LEVEL HEIGHT
+//LEVEL HEIGHT in Units
+int GetLevelHeight()
 {
 	return levelHeight;
 }
@@ -84,10 +101,10 @@ void LoadMapFile (MAP _level)	//Call FUNC to load map from file
 	unit->isActive = true;
 	unit->isCollidable = false;
 */
-void GridUnitInit(GridUnit * unit, int x, int y) //UNUSED for now
+/*void GridUnitInit(GridUnit * unit, int x, int y) //UNUSED for now
 {
 	
-}
+}*/
 
 /*Initialize Grid*/
 void GridInit()//Add starting point
@@ -528,18 +545,21 @@ void GridUpdate(Collider playerHitBox, Collider arrowHitBox)
 	
 }
 
+/*Deallocate and free the level*/
 void GridExit() 
 {
-
+	//Deallocate memory for level
 	for (int i = 0; i < levelWidth; i++)
 	{
 		free(*(level + i));
 	}
 	free(level);
 
+	//Free the spitesheet
 	CP_Image_Free(&envSpriteSheet);
 }
 
+//GridUnit in position on the grid
 GridUnit* GetGridUnit(int x, int y) 
 {
 	return &(level[x][y]);

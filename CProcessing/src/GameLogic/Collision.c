@@ -1,7 +1,26 @@
+//---------------------------------------------------------
+// file:	Collision.c
+// author:	[Phang Jia Rong]
+//			[Lim Zi Qing]
+//
+// email:	[jiarong.phang@digipen.edu]
+//			[ziqing.l@digipen.edu]
+//
+// brief:	Collision functions that check and handles
+//			physics for collsion for all objects
+//
+//			Line 23-137 written by Phang Jia Rong
+//			Line 140-261 written by Lim Zi Qing
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include "Collision.h"
 #include "../Audio/AudioManager.h"
 #include <math.h>
 #include <stdio.h>
+
+//Check Collsion between point and rect
 bool Col_PointRect(float x, float y, Collider rect) 
 {
 	return 
@@ -12,16 +31,19 @@ bool Col_PointRect(float x, float y, Collider rect)
 		? true : false;
 }
 
+//Get Min
 float Min(float f1, float f2) 
 {
 	return (f1 > f2) ? f2 : f1;
 }
 
+//Get Max
 float Max(float f1, float f2) 
 {
 	return (f1 > f2) ? f1 : f2;
 }
 
+//Check collision with level against any entity, compensates velocity as well
 bool GridCollisionCheck(Body* entity)
 {
 	
@@ -33,13 +55,13 @@ bool GridCollisionCheck(Body* entity)
 			Collider wallCol = level[i][j].collider;
 			Collider entityCol = entity->hitbox;
 
+			//Casting to new obj for checking
 			entityCol.shapeType = COL_RECT;					//Im not gonna do math now so just casting entity hitbox to rects for collision
 			entityCol.width = entity->hitbox.radius * 2;
 			entityCol.height = entity->hitbox.radius * 2;
-			entityCol.position.x += entity->velocity.x;
+			entityCol.position.x += entity->velocity.x;		
 			
 			//Player can be replaced with any reference a struct with a collider and stores its position there instead, pass entity refer to INTOBJ.AS
-
 
 			//@REDO
 			//TOUCH FLOOR
@@ -50,7 +72,7 @@ bool GridCollisionCheck(Body* entity)
 					(entity->hitbox.position.y + entity->hitbox.radius) <= wallCol.position.y + wallCol.height / 2															&&		//Constrain
 					entity->velocity.y > 0)																																			//Player is moving down
 			{
-				entity->velocity.y = (wallCol.position.y - wallCol.height / 2) - (entity->hitbox.position.y + entity->hitbox.radius);
+				entity->velocity.y = (wallCol.position.y - wallCol.height / 2) - (entity->hitbox.position.y + entity->hitbox.radius);		//Compensate by distance to floor
 
 				Colliding = true;
 			}
@@ -61,7 +83,7 @@ bool GridCollisionCheck(Body* entity)
 					wallCol.position.x + wallCol.width / 2 >= entity->hitbox.position.x + entity->hitbox.radius		&&		//Constrain
 					entity->velocity.x > 0)																					//Player is moving left
 			{
-				entity->velocity.x = (wallCol.position.x - wallCol.width / 2) - (entity->hitbox.position.x + entity->hitbox.radius);
+				entity->velocity.x = (wallCol.position.x - wallCol.width / 2) - (entity->hitbox.position.x + entity->hitbox.radius);		//Compensate by distance to wall on entity's left
 				Colliding = true;
 			}
 
@@ -70,7 +92,8 @@ bool GridCollisionCheck(Body* entity)
 					wallCol.position.x - wallCol.width / 2 <= entity->hitbox.position.x - entity->hitbox.radius		&&		//Constrain
 					entity->velocity.x < 0)																					//Player is moving right
 			{
-				entity->velocity.x = (wallCol.position.x + wallCol.width / 2) - (entity->hitbox.position.x - entity->hitbox.radius);
+				entity->velocity.x = (wallCol.position.x + wallCol.width / 2) - (entity->hitbox.position.x - entity->hitbox.radius);		//Compensate by distance to wall on entity's right
+
 				Colliding = true;
 			}
 
@@ -82,7 +105,8 @@ bool GridCollisionCheck(Body* entity)
 					(entity->hitbox.position.y - entity->hitbox.radius) >= wallCol.position.y - wallCol.height / 2																&&		//Constrain
 					entity->velocity.y < 0)																																			//Player is moving up
 			{
-				entity->velocity.y = (wallCol.position.y + wallCol.height / 2) - (entity->hitbox.position.y - entity->hitbox.radius);
+				entity->velocity.y = (wallCol.position.y + wallCol.height / 2) - (entity->hitbox.position.y - entity->hitbox.radius);		//Compensate by distance to ceiling
+
 				Colliding = true;
 			}
 
@@ -92,6 +116,28 @@ bool GridCollisionCheck(Body* entity)
 	return Colliding;
 }
 
+//Check collision against wall
+bool WallCollision(Body* entity)
+{
+	bool Colliding = false;
+	for (int i = 0; i < GetLevelWidth(); i++)
+	{
+		for (int j = 0; j < GetLevelHeight(); j++)
+		{
+			Collider wallCol = level[i][j].collider;
+			Collider entityCol = entity->hitbox;
+			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH || (level[i][j].gridType == GE_DOOR && level[i][j].isCollidable)))
+			{
+				Colliding = true;
+				return Colliding;
+			}
+		}
+	}
+	return Colliding;
+}
+
+
+//Get new vector of arrow reflection
 CP_Vector ArrowReflection(Body* entity, CP_Vector n)
 {
 	float dotproduct = CP_Vector_DotProduct(entity->velocity, n);
@@ -102,7 +148,7 @@ CP_Vector ArrowReflection(Body* entity, CP_Vector n)
 	return r;
 }
 
-//End me now
+//Get new vector of rect and circle collsion
 CP_Vector Get_CircleRectCOL_Side(Collider circle, Collider rect, CP_Vector v, CP_Vector startPos)
 {
 	CP_Vector v1, v2, v3, v4, n; //rect vertices
@@ -150,25 +196,7 @@ CP_Vector Get_CircleRectCOL_Side(Collider circle, Collider rect, CP_Vector v, CP
 	return n;
 }
 
-bool WallCollision(Body* entity)
-{
-	bool Colliding = false;
-	for (int i = 0; i < GetLevelWidth(); i++)
-	{
-		for (int j = 0; j < GetLevelHeight(); j++)
-		{
-			Collider wallCol = level[i][j].collider;
-			Collider entityCol = entity->hitbox;
-			if (COL_IsColliding(entityCol, wallCol) && (level[i][j].gridType == GE_WALL || level[i][j].gridType == GE_SWITCH || level[i][j].gridType == GE_DOOR))
-			{
-				Colliding = true;
-				return Colliding;
-			}
-		}
-	}
-	return Colliding;
-}  
-
+//Collsion for Player Arrow
 bool ArrowCollision(Body* entity, CP_Vector startPos)
 {
 	bool Colliding = false;
@@ -214,7 +242,7 @@ bool ArrowCollision(Body* entity, CP_Vector startPos)
 	return Colliding;
 }
 
-
+//Collsion between player and another entity
 bool PlayerEntityCollision(Body* player, Body* entity)
 {
 	bool colliding = false;

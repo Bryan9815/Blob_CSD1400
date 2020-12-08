@@ -1,9 +1,20 @@
+//---------------------------------------------------------
+// file:	fader.c
+// author:	[Phang Jia Rong]
+// email:	[jiarong.phang@digipen.edu]
+//
+// brief:	Fader for screen transitions or other UX/UI
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <cprocessing.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include "fader.h"
 
-void CreateFader(Fader* fader) //Default Variables
+//Create with Default Variables
+void CreateFader(Fader* fader) 
 {
 	fader->isFading = false;
 	fader->fadeSpeed = 200.0f;
@@ -11,7 +22,8 @@ void CreateFader(Fader* fader) //Default Variables
 
 }
 
-void StartFade(Fader* fader, FadeType fadeType)	//Sets the Fader to fade
+//Sets the Fader to fade
+void StartFade(Fader* fader, FadeType fadeType)	
 {
 
 	if (fadeType == FADE_OUT)
@@ -23,13 +35,15 @@ void StartFade(Fader* fader, FadeType fadeType)	//Sets the Fader to fade
 	fader->fadeType = fadeType;
 }
 
-void StopFade(Fader* fader, FadeType fadeType)	//Sets the Fader to stop fading @todo
+//Sets the Fader to stop fading 
+void StopFade(Fader* fader, FadeType fadeType)	
 {
 	fader->isFading = false;
 	fader->fadeType = fadeType;
 }
 
-void UpdateFade(Fader* fader)	//Drawcall for Fader
+//Drawcall for Fader
+void UpdateFade(Fader* fader)	
 {
 	if (fader->isFading) //fading
 	{
@@ -61,6 +75,7 @@ void UpdateFade(Fader* fader)	//Drawcall for Fader
 
 }
 
+//Reset Fader
 void ResetFader(Fader* fader)
 {
 	fader->fadePosX = 0;

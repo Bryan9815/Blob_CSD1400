@@ -1,3 +1,14 @@
+//---------------------------------------------------------
+// file:	grid.h
+// author:	[Phang Jia Rong]
+// email:	[jiarong.phang@digipen.edu]
+//
+// brief:	Header file for grid.c
+//
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 #include "Collider.h"
 #include <stdbool.h>
@@ -7,13 +18,10 @@ This is for casting a grid
 --------------------------*/
 //DEFAULT VARIABLES
 
-//#define GRID_MAXWIDTH 200							//Set the horizontal length
-//#define GRID_MAXHEIGHT 200							//Set the vertical length
+#define GRID_UNIT_WIDTH 50		//Unit width of one unit of the grid
+#define GRID_UNIT_HEIGHT 50		//Unit height of one unit of the grid
 
-#define GRID_UNIT_WIDTH 50	
-#define GRID_UNIT_HEIGHT 50	
-
-#define GRID_SIZE GRID_WIDTH*GRID_HEIGHT		//Total size
+#define GRID_SIZE GRID_WIDTH*GRID_HEIGHT	//Total size of grid	
 
 //ENUMS that stores the GRID type
 typedef enum 
@@ -71,10 +79,11 @@ typedef struct
 //DATA FOR MAP
 char* levelData;
 
-//THE ARRAY FOR THE LEVEL, USE THIS TO REFERENCE THE LEVEL
-GridUnit** level;//[GRID_MAXWIDTH][GRID_MAXHEIGHT];
+//The pointer for the level, USE THIS TO REFERENCE THE LEVEL
+GridUnit** level;
 
 //NOTE: NOT THIS SIZE IS NOT BY PIXEL SIZE BUT BY NUMBER OF ELEMENTS, THIS IS THE LEVEL AS A FULL RECTANGLE, INCLUDING EMPTY ELEMENTS. 
+
 int GetLevelWidth();	//RETURN LEVEL WIDTH
 int GetLevelHeight();	//RETURN LEVEL HEIGHT
 
