@@ -1,3 +1,13 @@
+//---------------------------------------------------------
+// file:	Score.h
+// author:	[Koh Le An Leonard]
+// email:	[l.koh@digipen.edu]
+//
+// brief:	Header for functions in Score.c
+//
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 #include <cprocessing.h>
 #include "../Bosses/Boss.h"

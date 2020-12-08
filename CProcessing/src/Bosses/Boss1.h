@@ -1,3 +1,13 @@
+//---------------------------------------------------------
+// file:	Boss1.h
+// author:	[Koh Le An Leonard]
+// email:	[l.koh@digipen.edu]
+//
+// brief:	Header for functions in Boss1.c
+//
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 #include <cprocessing.h>
 #include "Boss.h"
@@ -9,7 +19,6 @@ AttackState NearAttack, FarAttack;
 Collider Attack;
 CP_Vector ChargeTarget, ChargeDir;
 
-//void Shield1Draw(Boss armorboss);
 void Boss1Init(void);
 void AttackNear(Boss* armorboss, Player* player);
 void AttackNearDraw(Boss armorboss);

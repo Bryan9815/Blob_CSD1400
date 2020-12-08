@@ -1,3 +1,13 @@
+//---------------------------------------------------------
+// file:	Boss1.c
+// author:	[Koh Le An Leonard]
+// email:	[l.koh@digipen.edu]
+//
+// brief:	Functions for the first boss in the game
+//
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <cprocessing.h>
 #include <stdio.h>
 #include "Boss.h"
@@ -15,7 +25,7 @@ float ChargeTimer = 0.f;
 float AttackCount = 0.f;
 float Stuntime = 0.f;
 
-void Boss1Init(void)
+void Boss1Init(void) //initialises the first boss
 {
 	BossInit(&ArmorSlime, 3, 80.f, CP_Vector_Set(200.f,200.f));
 	ArmorSlime.bosssprite = CP_Image_Load("././Assets/Boss1.png");
@@ -63,7 +73,7 @@ void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 	}
 }
 
-void AttackNearDraw(Boss armorboss)
+void AttackNearDraw(Boss armorboss) //draws warning area for near attack
 {
 	if (NearAttack == WARNING)
 	{
@@ -127,7 +137,7 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 	}
 }
 
-void AttackFarDraw(Boss armorboss)
+void AttackFarDraw(Boss armorboss) //draws warning area for boss charge attack
 {
 	if (FarAttack == WARNING)
 	{
@@ -144,9 +154,10 @@ void AttackFarDraw(Boss armorboss)
 			rotation = 360 - CP_Vector_Angle(RightDir, ChargeDir); //find the larger angle if > 180 degrees
 
 		//draw rectangle, adjust so it draws from the centre of the short side
+		
 		if (rotation <= 120 && rotation >= 60)
 		{
-			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x + armorboss.BossBody.hitbox.radius),
+			CP_Graphics_DrawRectAdvanced((armorboss.BossBody.hitbox.position.x + armorboss.BossBody.hitbox.radius * ),
 										  armorboss.BossBody.hitbox.position.y, width, 
 										 (armorboss.BossBody.hitbox.radius * 2), rotation, 0.f);
 			CP_Settings_Fill(CP_Color_Create(255,0,0,255));
@@ -184,7 +195,7 @@ void AttackFarDraw(Boss armorboss)
 	}
 }
 
-void StunTimer(Boss* currentboss)
+void StunTimer(Boss* currentboss) //function for boss getting stunned after hitting wall
 {
 	
 	Stuntime+= CP_System_GetDt();
@@ -195,7 +206,7 @@ void StunTimer(Boss* currentboss)
 	}
 }
 
-void B1_StateChange(Player player, Boss* currentboss) //this determines WHEN the boss does its actions
+void B1_StateChange(Player player, Boss* currentboss) //function determines when the boss does its actions
 {
 	
 	float PlayerDist = CP_Vector_Distance(player.pBody.hitbox.position, currentboss->BossBody.hitbox.position);
@@ -255,7 +266,7 @@ void Boss1Action(void) //determines the boss actions, only one should be active 
 	}
 }
 
-void Boss1Battle(void)
+void Boss1Battle(void) //function for the entire boss battle
 {
 	if (ArmorSlime.Health == 0) //defeat should come first to stop all other functions
 	{
@@ -266,7 +277,7 @@ void Boss1Battle(void)
 	Boss1Action(); //determine boss action
 }
 
-void Boss1Draw(Boss armorboss)
+void Boss1Draw(Boss armorboss) //function to draw boss and attacks
 {
 	AttackFarDraw(armorboss);
 	AttackNearDraw(armorboss);
@@ -274,7 +285,7 @@ void Boss1Draw(Boss armorboss)
 	BossHealthDraw(armorboss);
 }
 
-void Boss1Exit(void)
+void Boss1Exit(void) ///function for freeing boss image
 {
 	CP_Image_Free(&(ArmorSlime.bosssprite));
 }

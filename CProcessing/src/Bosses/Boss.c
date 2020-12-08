@@ -1,3 +1,13 @@
+//---------------------------------------------------------
+// file:	Boss.c
+// author:	[Koh Le An Leonard]
+// email:	[l.koh@digipen.edu]
+//
+// brief:	Functions that are used for all bosses in the game
+//
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <cprocessing.h>
 #include "Boss.h"
 #include "../Player/player.h"
@@ -29,7 +39,7 @@ void BossDraw(Boss currentboss) //function to draw boss(es)
 						  currentboss.bossAlpha, currentboss.BossBody.rotation);
 }
 
-void BossHealthDraw(Boss boss)
+void BossHealthDraw(Boss boss) //function to draw boss health bar
 {
 	CP_Settings_Fill(CP_Color_Create(50, 50, 50, 150));
 	CP_Settings_RectMode(CP_POSITION_CORNER);
@@ -42,7 +52,7 @@ void BossHealthDraw(Boss boss)
 						 (float)(boss.BossBody.hitbox.radius * 2 * boss.Health/boss.maxHealth), 8.f);
 }
 
-void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //boss slowly moves toward player
+void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //function for boss  to slowly moves toward player
 {
 	float distance;
 	CP_Vector MoveDir = CP_Vector_Subtract(player.pBody.hitbox.position, currentboss->BossBody.hitbox.position);
@@ -69,7 +79,7 @@ void BossMovement(Boss* currentboss, Player player, GridUnit* grid) //boss slowl
 	currentboss->BossBody.hitbox.position =  CP_Vector_Add(currentboss->BossBody.velocity, currentboss->BossBody.hitbox.position); //update position	
 }
 
-void BossRotation(Boss* currentboss, CP_Vector position)
+void BossRotation(Boss* currentboss, CP_Vector position) //function for boss to always face player
 {
 	//For rotation
 	CP_Vector UpDir = CP_Vector_Set(0.f, 1.f);
@@ -82,7 +92,7 @@ void BossRotation(Boss* currentboss, CP_Vector position)
 }
 
 
-void BossDamage(bool* hit, Boss* boss) // for boss invincibility between hits
+void BossDamage(bool* hit, Boss* boss) //function for boss invincibility between hits
 {
 	if (NoDamageTimer == 0.f)
 	{

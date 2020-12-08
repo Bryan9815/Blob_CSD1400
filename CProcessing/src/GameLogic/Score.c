@@ -1,3 +1,13 @@
+//---------------------------------------------------------
+// file:	Score.c
+// author:	[Koh Le An Leonard]
+// email:	[l.koh@digipen.edu]
+//
+// brief:	Functions that are used for calculating score
+//
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <cprocessing.h>
 #include <stdio.h>
 #include "../Bosses/Boss.h"
@@ -7,11 +17,13 @@
 CP_Color rankColor;
 int pDeaths = 0, deathCount = 0;
 
+//calculate stage time
 void StageTime(float *timer)
 {
 	*timer += CP_System_GetDt();
 }
 
+//calculate score for stage
 float CalculateScore(float time, bool lose)
 {
 	float totalScore = 0;
@@ -53,6 +65,7 @@ float CalculateScore(float time, bool lose)
 	return totalScore;
 }
 
+//calculate rank based on score
 void CalculateRank(float score)
 {
 	//set rank
@@ -99,6 +112,7 @@ void CalculateRank(float score)
 	}
 }
 
+//displays score on game over or win
 void DisplayScore(float scoreCenterX, float scoreCenterY, float time, float score)
 {
 	char scoreString[] = "Score:";
