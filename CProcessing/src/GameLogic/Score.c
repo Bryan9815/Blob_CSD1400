@@ -5,7 +5,7 @@
 //
 // brief:	Functions that are used for calculating score
 //
-// Copyright ? 2020 DigiPen, All rights reserved.
+// Copyright � 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
 #include <cprocessing.h>

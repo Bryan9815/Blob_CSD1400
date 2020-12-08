@@ -5,7 +5,7 @@
 //
 // brief:	Header for functions in AudioManager.c
 //
-// Copyright ? 2020 DigiPen, All rights reserved.
+// Copyright � 2020 DigiPen, All rights reserved.
 //---------------------------------------------------------
 
 #pragma once
