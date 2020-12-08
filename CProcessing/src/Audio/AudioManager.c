@@ -1,3 +1,13 @@
+//---------------------------------------------------------
+// file:	AudioManager.c
+// author:	[Koh Le An Leonard]
+// email:	[l.koh@digipen.edu]
+//
+// brief:	Functions that are used for audio within the game
+//
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <cprocessing.h>
 #include "AudioManager.h"
 #include "../GameLogic/ScreenManager.h"
@@ -41,12 +51,14 @@ char* GetVolumeText(soundSelect input)
 	return volumeLevel;
 }
 
+//initialise volume
 void VolumeInit(void)
 {
 	SFX_Vol = 10;
 	BGM_Vol = 10;
 }
 
+//initialise audio for menu
 void AudioMenuInit(void)
 {
 	if (MenuPlaying == false)
@@ -59,6 +71,7 @@ void AudioMenuInit(void)
 	}
 }
 
+//freee audio for menu
 void AudioMenuExit(void)
 {
 	CP_Sound_StopAll();
@@ -66,6 +79,7 @@ void AudioMenuExit(void)
 	MenuPlaying = false;
 }
 
+//initialise audio for tutorial
 void AudioL0Init(void)
 {
 	BGM_Tutorial = CP_Sound_LoadMusic("././Assets/Audio/BlobTutorial.wav");
@@ -74,13 +88,14 @@ void AudioL0Init(void)
 	CP_Sound_PlayMusic(BGM_Tutorial);
 }
 
+//free audio for tutorial
 void AudioL0Exit(void)
 {
 	CP_Sound_StopAll();
 	CP_Sound_Free(BGM_Tutorial);
 }
 
-
+//initialise audio for lvl1
 void AudioL1Init(void)
 {
 	//load and play
@@ -98,6 +113,7 @@ void AudioL1Init(void)
 	SFXPlaying = false;
 }
 
+//play audio for lvl1
 void AudioL1Play(void)
 {
 	//if not playing from pause, resume music
@@ -108,6 +124,7 @@ void AudioL1Play(void)
 	}
 }
 
+//pause audio if game is paused
 void AudioL1Pause(void)
 {
 	//if playing, pause music
@@ -118,6 +135,7 @@ void AudioL1Pause(void)
 	}
 }
 
+//free audio after exit
 void AudioL1Exit(void)
 {
 	//stop any music/SFX still playing
@@ -130,22 +148,26 @@ void AudioL1Exit(void)
 	CP_Sound_Free(warningSFX);
 }
 
+// function to get SFX volume in sound options
 float GetSFXVolume()
 {
 	return SFX_Vol;
 }
 
+//function to set SFX volume in sound options
 void SetSFXVolume(float newVol)
 {
 	SFX_Vol = roundf(newVol);
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_SFX, (0.1f * newVol));
 }
 
+// function to get BGM volume in sound options
 float GetBGMVolume()
 {
 	return BGM_Vol;
 }
 
+// function to set BGM volume in sound options
 void SetBGMVolume(float newVol)
 {
 	BGM_Vol = roundf(newVol);

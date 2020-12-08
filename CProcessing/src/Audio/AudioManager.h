@@ -1,3 +1,13 @@
+//---------------------------------------------------------
+// file:	AudioManager.h
+// author:	[Koh Le An Leonard]
+// email:	[l.koh@digipen.edu]
+//
+// brief:	Header for functions in AudioManager.c
+//
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 #include <cprocessing.h>
 #include <stdbool.h>

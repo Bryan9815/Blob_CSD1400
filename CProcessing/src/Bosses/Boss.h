@@ -1,3 +1,13 @@
+//---------------------------------------------------------
+// file:	Boss.h
+// author:	[Koh Le An Leonard]
+// email:	[l.koh@digipen.edu]
+//
+// brief:	Header for functions in Boss.c
+//
+// Copyright ? 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #pragma once
 #include <cprocessing.h>
 #include "../Player/player.h"
