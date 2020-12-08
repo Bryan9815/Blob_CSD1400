@@ -1,5 +1,5 @@
 ﻿//---------------------------------------------------------
-// file:	scr_options.c
+// file:	scr_mainmenu.c
 // author:	[Teh Kai Hong Bryan]
 // email:	[t.kaihongbryan@digipen.edu]
 //
