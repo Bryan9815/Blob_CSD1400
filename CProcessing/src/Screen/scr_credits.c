@@ -1,3 +1,13 @@
+//---------------------------------------------------------
+// file:	scr_credits.c
+// author:	[Phang Jia Rong]
+// email:	[jiarong.phang@digipen.edu]
+//
+// brief:	Handles the functionality and update for credits
+//
+// Copyright � 2020 DigiPen, All rights reserved.
+//---------------------------------------------------------
+
 #include <cprocessing.h>
 #include "../GameLogic/ScreenManager.h"
 
@@ -8,8 +18,10 @@ static CP_Matrix translationMatrix;
 float scrollSpeed = 2.0f;
 float endTimer = 0.0f;
 
-void CreditsDraw() //Hardcoded DrawCalls for Credits
+//Hardcoded DrawCalls for Credits
+void CreditsDraw() 
 {
+	//Start
 	CP_Settings_Background(CP_Color_Create(0, 0, 0, 255));
 	CP_Settings_Fill(CP_Color_Create(255, 255, 255, 255));
 	CP_Settings_TextAlignment(CP_TEXT_ALIGN_H_CENTER, CP_TEXT_ALIGN_V_MIDDLE);
@@ -61,7 +73,7 @@ void CreditsInit()
 
 void CreditsUpdate()
 {
-	
+	//Camera Panning
 	currentPosition = CP_Vector_Add(currentPosition, CP_Vector_Set(0, +scrollSpeed));
 	CameraUpdate(&currentPosition, GetFader());
 	
