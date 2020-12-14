@@ -43,7 +43,9 @@ void CreditsDraw()
 	CP_Settings_TextSize(50);
 	CP_Font_DrawText("WWW.DIGIPEN.EDU", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 500);
 	CP_Settings_TextSize(50);
-	CP_Font_DrawText("ALL CONTENT © 2020 DigiPen Institute of Technology Singapore, ALL RIGHTS RESERVED.", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 600);
+	CP_Font_DrawText("ALL CONTENT © 2020 DIGIPEN INSTITUTE OF TECHNOLOGY SINGAPORE", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 600);
+	CP_Settings_TextSize(50);
+	CP_Font_DrawText("ALL RIGHTS RESERVED.", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 650);
 
 	CP_Settings_TextSize(50);
 	CP_Font_DrawText("DEVELOPED BY", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 1200);
@@ -58,14 +60,22 @@ void CreditsDraw()
 	CP_Font_DrawText("INSTRUCTORS", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2100);
 
 	CP_Settings_TextSize(75);
-	CP_Font_DrawText("Cheng Ding Xiang", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2175);
-	CP_Font_DrawText("Raymond Teo", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2250);
+	CP_Font_DrawText("CHENG DING XIANG", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2175);
+	CP_Font_DrawText("RAYMOND TEO", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2250);
 
 	CP_Settings_TextSize(50);
-	CP_Font_DrawText("PRESIDENT", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2400);
-
+	CP_Font_DrawText("PRESIDENT", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2800);
 	CP_Settings_TextSize(75);
-	CP_Font_DrawText("Claude Comair", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2475);
+	CP_Font_DrawText("CLAUDE COMAIR", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 2875);
+
+	CP_Settings_TextSize(50);
+	CP_Font_DrawText("EXECUTIVES", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 3000);
+	CP_Settings_TextSize(75);
+	CP_Font_DrawText("JASON CHU   JOHN BAUER", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 3075);
+	CP_Font_DrawText("SAMIR ABOU SAMRA   RAYMOND YAN", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 3150);
+	CP_Font_DrawText("PRASANNA GHALI   MICHELE COMAIR", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 3225);
+	CP_Font_DrawText("XIN LI   ANGELA KUGLER", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 3300);
+	CP_Font_DrawText("MELVIN GONSALVEZ   MEIGHAN MCKELVEY", (float)CP_System_GetWindowWidth() / 2, (float)CP_System_GetWindowHeight() + 3375);
 
 }
 
@@ -87,7 +97,7 @@ void CreditsUpdate()
 	
 	endTimer += scrollSpeed;
 
-	if (GetBlobInputTriggered(BLOB_INTERACT) || endTimer > 2250 + (float)CP_System_GetWindowHeight() * 4/3) //Ends Credits after last text appears +  4/3 of the screen
+	if (GetBlobInputTriggered(BLOB_INTERACT) || endTimer > 3375 + (float)CP_System_GetWindowHeight() * 4/3) //Ends Credits after last text appears +  4/3 of the screen
 	{
 		SetGameState(SCR_MAIN_MENU); //Change Back to Main Menu
 	}
