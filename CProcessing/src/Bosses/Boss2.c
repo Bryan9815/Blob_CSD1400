@@ -68,7 +68,7 @@ void B2_StateChange(Player player)
 
 			if (SFXPlaying == false)
 			{
-				CP_Sound_Play(warningSFX);
+				//CP_Sound_Play(warningSFX);
 				SFXPlaying = true;
 			}
 		}
@@ -185,7 +185,7 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 				{
 					if (SFXPlaying == true)
 					{
-						CP_Sound_Play(attackSFX);
+						//CP_Sound_Play(attackSFX);
 					}
 					CP_Vector dirVec = CP_Vector_Set(0, 1);
 					CP_Matrix rotationProj = CP_Matrix_Rotate(Boss2.BossBody.rotation - 10 + (i * 10));
@@ -232,7 +232,7 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 				{
 					if (SFXPlaying == true)
 					{
-						CP_Sound_Play(attackSFX);
+						//CP_Sound_Play(attackSFX);
 					}
 					CP_Vector dirVec = CP_Vector_Set(0, 1);
 					CP_Matrix rotationProj = CP_Matrix_Rotate(Boss2.BossBody.rotation + (i * 36));
@@ -285,7 +285,7 @@ void Boss2Action(void) //determines the boss actions, only one should be active 
 					NewProjectile(Boss2.BossBody.hitbox.position, dirVec, 7.5f);
 					if (SFXPlaying == true && i%5==0)
 					{
-						CP_Sound_Play(attackSFX);
+						//CP_Sound_Play(attackSFX);
 					}
 				}
 				AttackCount++;

@@ -65,7 +65,7 @@ void AudioMenuInit(void)
 	{
 		BGM_Menu = CP_Sound_LoadMusic("././Assets/Audio/BlobMenu.wav");
 		CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * BGM_Vol));
-		CP_Sound_PlayMusic(BGM_Menu);
+		//CP_Sound_PlayMusic(BGM_Menu);
 		CP_Sound_ResumeAll(); //Resume from pause menu
 		MenuPlaying = true;
 	}
@@ -85,7 +85,7 @@ void AudioL0Init(void)
 	BGM_Tutorial = CP_Sound_LoadMusic("././Assets/Audio/BlobTutorial.wav");
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_SFX, (0.1f * SFX_Vol));
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * BGM_Vol));
-	CP_Sound_PlayMusic(BGM_Tutorial);
+	//CP_Sound_PlayMusic(BGM_Tutorial);
 }
 
 //free audio for tutorial
@@ -107,7 +107,7 @@ void AudioL1Init(void)
 	warningSFX = CP_Sound_Load("././Assets/Audio/warningAttackSFX.wav");
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_SFX, (0.1f * SFX_Vol));
 	CP_Sound_SetGroupVolume(CP_SOUND_GROUP_MUSIC, (0.1f * BGM_Vol));
-	CP_Sound_PlayMusic(BGM_Boss1);
+	//CP_Sound_PlayMusic(BGM_Boss1);
 	CP_Sound_ResumeAll(); //resume if player paused and retry
 	MusicPlaying = true;
 	SFXPlaying = false;

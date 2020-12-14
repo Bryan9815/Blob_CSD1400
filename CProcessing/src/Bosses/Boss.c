@@ -100,7 +100,7 @@ void BossDamage(bool* hit, Boss* boss) //function for boss invincibility between
 		{
 			boss->Health--;
 			*hit = false;
-			CP_Sound_Play(damageSFX);
+			//CP_Sound_Play(damageSFX);
 			NoDamageTimer += CP_System_GetDt();
 			boss->bossAlpha = 100;
 		}

@@ -45,7 +45,7 @@ void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 		NearAttack = WARNING;
 		if (SFXPlaying == false)
 		{
-			CP_Sound_Play(warningSFX);
+			//CP_Sound_Play(warningSFX);
 			SFXPlaying = true;
 		}
 		NearAttackTimer += CP_System_GetDt();
@@ -55,7 +55,7 @@ void AttackNear(Boss* armorboss, Player* player) //attacks a radius around boss
 		NearAttack = ATTACK;
 		if (SFXPlaying == true)
 		{
-			CP_Sound_Play(attackSFX);
+			//CP_Sound_Play(attackSFX);
 			SFXPlaying = false;
 		}
 		if (COL_IsColliding(Attack, player->pBody.hitbox)) //check if player is hit by attack
@@ -103,7 +103,7 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 		FarAttack = WARNING;
 		if (SFXPlaying == false)
 		{
-			CP_Sound_Play(warningSFX);
+			//CP_Sound_Play(warningSFX);
 			SFXPlaying = true;
 		}
 		FarAttackTimer += CP_System_GetDt();
@@ -123,7 +123,7 @@ void AttackCharge(Player *player, Boss* armorboss, GridUnit *grid) //boss charge
 		if (GridCollisionCheck(&(armorboss->BossBody)))
 		{
 			ScreenShake(0.5f, 500);
-			CP_Sound_Play(SlamSFX);
+			//CP_Sound_Play(SlamSFX);
 			armorboss->State = STUNNED;
 			FarAttackTimer = 0;
 		}

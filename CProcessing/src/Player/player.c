@@ -399,7 +399,7 @@ bool ArrowBoss1Collision(Arrow* arrow, Body* bBody)
 		CP_Vector dir = CP_Vector_MatrixMultiply(rotatedir, CP_Vector_Set(0.0f, 1.0f)); //rotate based off (0,1) to get direction vector 
 		float theta = CP_Vector_Angle(differences, dir); //angle between dir vector and arrow vector
 		//r = d-2(d.n)n
-		CP_Sound_Play(ReflectSFX);
+		//CP_Sound_Play(ReflectSFX);
 		CP_Vector normal = CP_Vector_Normalize(differences);
 		//CP_Vector resultantVector = ArrowReflection(&arrow->aBody, normal);
 		float dotproduct = CP_Vector_DotProduct(arrow->aBody.velocity, normal);
